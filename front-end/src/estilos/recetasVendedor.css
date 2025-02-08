@@ -1,0 +1,5 @@
+.cardRecetasVendedor{
+        border: 1px solid;
+        display: grid;
+        justify-content: center;
+}

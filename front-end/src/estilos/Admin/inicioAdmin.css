@@ -1,0 +1,19 @@
+
+.imagenSuperiorAdmin {
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.tituloPrincipalInicioAdmin{
+  display: flex;
+  font-size: 14vh;
+  position: relative;
+  bottom: 97vh;
+  left: 4%;
+  width: 85%;
+  font-weight: 700;
+  color: #fff;
+  z-index: 1;
+}
+

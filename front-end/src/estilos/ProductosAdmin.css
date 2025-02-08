@@ -1,0 +1,113 @@
+body{
+    margin: 0;
+    min-width: 0;
+    min-height: 0;
+}
+.SemillasAdmin{
+    width: 100%;
+}
+
+.tituloCrudSemillas{
+    border-bottom: 0.5px solid;
+    width: 262px;
+}
+
+.actulizarProductos{
+    background-color: #00AF00;
+    font-size: 27px;
+    border-radius: 15%;
+    position: relative;
+    top: 12px;
+
+}
+.verMasProductosAdmin{
+    background-color: #D9D9D9;
+    width: 82%;
+}
+.CrudSemillasAdmin{
+    width: 80%;
+    position: relative;
+    left: 18.5%;
+}
+.accionesProductosAdmin{
+    width: 15%;
+    position: relative;
+    left: 2.5%;
+}
+.buscarSemillasAdmin{
+    background: #D9D9D9;
+    border: none;
+    width: 22%;
+    height: 40px;
+    border-radius: 67px;
+    position: relative;
+    left: 31%;
+    bottom: 27px;
+}
+.botonBuscarSemillasAdmin{
+    background-color: #623768;
+    position: relative;
+    left: 28%;
+    width: 3%;
+    bottom: 23px;
+    border-radius: 70%;
+}
+.botonNuevaSemillaAdmin{
+    background: #a5a0a082;
+    position: relative;
+    right: 20%;
+    bottom: 25px;
+}
+
+
+
+/* desactivar */
+.toggle-switch {
+    width: 40px;
+    height: 20px;
+    background-color: #e61f1f;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    bottom: 18px;
+}
+
+.toggle-switch.active {
+    background-color: #4caf50;
+}
+
+.toggle-knob {
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: left 0.3s;
+}
+
+.toggle-switch.active .toggle-knob {
+    left: 20px;
+}
+
+
+.imgVerMas{
+    width: 40%;
+    height: 40%;
+    object-fit: cover;
+    border-radius: 9px;
+}
+
+.botonEditarProductosAdmin{
+    background-color: #00AF00;
+    height: 49px;
+    border-radius: 5px;
+}
+.iconoFotoProductosAdmin{
+    position: relative;
+    bottom: 46px;
+    font-size: 37px;
+    left: 250px;
+}

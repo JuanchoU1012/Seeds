@@ -1,0 +1,101 @@
+
+.contenedorRegistro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.formularioRegistro {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 1000px;
+    width: 100%;
+    text-align: center;
+}
+
+.tituloRegistro {
+    margin-bottom: 20px;
+    font-size: 78px;
+    font-weight: bold;
+    position: relative;
+    bottom: 15vh;
+    font-weight: 400;
+}
+
+.inputsRegistro {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.inputRegistro {
+    background-color: #D9D9D9;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    height: 59px;
+
+}
+
+@media (max-width: 768px) {
+    .inputRegistro {
+        width: 100%;
+    }
+}
+.botonesRegistro{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+.botonRegistro {
+    width: 48%;
+    padding: 4px;
+    background-color: #00AF00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.botonResgistro:hover {
+    background-color: #699d69;
+}
+
+.volverRegistro {
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #000;
+    font-size: 25px;
+    background-color: #00AF00;
+    width: 48%;
+    height: 42px;
+    border-radius: 5px;
+}
+.volverRegistro:hover{
+    background-color: #699d69;
+    color: #fff;
+}
+
+.cuentaRegistro {
+    color: #000000;
+    font-size: 14px;
+    text-decoration: none;
+}
+.cuentaRegistro:hover{
+    color: #00AF00;
+}

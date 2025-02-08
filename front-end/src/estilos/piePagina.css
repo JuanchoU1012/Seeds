@@ -1,0 +1,129 @@
+.footer {
+    margin-top: 3%;
+    background-color: #3e123e;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  .footer p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    margin-top: 10px;
+  }
+  
+  .social-icons a {
+    margin: 0 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .social-icons a:hover {
+    color: #512b51;
+  }
+  .piePaginaContenedor{
+    display: flex;
+    justify-content: right;
+    margin-right: 5%;
+    margin-bottom: 8%;
+  }
+  .contactosFooter{
+    display: grid;
+    margin-top: 4%;
+    position: relative;
+    right: 12%;
+    color: #fff;
+    font-size: 20px;
+    justify-content: center;
+  }
+  .piePagina{
+    margin-top: 4%;
+    background-color: #512b51;
+  }
+  .contactanosFooter{
+    color: #fff;
+  }
+  .inputFooter{
+    border: none;
+    width: 228px;
+    height: 15%;
+    margin-right: 15px;
+    background-color: #512b51;
+    border-bottom: 1px solid black;
+    /* border-radius: 5px; */
+    color: #fff;
+
+  }
+  .botonFooter{
+    width: 150px;
+    margin-right: 55%;
+    height: 15%;
+    border-radius: 0;
+    background-color: #3e123e;
+    border-radius: 20px;
+    color: #fff;
+  }
+  .botonFooter:hover{
+    background-color: #321132;
+  }
+  .mensajeFooter{
+    width: 473px;
+    margin-right: 14px;
+    height: 32%;
+    border: none;
+    /* border-radius: 5px; */
+    background-color: #512b51;
+    border-bottom: 1px solid black;
+    color: #fff;
+  }
+  .iconosContactos{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+.iconosFooter{
+  margin-right: 16px;
+}
+.logoFooter{
+  width: 39%;
+}
+.enlacesFooter{
+  display: grid;
+  margin-right: 19%;
+  
+}
+.linkFooter{
+  text-decoration: none;
+  display: flex;
+  justify-content: left;
+  color: #fff;
+}
+.linkFooter:hover{
+  color: #3e123e;
+}
+.grcaiasMensaje{
+  color: #fff;
+  width: 238px;
+  height: 12%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 19%;
+  left: 44%;
+}
+.inputFooter::placeholder {
+  color: #fff;
+  opacity: 1;
+}
+.mensajeFooter::placeholder {
+  color: #fff;
+  opacity: 1;
+}

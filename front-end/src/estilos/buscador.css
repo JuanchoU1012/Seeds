@@ -1,0 +1,28 @@
+/* Estilos para el componente de búsqueda */
+.input-search-container {
+    margin-left: 50%;
+  }
+  
+  .input-search {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 300px;
+    height: 27px;
+    position: relative;
+    top: 22px;
+  }
+  
+  .search-button {
+    padding: 8px 12px;
+    font-size: 16px;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    right: 7%;
+    top: 22px;
+  }
+  

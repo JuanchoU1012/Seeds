@@ -1,0 +1,82 @@
+/* Modal Overlay */
+.modalEditarProductosAdmin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Close Button */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Form Elements */
+.formularioEditarProductosAdmin {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    width: 400px;
+}
+
+.inputProductoEditarAdmin {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.botonEditarProductosAdmin {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.botonEditarProductosAdmin:hover {
+    background: #218838;
+}
+
+/* Image Preview */
+.preview-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.preview-container img {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    max-width: 100px;
+    height: auto;
+}
