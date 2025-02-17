@@ -32,10 +32,8 @@ export const Registro = () => {
     try {
       const response = await fetch(`${API}/registro`, {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
         },
         body: JSON.stringify({
           email: formData.email,

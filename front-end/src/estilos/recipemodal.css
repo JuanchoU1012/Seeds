@@ -1,5 +1,5 @@
 /* Modal Overlay */
-.modalEditarProductosAdmin {
+.modalReceta {
     position: fixed;
     top: 0;
     left: 0;
@@ -26,6 +26,7 @@
 
 /* Close Button */
 .close-modal {
+    color: black;
     position: absolute;
     top: 10px;
     right: 15px;
@@ -36,23 +37,23 @@
 }
 
 /* Form Elements */
-.formularioEditarProductosAdmin {
+form {
     display: flex;
-    align-items: center;
     flex-direction: column;
     gap: 15px;
-    width: 400px;
 }
 
-.inputProductoEditarAdmin {
+input[type="text"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #e9ecef;
 }
 
-.botonEditarProductosAdmin {
+button[type="submit"], 
+button[type="button"] {
     background: #28a745;
     color: white;
     padding: 10px;
@@ -63,20 +64,24 @@
     transition: background 0.3s;
 }
 
-.botonEditarProductosAdmin:hover {
+button[type="submit"]:hover, 
+button[type="button"]:hover {
     background: #218838;
 }
 
-/* Image Preview */
-.preview-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+/* React Select Styles */
+.basic-multi-select {
+    width: 100%;
 }
 
-.preview-container img {
+.select__control {
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: 1px solid #ddd;
-    max-width: 100px;
-    height: auto;
+    min-height: 38px;
 }
+
+.select__multi-value {
+    background-color: #e9ecef;
+    border-radius: 2px;
+}
+

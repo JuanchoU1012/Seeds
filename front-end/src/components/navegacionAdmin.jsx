@@ -7,10 +7,6 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { logout } from "../../helpers/logout";
 
-
-
-
-
 const NavAdmin = () => {
 
     return (

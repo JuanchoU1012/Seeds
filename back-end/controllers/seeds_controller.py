@@ -58,7 +58,8 @@ class SeedsController():
         return prepare_for_json(seeds_with_images)
 
     def delete_seed(IdSemilla):
-        image = Seeds.get_image(IdSemilla)
+        image = Seeds.get_seed(IdSemilla)
+        print(image)
         if image:
             file_path = os.path.join(current_app.root_path, 'static', image['Ruta'].lstrip('/'))
             print(file_path)

@@ -52,9 +52,9 @@ export const SemillasAdmin = () => {
                     "Accept": "application/json"
                 }
             })
-            if (response.ok){
+            if (response.status === 200) {
                 const data = await response.json();
-                console.log("Fetched seed data:", data);
+
                 setDataSemillas(data);
             }
             else{

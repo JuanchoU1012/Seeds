@@ -1,3 +1,6 @@
+import { getTokenInfo } from "./getjwt";
+
+const token = await getTokenInfo();
 const API = import.meta.env.VITE_REACT_APP_API
 
 export const logout = async () => {
@@ -6,8 +9,8 @@ export const logout = async () => {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json",
+                "X-CSRF-TOKEN": token
             },
         });
         if (response.ok) {

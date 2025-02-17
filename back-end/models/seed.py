@@ -42,6 +42,19 @@ class Seeds:
             cursor.close()
             conn.close()
     
+    def get_seed(IdSemilla):
+        conn, cursor = connection()
+        try:
+            sql = "SELECT s.*, sm.Ruta FROM semillas s INNER JOIN semillas_multimedia sm ON s.IdSemilla = sm.Semillas_IdSemilla WHERE s.IdSemilla = %s"
+            cursor.execute(sql, (IdSemilla,))
+            seeds = cursor.fetchone()
+            return seeds
+        except Exception as e:
+            return {"success": False, "message": str(e)}, 500
+        finally:
+            cursor.close()
+            conn.close()
+    
     def delete_seed(IdSemilla):
         conn, cursor = connection()
         try:

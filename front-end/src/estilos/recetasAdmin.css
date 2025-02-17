@@ -1,40 +1,44 @@
-body{
+body {
     margin: 0;
     min-width: 0;
     min-height: 0;
 }
-.recetasAdmin{
+
+.RecetasAdmin {
     width: 100%;
 }
 
-.tituloCrudRecetas{
+.tituloCrudRecetas {
     border-bottom: 0.5px solid;
     width: 262px;
 }
 
-.actulizarRecetas{
+.actualizarRecetas {
     background-color: #00AF00;
     font-size: 27px;
     border-radius: 15%;
     position: relative;
     top: 12px;
-
 }
-.verMasRecetasAdmin{
+
+.verMasRecetasAdmin {
     background-color: #D9D9D9;
     width: 82%;
 }
-.crudRecetasAdmin{
+
+.CrudRecetasAdmin {
     width: 80%;
     position: relative;
     left: 18.5%;
 }
-.accionesRecetasAdmin{
+
+.accionesRecetasAdmin {
     width: 15%;
     position: relative;
     left: 2.5%;
 }
-.buscarRecetasAdmin{
+
+.buscarRecetasAdmin {
     background: #D9D9D9;
     border: none;
     width: 22%;
@@ -44,24 +48,24 @@ body{
     left: 31%;
     bottom: 27px;
 }
-.botonBuscarRecetasAdmin{
-    background-color: #5E5E5E;
+
+.botonBuscarRecetasAdmin {
+    background-color: #623768;
     position: relative;
     left: 28%;
     width: 3%;
     bottom: 23px;
     border-radius: 70%;
 }
-.nuevaRecetaAdmin{
+
+.botonNuevaRecetaAdmin {
     background: #a5a0a082;
     position: relative;
     right: 20%;
     bottom: 25px;
 }
 
-
-
-/* desactivar */
+/* Toggle Switch */
 .toggle-switch {
     width: 40px;
     height: 20px;
@@ -92,132 +96,22 @@ body{
     left: 20px;
 }
 
-
-/* modal ver mas */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.imgVerMasRecetas {
+    width: 40%;
+    height: 40%;
+    object-fit: cover;
+    border-radius: 9px;
 }
 
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    position: relative;
-    max-width: 614px;
-    width: 100%;
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-
-/* modal editar recetas */
-.modalEditarRecetasAdmin{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-
-.formularioEditarRecetasAdmin{
-    display: flex;
-    flex-direction: column;
-
-}
-
-.inputRecetaEditarAdmin{
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    background-color: #D9D9D9;
-    padding: 2%;
-}
-
-.botonEditarRecetasAdmin{
+.botonEditarRecetasAdmin {
     background-color: #00AF00;
     height: 49px;
     border-radius: 5px;
 }
-.iconoFotoRecetasAdmin{
+
+.iconoFotoRecetasAdmin {
     position: relative;
     bottom: 46px;
     font-size: 37px;
     left: 250px;
 }
-
-/* modal crear recetas */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    width: 400px;
-    max-width: 90%;
-    border-radius: 8px;
-    position: relative;
-  }
-  
-  .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-  }
-  
-  .inputRecetaAdmin, .botonGuardarRecetaAdmin {
-    display: block;
-    margin: 10px 0;
-    width: 100%;
-    padding: 8px;
-  }
-  
-  .botonGuardarRecetaAdmin {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .botonGuardarRecetaAdmin:hover {
-    background-color: #45a049;
-  }
-  

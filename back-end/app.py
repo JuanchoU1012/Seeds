@@ -13,6 +13,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from routes.user_routes import UserRoutes
 from routes.seeds_routes import SeedsRoutes
+from routes.recipes_routes import RecipesRoutes
 
 from flask_jwt_extended import JWTManager
 import os
@@ -36,8 +37,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/seeds'
 
 # Update CORS configuration
 CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:5173"],  # Your React app's URL
+    r"/*": {  # Your React app's URL
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Added OPTIONS
         "allow_headers": ["Content-Type", "X-CSRF-TOKEN"],
         "supports_credentials": True  # Enable if you're using cookies/credentials
@@ -54,6 +54,7 @@ def index():
 
 app.register_blueprint(UserRoutes)
 app.register_blueprint(SeedsRoutes)
+app.register_blueprint(RecipesRoutes)
 
 
 if __name__ == '__main__':
