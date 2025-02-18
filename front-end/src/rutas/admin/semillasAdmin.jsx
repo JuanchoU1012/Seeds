@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
-import '../../estilos/ProductosAdmin.css';
-import MenuLateral from '../../components/sidebar';
+import { faPencil, faMagnifyingGlass, faTrash} from '@fortawesome/free-solid-svg-icons';
+
+import MenuLateralAdmin from '../../components/sidebarAdmin.jsx';
 import NavAdmin from '../../components/navegacionAdmin';
 import SeedModal from '../../components/SeedModal';
-import { useEffect, useState } from "react";
+import '../../estilos/ProductosAdmin.css';
+
+// usertoken
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
@@ -26,6 +29,10 @@ export const SemillasAdmin = () => {
     });
     const [dataSemillas, setDataSemillas] = useState([]); // Ensure this is initialized as an empty array
     const [selectedSemilla, setSelectedSemilla] = useState(null);
+
+    const [filteredSemillas, setFilteredSemillas] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const [Err, setErr] = useState("");
 
     useEffect(() => {
@@ -56,6 +63,7 @@ export const SemillasAdmin = () => {
                 const data = await response.json();
 
                 setDataSemillas(data);
+                setFilteredSemillas(data);
             }
             else{
                 const data = await response.json();
@@ -70,6 +78,12 @@ export const SemillasAdmin = () => {
     fetchData();
 }, []);
 
+const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    const filtered = dataSemillas.filter(semilla => semilla.NombreComun.toLowerCase().includes(value));
+    setFilteredSemillas(filtered);
+};
     const handleNuevaSemilla = async (e) => {
         e.preventDefault();
     
@@ -182,10 +196,15 @@ export const SemillasAdmin = () => {
         <div className="SemillasAdmin">
             {Err && <div>{Err}</div>}
             <NavAdmin />
-            <MenuLateral />
+            <MenuLateralAdmin />
             <h1>Semillas</h1>
-            <input type="text" className="buscarSemillasAdmin" />
-            <button className="botonBuscarSemillasAdmin"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+            <div className="search-container">
+                <input className="input-search" 
+                type="text" 
+                placeholder="Buscar..." 
+                value={searchTerm} 
+                onChange={handleSearch}/>
+            </div>
             <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Semilla</button>
             <table className="CrudSemillasAdmin">
                 <thead>
@@ -198,23 +217,26 @@ export const SemillasAdmin = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {(!dataSemillas)?
+                    {(!filteredSemillas)?
                         <tr>
                             <td colSpan="5">No hay semillas disponibles.</td>
                         </tr>
                     :
-                    dataSemillas.map((semilla) => (
+                    filteredSemillas.map((semilla) => (
                         <tr key={semilla.IdSemilla}>
                             <td>{semilla.NombreCientSemilla}</td>
                             <td>{semilla.NombreComun}</td>
                             <td>{semilla.Descripcion}</td>
-                            <td><img src={`http://localhost:5000${semilla.image_url}`} alt={semilla.NombreComun} />
+                            <td className="crud-img"><img src={`http://localhost:5000${semilla.image_url}`} alt={semilla.NombreComun} />
                             </td>
                             <td className="accionesSemillasAdmin">
-                                <NavLink>
+                                <NavLink className='actualizarSemillas'>
                                     <FontAwesomeIcon icon={faPencil} onClick={() => handleEditar(semilla)} />
                                 </NavLink>
-                                <button onClick={() => handleEliminar(semilla.IdSemilla)}>Eliminar</button>
+
+                                <NavLink className='eliminarSemillas'>
+                                    <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(semilla.IdSemilla)} />
+                                </NavLink>
                             </td>
                         </tr>
                     ))}

@@ -9,6 +9,7 @@ import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
 import  RecipesModal from "../../components/RecipeModal";
+import MenuLateralAdmin from "../../components/sidebarAdmin";
 const API = import.meta.env.VITE_REACT_APP_API;
 
 export const RecetasAdmin = () => {
@@ -18,6 +19,8 @@ export const RecetasAdmin = () => {
 
     const [dataRecipes, setRecipes] = useState([]);
 
+    const [filteredRecetas, setFilteredRecetas] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
     const [dataForm, setDataForm] = useState({
         Nombre: "",
         Descripcion: "",
@@ -63,6 +66,7 @@ export const RecetasAdmin = () => {
                 const data = await response.json();
                 console.log("Fetched seed data:", data);
                 setRecipes(data);
+                setFilteredRecetas(data);
             }
         };
 
@@ -108,6 +112,12 @@ export const RecetasAdmin = () => {
 
     }, []);
 
+    const handleSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchTerm(value);
+        const filtered = dataRecipes.filter(recetas => recetas.nombre.toLowerCase().includes(value));
+        setFilteredRecetas(filtered);
+    };
 
     const handleNuevaReceta = async (e) => {
         e.preventDefault();
@@ -230,7 +240,15 @@ export const RecetasAdmin = () => {
     return(
         <div className="RecetasAdmin">
             <NavAdmin/>
+            <MenuLateralAdmin/>
             <h1>Recetas</h1>
+            <div className="search-container">
+                <input className="input-search" 
+                type="text" 
+                placeholder="Buscar..." 
+                value={searchTerm} 
+                onChange={handleSearch}/>
+            </div>
             <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
             <table>
                 <thead>

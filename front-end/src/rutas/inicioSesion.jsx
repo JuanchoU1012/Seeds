@@ -1,9 +1,10 @@
 import '../estilos/inicioSesion.css';
-import logo from '../imagenes/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { useState } from "react";
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 
 const API = import.meta.env.VITE_REACT_APP_API
@@ -48,13 +49,13 @@ export const InicioSesion = () => {
 
             if (response.ok) {
                 if (data.rol === 0) {
-                  navigate('/inicioadmin')
+                  navigate('/recetasadmin')
                 }
                 else if (data.rol === 1) {
                     navigate('/')
                 } 
                 else if (data.rol === 2) {
-                    navigate('/iniciovendedor')
+                    navigate('/misSemillasVendedor')
                 } 
                 else {
                   alert('No se pudo iniciar sesión')
@@ -70,47 +71,45 @@ export const InicioSesion = () => {
         }
     }
     return (
-      <div className="contenedor">
+      <div className="contenedorLogin">
+        <div className="contenedorImagenLogin">
+            <img className="imagenLogin" src="https://media.istockphoto.com/id/1401722160/es/foto/plantaci%C3%B3n-soleada-con-cultivo-de-soja.jpg?s=612x612&w=0&k=20&c=5ZTCnfPWntup-6i6G5cAhOniow_TWNFCacAaFipnI2o=" alt="" />
+            <h1 className="tituloImagenLogin">Bienvenidos a saberes y sabores</h1>
+        </div>
           <div className="contenedorFormulario">
               <form className="formularioInicio" onSubmit={handleSubmit}>
-                  <h2 className="tituloInicio">INICIO DE SESION</h2>
+                  <h1 className="tituloInicio">Inicio de sesion</h1>
                   <br /><br />
                   <div className="inputs">
+                  <FontAwesomeIcon icon={faEnvelope} className="iconosLogin"/>
                       <input
                           type="email"
                           placeholder="Correo electrónico"
-                          className="inputInicio"
+                          className="inputLogin"
                           name="email"
                           onChange={handleChange}
                       />
                       <br />
-                      
                       <input
                           type="password"
                           placeholder="Contraseña"
-                          className="inputInicio"
+                          className="inputLogin"
                           name="password"
                           onChange={handleChange}
                       />
-                      
                       <br/>
-                      <br/>
-                  </div>
                   {errorMessage && <p className="error">{errorMessage}</p>}
-                  <div className="contenedorBonotesInicioSesion">
                       <Link to="/" className="botonVolverinicio">
-                          <button type="button" className="botones botonVolverInicio">Volver</button>
+                          <button type="button" className="botonesSesion botonVolverInicioR">Volver</button>
                       </Link>
-                      <button type="submit" className="botones botoneInicio">Iniciar Sesión</button>
-                      <br />
+                      <button type="submit" className="botonesSesion botoneInicio">Iniciar Sesión</button>
+                      
+                  <Link to="/registro" className="cuenta">¿No tienes cuenta? Regístrate</Link>
+                  <br />
+                  <Link to="/recuperacioClave" className="cuenta cuentaRecuperacion">¿Olvidaste tu contraseña?</Link>
+                  
                   </div>
               </form>
-              <div className="imagen">
-                  <img src={logo} alt="Logo de mi aplicación" />
-                  <br />
-                  <Link to="/registro" className="cuenta">¿No tienes cuenta? Regístrate</Link>
-                  <Link to="/recuperacioClave" className="cuenta cuentaRecuperacion">¿Olvidaste tu contraseña?</Link>
-              </div>
           </div>
       </div>
   );

@@ -12,12 +12,15 @@
     height: 27px;
     position: relative;
     top: 22px;
+    background-color: #fff;
+    color: #000;
   }
   
   .search-button {
     padding: 8px 12px;
     font-size: 16px;
     color: #000;
+    background-color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;

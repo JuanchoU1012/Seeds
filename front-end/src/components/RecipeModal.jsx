@@ -69,8 +69,9 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.IdReceta ? 'Editar Receta' : 'Nueva Receta'}</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className='modal-form'>
                     <input
+                    className='input-modal'
                         type="text"
                         name="Nombre"
                         value={data.Nombre || ''}
@@ -79,6 +80,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     />
 
                     <input
+                    className='input-modal'
                         type="text"
                         name="Descripcion"
                         value={data.Descripcion || ''}
@@ -87,6 +89,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     />
 
                     <input
+                    className='input-modal'
                         type="text"
                         name="videoUrl"
                         value={data.videoUrl || ''}
@@ -120,6 +123,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                         <div key={index}>
                             <label>Paso {index + 1}:</label>
                             <input
+                            className='input-modal'
                                 type="text"
                                 value={step}
                                 onChange={(e) => handleStepChange(index, e.target.value)}
@@ -128,9 +132,9 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                             <button type="button" onClick={() => removeStep(index)}>🗑️</button>
                         </div>
                     ))}
-                    <button type="button" onClick={addStep}>➕ Agregar Paso</button>
+                    <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
 
-                    <button type="submit">Guardar Receta</button>
+                    <button type="submit" className='btn-modal'>Guardar Receta</button>
 
                 </form>
             </div>

@@ -8,12 +8,12 @@ import {InicioTienda} from './rutas/InicioTienda'
 
 import {UsuariosAdmin} from './rutas/admin/usuariosAdmin'
 
-import {InicioAdmin} from './rutas/admin/InicioAdmin'
-import { SemillasAdmin } from './rutas/admin/semillasAdmin'
+// import {InicioAdmin} from './rutas/admin/InicioAdmin'
 import {RecetasAdmin} from './rutas/admin/recetasAdmin'
+import { SemillasAdmin } from './rutas/admin/semillasAdmin'
 import {ProductosRecetasAdmin} from './rutas/admin/productosrecetasAdmin'
 
-import {InicioVendedor} from './rutas/vendedor/inicioVendedor'
+// import {InicioVendedor} from './rutas/vendedor/inicioVendedor'
 import {MisSemillas} from './rutas/vendedor/MisSemillas'
 import {RecetasVendedor} from './rutas/vendedor/recetasVendedor'
 import {TiendaVendedor} from './rutas/vendedor/tiendaVendedor'
@@ -33,14 +33,14 @@ function App() {
         
 
         {/* Admin Paths */}
-        <Route path="/InicioAdmin" element={<InicioAdmin />} />
+        {/* <Route path="/InicioAdmin" element={<InicioAdmin />} /> */}
         <Route path="/recetasAdmin" element={<RecetasAdmin />} />
         <Route path="/usuariosAdmin" element={<UsuariosAdmin />} />
         <Route path="/productosAdmin" element={<ProductosRecetasAdmin />} />
         <Route path='/semillasAdmin' element= {<SemillasAdmin/>}/>
         
         {/* Vendedor Paths */}
-        <Route path="/InicioVendedor" element={<InicioVendedor />} />
+        {/* <Route path="/InicioVendedor" element={<InicioVendedor />} /> */}
         <Route path="/RecetasVendedor" element={<RecetasVendedor />} />
         <Route path="/misSemillasVendedor" element={<MisSemillas />} />
         <Route path="/TiendaVendedor" element={<TiendaVendedor />} />

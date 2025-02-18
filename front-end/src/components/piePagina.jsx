@@ -35,8 +35,7 @@ const PiePagina = () => {
         <div className="enlacesFooter">
           <h2 className='contactanosFooter'>Enlaces</h2>
             <NavLink className='linkFooter' to='/inicioSesion'>Inicio de sesion</NavLink>
-            <NavLink className='linkFooter' to="/nosotros">Nosotros</NavLink>
-            <NavLink className='linkFooter' to="/tiendaPrincipio">Tienda</NavLink>
+
             <NavLink className='linkFooter' to='/registro'>Registro</NavLink>
         </div>
         <form action="" className='formularioFooter'>

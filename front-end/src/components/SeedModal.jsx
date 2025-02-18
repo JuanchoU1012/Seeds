@@ -22,7 +22,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modalEditarProductosAdmin" onClick={onClose}>
+        <div className="modalSemillasAdmin" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.IdSemilla ? 'Editar Semilla' : 'Nueva Semilla'}</h2>

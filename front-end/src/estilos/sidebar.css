@@ -1,5 +1,5 @@
 .menuLateral {
-    width: 17%;
+    width: 40%;
     height: 100vh;
     background-color: #D9D9D9;
     color: white;
@@ -17,7 +17,7 @@
     top: 16%;
 }
 
-.menuLateral ul li {
+.menuLateral ul li  {
     position: relative;
     padding: 20px 40px;
     font-size: 20px;
@@ -33,29 +33,84 @@
 .menuLateral ul li::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 85%;
     left: -100%;
-    width: 100%;
+    width: 77%;
     height: 100%;
-    background-color: #c9c8c8c5;
+    background-color: #814789;
     transition: left 0.4s ease;
     z-index: 0;
+    height: 3px;
 }
 
 .menuLateral ul li:hover::before {
     left: 0;
 }
 
-
 .menuLateral ul li:hover {
     color: #000;
 }
-
-
-
 
 .tituloCategorias{
     position: relative;
     left: 3%;
     color: #000;
+}
+
+.linkVendedorSidebar{
+    color: #71277a;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-left: 9%;
+    margin-top: 36%;
+    font-size: 18px;
+    font-weight: 600;
+}
+.linkVendedorSidebar:hover{
+    color: #814789;
+}
+.iconosSidebar{
+    margin-right: 10%;
+    font-size: 20px;
+}
+
+
+.menuLateral {
+    width: 17%;
+    height: 100vh;
+    background-color: #D9D9D9;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: left 0.4s ease;
+    z-index: 10;
+}
+
+.menuLateral.open {
+    left: 0;
+    width: 40%;
+}
+
+.menuToggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #71277a;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+@media (min-width: 850px) {
+    .menuLateral {
+        left: 0;
+        width: 17%;
+    }
+    .menuToggle {
+        display: none;
+    }
 }

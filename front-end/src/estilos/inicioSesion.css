@@ -1,96 +1,81 @@
-img {
-    width: 80%;
-}
-
-.imagen {
-    position: absolute;
-    left: 59%;
-    bottom: 29%;
-}
-
-.tituloInicio {
-    font-size: 10vh;
-    position: relative;
-    bottom: 10vh;
-    left: 3%;
-    font-weight: 400;
+.contenedorLogin{
     width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: #c2c2c299;
 }
-
-.formularioInicio {
-    position: relative;
-    left: 7%;
-    top: 30px;
+.contenedorImagenLogin{
+    width: 50%;
+    height: 90vh;
+    margin-top: 35px;
+    margin-left: 45px;
+    border-radius: 12px;
+    display: flex;
+}
+.imagenLogin{
+    width: 100%;
+    height: 90vh;
+    border-radius: 12px;
+}
+.contenedorFormulario{
+    width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.cuentaRecuperacion {
-    position: relative;
-    left: 5%;
-}
-
-.cuenta {
-    position: relative;
-    top: 2vh;
-    font-size: 2vh;
-    color: black;
-}
-
-.cuenta:hover {
-    color: #00AF00;
-}
-
-.inputInicio {
-    width: 100%;
-    height: 6vh;
-    position: relative;
-    bottom: 32%;
+.inputLogin{
+    width: 95%;
+    height: 30px;
+    margin-bottom: 25px;
     border: none;
-    border-radius: 11px;
-    background: #D9D9D9;
+    border-radius: 8px;
     padding: 12px;
+    padding-left: 42px;
+    background-color: #fff;
+    color: #3a3f43;
 }
 
-.inputs {
-    position: relative;
-    top: 22vh;
-    right: 30%;
-    width: 100%;
-
+.botonesSesion{
+    margin-top: 42px;
+    margin-bottom: 12px;
+    width: 45%;
+    height: 55px;
+    background-color: #fff;
+    margin-left: 5%;
 }
+.botones:hover{
+    background-color: #acacac;
 
-.botones {
-    position: relative;
-    background: #00AF00;
-    height: 7vh;
-    width: 48%;
-    font-size: 3vh;
-}
-
-.botones:hover {
-    background: #699d69;
-}
-
-.botoneInicio {
-    position: relative;
-    left: 4%;
-    width: 48%;
 }
 .botonVolverInicio{
+    margin-right: 17px;
+    margin-left: 17px;
+}
+.tituloImagenLogin{
+    z-index: 100;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 65px;
+    margin-left: -100%;
+    margin-top: 18%;
+}
+.iconosLogin{
     position: relative;
-    left:5%;
-    width: 48%;
-    margin-right: 4%;
-
+    top: 38px;
+    right: 46%;
+    font: 32%;
 }
 
-.contenedorBonotesInicioSesion {
-    position: relative;
-    top: 42vh;
-    right: 65%;
-    width: 100%;
-    /* display: flex; */
-    /* justify-content: space-between; */
+.cuenta{
+    color: #3a3f43;
+}
+
+.error{
+    color: #c63f3f;
+    border: solid 1px #c63f3f;
+    padding: 11px;
+    border-radius: 5px;
+    width: 101%;
 }

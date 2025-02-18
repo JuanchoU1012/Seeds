@@ -1,5 +1,5 @@
 /* Modal Overlay */
-.modalEditarProductosAdmin {
+.modalSemillasAdmin {
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +19,7 @@
     border-radius: 10px;
     width: 400px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
+    position: fixed;
     justify-content: center;
     align-items: center;
 }
@@ -39,6 +39,7 @@
 .formularioEditarProductosAdmin {
     display: flex;
     align-items: center;
+    justify-self: center;
     flex-direction: column;
     gap: 15px;
     width: 400px;
@@ -48,6 +49,7 @@
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
+    background-color: #e9ecef;
     border-radius: 5px;
     font-size: 16px;
 }
@@ -77,6 +79,7 @@
 .preview-container img {
     border-radius: 5px;
     border: 1px solid #ddd;
-    max-width: 100px;
+    max-width: 300px;
+    width: auto;
     height: auto;
 }

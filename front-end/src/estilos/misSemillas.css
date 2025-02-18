@@ -41,3 +41,9 @@
   position: relative;
   bottom: 30px;
 }
+
+@media (max-width: 800px){
+  .modal-content{
+    width: 75%;
+  }
+}

@@ -1,37 +1,31 @@
-body{
+body {
     margin: 0;
     min-width: 0;
     min-height: 0;
 }
-.UsuariosAdmin{
+
+.UsuariosAdmin {
     width: 100%;
 }
 
-.tituloCrudUsuarios{
+.tituloCrudUsuarios {
     border-bottom: 0.5px solid;
     width: 262px;
 }
 
-.actulizarUsuarios{
-    background-color: #00AF00;
-    font-size: 27px;
-    border-radius: 15%;
-    position: relative;
-    top: 12px;
-
-}
-
-.crudUsuariosAdmin{
+.crudUsuariosAdmin {
     width: 80%;
     position: relative;
-    left: 18.5%;
+    left: 19%;
+
+    display: block;
 }
-.accionesUsuariosAdmin{
+
+.accionesUsuariosAdmin {
     width: 15%;
-    position: relative;
-    left: 2.5%;
 }
-.buscarUsuariosAdmin{
+
+.buscarUsuariosAdmin {
     background: #D9D9D9;
     border: none;
     width: 22%;
@@ -41,7 +35,8 @@ body{
     left: 31%;
     bottom: 27px;
 }
-.botonBuscarUsuariosAdmin{
+
+.botonBuscarUsuariosAdmin {
     background-color: #5E5E5E;
     position: relative;
     left: 28%;
@@ -49,131 +44,38 @@ body{
     bottom: 23px;
     border-radius: 70%;
 }
-
-
-
-
-/* desactivar */
-.toggle-switch {
-    width: 40px;
-    height: 20px;
-    background-color: #e61f1f;
-    border-radius: 20px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    bottom: 18px;
-}
-
-.toggle-switch.active {
-    background-color: #4caf50;
-}
-
-.toggle-knob {
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    transition: left 0.3s;
-}
-
-.toggle-switch.active .toggle-knob {
-    left: 20px;
-}
-
-
-/* modal ver mas */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    position: relative;
-    max-width: 614px;
-    width: 100%;
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-
-/* modal editar Usuarios */
-.modalEditarUsuariosAdmin{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-
-.formularioEditarUsuariosAdmin{
-    display: flex;
-    flex-direction: column;
-
-}
-
-.inputUsuarioEditarAdmin{
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    background-color: #D9D9D9;
-    padding: 2%;
-}
-.inputsUsuariosSelectEditar{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-}
-.selectClaveUsuariosEditar{
-    width: 50%;
-    margin-right: 1%;
-    margin-bottom: 4%;
-}
-.selectUsuarioEditarAdmin{
-    height: 65px;
-    border: none;
-    border-radius: 5px;
-    background-color: #D9D9D9;
-    padding: 2%;
-}
-.botonEditarUsuariosAdmin{
+.actulizarUsuarios{
     background-color: #00AF00;
-    height: 49px;
-    border-radius: 5px;
-}
-.iconoFotoUsuariosAdmin{
+    font-size: 25px;
+    border-radius: 15%;
     position: relative;
-    bottom: 46px;
-    font-size: 37px;
-    left: 250px;
+    top: 12px;
+    margin-left: 3%;
+    padding: 2px;
+}
+.eliminarUsuarios{
+    background-color: rgb(180, 30, 30);
+    padding: 2px;
+    font-size: 25px;
+    border-radius: 15%;
+    position: relative;
+    top: 12px;
+    margin-left: 2%;
+}
+
+/* Estilos para la tabla responsiva */
+@media (max-width: 700px) {
+    .crudUsuariosAdmin {
+        width: 80%;
+        left: 8%;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+    }
+    .tituloCrudUsuarios, .accionesUsuariosAdmin {
+        min-width: 100px;
+    }
+    .actulizarUsuarios, .eliminarUsuarios{
+        font-size: 20px;
+    }
 }

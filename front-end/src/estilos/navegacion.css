@@ -21,9 +21,15 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    width: 8% ;
+    margin-left: 20%;
+    position: relative;
+    left: 15%;
 }
 .link:hover{
-    color: #300d50;
+    color: #fff;
+    width: 8% ;
+    border-radius: 9px;
 }
 .linkRegistro{
     border: 1px solid #500659;
@@ -45,4 +51,18 @@
 }
 .imagenHeader{
     width: 21%;
+}
+@media  (max-width: 1000px){
+    .linkRegistro {
+        left: -5%;
+        width: 38%;
+        font-size: 13px;
+    }
+    .link{
+        left: -18%;
+        font-size: 13px;
+    }
+    .imagenHeader{
+        width: 30%;
+    }
 }

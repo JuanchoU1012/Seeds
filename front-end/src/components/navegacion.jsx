@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import '../estilos/navegacion.css';
 import logo from '../imagenes/logo.png';
 
@@ -11,13 +11,13 @@ const Nav = () => {
             <header>
                 <nav className="headerInicio">
                     <ul className="ulNavegacion">
-                        <NavLink to="/">
+                        <NavLink >
                             <img src={logo} alt="Logo" className="imagenHeader" />
                         </NavLink>
-                        <NavLink className='link' to='/login'>Inicio</NavLink>
-                        <NavLink className='link' to='/registro'>Registro</NavLink>
-                        <NavLink className='link' to="/tiendaPrincipio">Tienda</NavLink>
-                        <NavLink className='link' to="/nosotros">Nosotros</NavLink>
+                        <NavLink className='link ' to='/login'>Inicio</NavLink>
+                        {/* <NavLink className='link' to="/nosotros">Nosotros</NavLink>
+                        <NavLink className='link' to="/tiendaPrincipio">Tienda</NavLink> */}
+                        <NavLink className='linkRegistro' to='/registro'>Registro</NavLink>
                     </ul>
                 </nav>
             </header>

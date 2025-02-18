@@ -37,13 +37,16 @@
 }
 
 /* Form Elements */
-form {
+.modal-form {
     display: flex;
+    align-items: center;
+    justify-self: center;
     flex-direction: column;
     gap: 15px;
+    width: 400px;
 }
 
-input[type="text"] {
+.input-modal {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -52,8 +55,7 @@ input[type="text"] {
     background-color: #e9ecef;
 }
 
-button[type="submit"], 
-button[type="button"] {
+.btn-modal {
     background: #28a745;
     color: white;
     padding: 10px;
@@ -64,8 +66,7 @@ button[type="button"] {
     transition: background 0.3s;
 }
 
-button[type="submit"]:hover, 
-button[type="button"]:hover {
+.btn-modal {
     background: #218838;
 }
 

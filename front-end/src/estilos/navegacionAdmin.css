@@ -41,3 +41,10 @@
 .iconosAdmin{
     font-size: 159%;
 }
+
+@media  (max-width: 700px){
+    .imagenHeaderAdmin{
+       display: flex;
+       margin-left: 25%;
+    }   
+}
