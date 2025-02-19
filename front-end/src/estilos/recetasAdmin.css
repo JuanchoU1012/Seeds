@@ -4,7 +4,9 @@ body{
     min-height: 0;
 }
 .recetasAdmin{
-    width: 100%;
+    width: 75%;
+    display: flex;
+    margin-left: 20%;
 }
 
 .tituloCrudRecetas{
@@ -209,5 +211,9 @@ body{
     }
     .modal-content {
         width: 60%;
+    }
+    .recetasAdmin{
+        margin-left: 3%;
+        font-size: 14px;
     }
   }

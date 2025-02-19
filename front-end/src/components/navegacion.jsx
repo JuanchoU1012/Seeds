@@ -15,8 +15,6 @@ const Nav = () => {
                             <img src={logo} alt="Logo" className="imagenHeader" />
                         </NavLink>
                         <NavLink className='link ' to='/login'>Inicio</NavLink>
-                        {/* <NavLink className='link' to="/nosotros">Nosotros</NavLink>
-                        <NavLink className='link' to="/tiendaPrincipio">Tienda</NavLink> */}
                         <NavLink className='linkRegistro' to='/registro'>Registro</NavLink>
                     </ul>
                 </nav>
