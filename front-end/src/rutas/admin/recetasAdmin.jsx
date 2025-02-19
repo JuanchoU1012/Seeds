@@ -10,6 +10,7 @@ import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
 import  RecipesModal from "../../components/RecipeModal";
 import MenuLateralAdmin from "../../components/sidebarAdmin";
+
 const API = import.meta.env.VITE_REACT_APP_API;
 
 export const RecetasAdmin = () => {
@@ -250,7 +251,7 @@ export const RecetasAdmin = () => {
                 onChange={handleSearch}/>
             </div>
             <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
-            <table>
+            <table className="recetasAdmin">
                 <thead>
                     <tr>
                         <th className="tituloCrudRecetas">Nombre Receta</th>
