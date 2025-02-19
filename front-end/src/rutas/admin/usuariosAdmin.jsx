@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import '../../estilos/usuariosAdmin.css';
-import MenuLateral from '../../components/sidebar';
+import MenuLateral from '../../components/sidebarAdmin';
 import NavAdmin from '../../components/navegacionAdmin';
 import UserModal from '../../components/UserModal';
 

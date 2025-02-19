@@ -64,7 +64,6 @@ export const RecetasAdmin = () => {
             });
             if (response.status === 200) {
                 const data = await response.json();
-                console.log("Fetched seed data:", data);
                 setRecipes(data);
                 setFilteredRecetas(data);
             }
@@ -119,8 +118,7 @@ export const RecetasAdmin = () => {
         setFilteredRecetas(filtered);
     };
 
-    const handleNuevaReceta = async (e) => {
-        e.preventDefault();
+    const handleNuevaReceta = async () => {
 
         const formData = new FormData();
         formData.append('NombreReceta', dataForm.NombreReceta);
@@ -128,6 +126,7 @@ export const RecetasAdmin = () => {
         dataForm.IdSemilla.forEach(IdSemilla => formData.append('IdSemilla[]', IdSemilla));
         dataForm.ingredients.forEach(ingredient => formData.append('IdProducto[]', ingredient));
 
+        console.log(formData);
         if (dataForm.Video_url) {
             formData.append('Video_url', dataForm.Video_url);
         }
@@ -150,7 +149,7 @@ export const RecetasAdmin = () => {
             if (response.status === 201) {
                 alert("Receta creada con éxito");
                 setDataForm({ ...dataForm, NombreReceta: '', Descripcion: '', IdSemilla: [], IdProducto: [], Video_url: null });
-                window.location.reload();
+                // window.location.reload();
             }
             else {
                 alert("Error al crear la receta");
@@ -174,7 +173,7 @@ export const RecetasAdmin = () => {
             })
             if (response.status === 200) {
                 alert("Receta eliminada con éxito");
-                window.location.reload();
+                // window.location.reload();
             }
             else {
                 alert("Error al eliminar la receta");
@@ -261,12 +260,12 @@ export const RecetasAdmin = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {(!dataRecipes)?
+                    {(!filteredRecetas)?
                     <tr>
                         <td colSpan="5">No hay recetas disponibles.</td>
                     </tr>
                     :
-                    dataRecipes.map((recipe) => (
+                    filteredRecetas.map((recipe) => (
                         <tr key={recipe.IdReceta}>
                             <td>{recipe.NombreReceta}</td>
                             <td>{recipe.Descripcion}</td>

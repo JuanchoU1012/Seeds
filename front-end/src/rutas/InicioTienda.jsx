@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from '../components/navegacion'
-import MenuLateral from '../components/sidebar'
+import MenuLateral from '../components/sidebarAdmin'
 import Galeria from '../components/galeria'
 
 

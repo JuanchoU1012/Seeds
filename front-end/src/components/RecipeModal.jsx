@@ -4,29 +4,22 @@ import PropTypes from 'prop-types';
 import Select from 'react-select'; // Import Select from react-select
 import '../estilos/recipemodal.css'
 
-const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-
-        Object.entries(data).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                value.forEach((val) => formData.append(`${key}[]`, val));
-            } else {
-                formData.append(key, value);
-            }
-        });
-
-        onSubmit(formData);
-    };
-    
+const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {  
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
     };
 
     const [steps, setSteps] = useState(data.steps || ['']);
+
+    const [preview, setPreview] = useState(null);
+
+    const handleVideoChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setData({ ...data, videoUrl: file }); 
+        setPreview(URL.createObjectURL(file));
+    };
 
     useEffect(() => {
         setSteps(data.steps || ['']); // Sync when data updates
@@ -61,7 +54,6 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
         setData({ ...data, ingredients: values });
     };
 
-    console.log("modalabierto", isOpen);
     if (!isOpen) return null;
 
     return (
@@ -69,12 +61,12 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.IdReceta ? 'Editar Receta' : 'Nueva Receta'}</h2>
-                <form onSubmit={handleSubmit} className='modal-form'>
+                <form onSubmit={onSubmit} className='modal-form'>
                     <input
                     className='input-modal'
                         type="text"
                         name="Nombre"
-                        value={data.Nombre || ''}
+                        value={data.Nombre}
                         onChange={handleChange}
                         placeholder="Nombre de la receta"
                     />
@@ -83,19 +75,24 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     className='input-modal'
                         type="text"
                         name="Descripcion"
-                        value={data.Descripcion || ''}
+                        value={data.Descripcion}
                         onChange={handleChange}
                         placeholder="Descripción"
                     />
 
                     <input
                     className='input-modal'
-                        type="text"
+                        type="file"
                         name="videoUrl"
-                        value={data.videoUrl || ''}
-                        onChange={handleChange}
+                        value={data.videoUrl}
+                        onChange={handleVideoChange}
                         placeholder="URL del video"
                     />
+                    {preview && (
+                        <div className="preview-container">
+                            <img src={preview} alt="Preview" width="200" />
+                        </div>
+                    )}
 
                     <Select
                         isMulti
