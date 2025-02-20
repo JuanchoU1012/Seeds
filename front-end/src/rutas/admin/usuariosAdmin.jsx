@@ -20,6 +20,17 @@ export const UsuariosAdmin = () => {
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
     
+    const [filteredUsuarios, setFilteredUsuarios] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
+
+
+    const handleSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchTerm(value);
+        const filtered = filteredUsuarios.filter(semilla => semilla.NombreComun.toLowerCase().includes(value));
+        setFilteredUsuarios(filtered);
+    };
+
     const validateFormData = () => {
         return FormData.email && FormData.password && FormData.rol;
     };
@@ -57,17 +68,32 @@ export const UsuariosAdmin = () => {
     };
 
     useEffect(() => {
-        fetch(`${API}/users/get`, { 
-            method: "GET",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                "Accept": "application/json"
+            const fetchData = async () => {
+            // console.log("Fetching seed data...");
+            try{
+                const response = await fetch(`${API}/users/get`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Accept": "application/json"
+                    }
+                })
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setDataUsuarios(data);
+                    setFilteredUsuarios(data);
+                }
+                else{
+                    const data = await response.json();
+                    console.error("Failed to fetch user data:", data);
+                }
             }
-        })
-        .then(response => response.json())
-        .then(data => setDataUsuarios(data))
-        .catch(error => console.error('Error al obtener usuarios:', error));
+            catch (error) {
+                console.error("Error fetching seed data:", error);
+            }
+        }
+        fetchData();
     }, []);
 
     const handleUpdate = async (e) => {
@@ -106,16 +132,14 @@ export const UsuariosAdmin = () => {
             <NavAdmin />
             <MenuLateral />
             <h1>Usuarios</h1>
-            <input type="text" className="buscarUsuariosAdmin" />
-            <button className="botonBuscarUsuariosAdmin">
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
-            <button 
-                className="nuevaRecetaAdmin" 
-                onClick={() => setShowNuevoModal(true)}
-            >
-                Registrar usuario
-            </button>
+            <div className="search-container">
+                <input className="input-search" 
+                type="text" 
+                placeholder="Buscar..." 
+                value={searchTerm} 
+                onChange={handleSearch}/>
+            </div>
+            <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
             <table className="crudUsuariosAdmin">
                 <thead>
                     <tr>
@@ -126,13 +150,13 @@ export const UsuariosAdmin = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dataUsuarios.map((item) => (
-                        <tr key={item.IdAccesoUsuario}>
-                            <td>{item.IdAccesoUsuario}</td>
-                            <td>{item.Email}</td>
-                            <td>{item.Rol}</td>
+                    {filteredUsuarios.map((user) => (
+                        <tr key={user.IdAccesoUsuario}>
+                            <td>{user.IdAccesoUsuario}</td>
+                            <td>{user.Email}</td>
+                            <td>{user.Rol}</td>
                             <td className="accionesUsuariosAdmin">
-                                <NavLink className='actulizarUsuarios' onClick={() => handleEditar(item)}>
+                                <NavLink className='actulizarUsuarios' onClick={() => handleEditar(user)}>
                                     <FontAwesomeIcon icon={faPencil} style={{ color: "#000000" }} />
                                 </NavLink>
                             </td>

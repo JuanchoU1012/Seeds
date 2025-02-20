@@ -3,7 +3,6 @@ from models.seed import Seeds
 
 import os
 import uuid
-from werkzeug.utils import secure_filename
 from flask import jsonify, current_app
 
 
@@ -16,7 +15,7 @@ def allowed_file(filename):
 
 class SeedsController():
     def create_seed(data):
-        print('cont', data)
+        print('data controller', data)
         if not data['image_url']:
             return {"error": "No image file"}, 400
         
@@ -33,9 +32,9 @@ class SeedsController():
             return {"error": "File is too large"}, 400
         data['image_url'].seek(0)
 
-        # Generar un nombre único y guardar el archivo
-        filename = f"{uuid.uuid4().hex}_{secure_filename(data['image_url'].filename)}"
-        upload_folder = current_app.config['UPLOAD_FOLDER']
+        # Guardar el archivo
+        filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
+        upload_folder = current_app.config['UPLOAD_FOLDER_SEED']
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)
         data['image_url'].save(file_path)
@@ -87,7 +86,7 @@ class SeedsController():
         data['image_url'].seek(0)
 
         # Generar un nombre único y guardar el archivo
-        filename = f"{uuid.uuid4().hex}_{secure_filename(data['image_url'].filename)}"
+        filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
         upload_folder = current_app.config['UPLOAD_FOLDER']
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)

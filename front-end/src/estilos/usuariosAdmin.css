@@ -36,14 +36,6 @@ body {
     bottom: 27px;
 }
 
-.botonBuscarUsuariosAdmin {
-    background-color: #5E5E5E;
-    position: relative;
-    left: 28%;
-    width: 3%;
-    bottom: 23px;
-    border-radius: 70%;
-}
 .actulizarUsuarios{
     background-color: #00AF00;
     font-size: 25px;

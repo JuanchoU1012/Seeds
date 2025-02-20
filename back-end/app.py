@@ -31,7 +31,9 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=60)
 app.config["JWT_COOKIE_SECURE"] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads/seeds'
+app.config['UPLOAD_FOLDER_SEED'] = 'static/uploads/seeds'
+# another folder for uploads
+app.config['UPLOAD_FOLDER_RECIPE'] = 'static/uploads/recipes'
 
 
 

@@ -4,7 +4,7 @@ class Recipes:
     def get_recipes():
         conn, cursor = connection()
         try:
-            query = "SELECT r.IdReceta,r.Nombre,r.Descripcion, COALESCE(GROUP_CONCAT(DISTINCT s.NombreComun SEPARATOR ', '), 'No se encontraron semillas') AS 'Semillasusadas', COALESCE(GROUP_CONCAT(DISTINCT p.Producto SEPARATOR ', '), 'No se encontraron productos adicionales') AS 'ProductosAdicionales' FROM recetas r LEFT JOIN recetas_has_semillas rs ON r.IdReceta = rs.Recetas_IdReceta LEFT JOIN semillas s ON rs.Semillas_IdSemilla = s.IdSemilla LEFT JOIN recetas_has_productosalterrecetas rp ON r.IdReceta = rp.Recetas_IdReceta LEFT JOIN productosalterrecetas p ON rp.ProductosAlterRecetas_IdProductosAlter = p.IdProductosAlter GROUP BY r.IdReceta, r.Nombre, r.Descripcion"
+            query = "SELECT r.IdReceta,r.Nombre,r.Descripcion, COALESCE(GROUP_CONCAT(DISTINCT s.NombreComun SEPARATOR ', '), 'No se encontraron semillas') AS 'Semillasusadas', COALESCE(GROUP_CONCAT(DISTINCT p.Producto SEPARATOR ', '), 'No se encontraron productos adicionales') AS 'ProductosAdicionales', rm.Ruta AS 'Ruta' FROM recetas r LEFT JOIN recetas_has_semillas rs ON r.IdReceta = rs.Recetas_IdReceta LEFT JOIN semillas s ON rs.Semillas_IdSemilla = s.IdSemilla LEFT JOIN recetas_has_productosalterrecetas rp ON r.IdReceta = rp.Recetas_IdReceta LEFT JOIN productosalterrecetas p ON rp.ProductosAlterRecetas_IdProductosAlter = p.IdProductosAlter INNER JOIN recetas_multimedia rm ON r.IdReceta = rm.Recetas_IdReceta GROUP BY rm.Ruta, r.IdReceta, r.Nombre, r.Descripcion "
             cursor.execute(query)
             recipes = cursor.fetchall()
             return recipes
@@ -15,21 +15,25 @@ class Recipes:
             cursor.close()
             conn.close()
 
-    def create_recipe(data):
+    def create_recipe(data, videourl):
         try:
             conn, cursor = connection()
             query = "INSERT INTO recetas (Nombre, Descripcion) VALUES (%s, %s)"
             cursor.execute(query, (data['Nombre'], data['Descripcion']))
             recipe_id = cursor.lastrowid
             conn.commit()
-            for semilla_id in data['Semillas']:
+            for IdSemilla in data['Semillas']:
                 query = "INSERT INTO recetas_has_semillas (Recetas_IdReceta, Semillas_IdSemilla) VALUES (%s, %s)"
-                cursor.execute(query, (recipe_id, semilla_id))
+                cursor.execute(query, (recipe_id, IdSemilla))
                 conn.commit()
-            for producto_id in data['Productos']:
+            for IdProducto in data['Ingredientes']:
                 query = "INSERT INTO recetas_has_productosalterrecetas (Recetas_IdReceta, ProductosAlterRecetas_IdProductosAlter) VALUES (%s, %s)"
-                cursor.execute(query, (recipe_id, producto_id))
+                cursor.execute(query, (recipe_id, IdProducto))
                 conn.commit()
+            if videourl:
+                    query = "INSERT INTO recetas_multimedia (Ruta, Recetas_IdReceta) VALUES (%s, %s)"
+                    cursor.execute(query, (videourl, recipe_id))
+                    conn.commit()
             return {"success": True, "message": "Receta creada correctamente"}, 201
         except Exception as e:
             conn.rollback()

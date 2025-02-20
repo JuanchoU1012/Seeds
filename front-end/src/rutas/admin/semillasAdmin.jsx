@@ -138,6 +138,7 @@ const handleSearch = (e) => {
             });
             if (response.status === 200) {
                 setDataSemillas(dataSemillas.filter(semilla => semilla.IdSemilla !== id));
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error);
