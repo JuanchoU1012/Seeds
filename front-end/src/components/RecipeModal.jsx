@@ -4,64 +4,58 @@ import PropTypes from 'prop-types';
 import Select from 'react-select'; // Import Select from react-select
 import '../estilos/recipemodal.css'
 
-const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-
-        Object.entries(data).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                value.forEach((val) => formData.append(`${key}[]`, val));
-            } else {
-                formData.append(key, value);
-            }
-        });
-
-        onSubmit(formData);
-    };
-    
+const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {  
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
     };
 
-    const [steps, setSteps] = useState(data.steps || ['']);
+    // Add validation before form submission
+  
+    const [Pasos, setPasos] = useState(data.Pasos);
+
+    const [preview, setPreview] = useState(null);
+
+    const handleVideoChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setData({ ...data, videoUrl: file }); 
+        setPreview(URL.createObjectURL(file));
+    };
 
     useEffect(() => {
-        setSteps(data.steps || ['']); // Sync when data updates
+        setPasos(data.Pasos || ['']); // Sync when data updates
     }, [data]);
 
     const handleStepChange = (index, value) => {
-        const newSteps = [...steps];
-        newSteps[index] = value;
-        setSteps(newSteps);
-        setData({ ...data, steps: newSteps });
+        const newPasos = [...Pasos];
+        newPasos[index] = value;
+        setPasos(newPasos);
+        setData({ ...data, Pasos: newPasos });
     };
 
     const addStep = () => {
-        const newSteps = [...steps, ''];
-        setSteps(newSteps);
-        setData({ ...data, steps: newSteps });
+        const newPasos = [...Pasos, ''];
+        setPasos(newPasos);
+        setData({ ...data, Pasos: newPasos });
     };
 
     const removeStep = (index) => {
-        const newSteps = steps.filter((_, i) => i !== index);
-        setSteps(newSteps);
-        setData({ ...data, steps: newSteps });
+        const newPasos = Pasos.filter((_, i) => i !== index);
+        setPasos(newPasos);
+        setData({ ...data, Pasos: newPasos });
     };
 
     const handleSeedChange = (selectedOptions) => {
         const values = selectedOptions.map(option => option.value);
-        setData({ ...data, seeds: values });
+        setData({ ...data, Semillas: values });
     };
 
     const handleIngredientChange = (selectedOptions) => {
         const values = selectedOptions.map(option => option.value);
-        setData({ ...data, ingredients: values });
+        setData({ ...data, Ingredientes: values });
     };
 
-    console.log("modalabierto", isOpen);
     if (!isOpen) return null;
 
     return (
@@ -69,12 +63,12 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.IdReceta ? 'Editar Receta' : 'Nueva Receta'}</h2>
-                <form onSubmit={handleSubmit} className='modal-form'>
+                <form onSubmit={onSubmit} className='modal-form'>
                     <input
                     className='input-modal'
                         type="text"
                         name="Nombre"
-                        value={data.Nombre || ''}
+                        value={data.Nombre}
                         onChange={handleChange}
                         placeholder="Nombre de la receta"
                     />
@@ -83,25 +77,29 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     className='input-modal'
                         type="text"
                         name="Descripcion"
-                        value={data.Descripcion || ''}
+                        value={data.Descripcion}
                         onChange={handleChange}
                         placeholder="Descripción"
                     />
 
                     <input
-                    className='input-modal'
-                        type="text"
+                        onChange={handleVideoChange}
+                        className='input-modal'
+                        type="file"
                         name="videoUrl"
-                        value={data.videoUrl || ''}
-                        onChange={handleChange}
-                        placeholder="URL del video"
+                        accept="video/*"
                     />
+                    {preview && (
+                        <div className="preview-container">
+                            <video src={preview} alt="Preview" width="200" controls/>
+                        </div>
+                    )}
 
                     <Select
                         isMulti
-                        name="seeds"
+                        name="Semillas"
                         options={seedOptions}
-                        value={seedOptions.filter(option => data.seeds?.includes(option.value))}
+                        value={seedOptions.filter(option => data.Semillas?.includes(option.value))}
                         className="basic-multi-select"
                         classNamePrefix="select"
                         onChange={handleSeedChange}
@@ -110,16 +108,16 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
 
                     <Select
                         isMulti
-                        name="ingredients"
+                        name="Ingredientes"
                         options={ingredientOptions}
-                        value={ingredientOptions.filter(option => data.ingredients?.includes(option.value))}
+                        value={ingredientOptions.filter(option => data.Ingredientes?.includes(option.value))}
                         className="basic-multi-select"
                         classNamePrefix="select"
                         onChange={handleIngredientChange}
                         placeholder="Seleccionar ingredientes..."
                     />
 
-                    {steps.map((step, index) => (
+                    {Pasos.map((step, index) => (
                         <div key={index}>
                             <label>Paso {index + 1}:</label>
                             <input
@@ -150,15 +148,15 @@ RecipesModal.propTypes = {
         IdReceta: PropTypes.string,
         Nombre: PropTypes.string,
         Descripcion: PropTypes.string,
-        seeds: PropTypes.array,
-        ingredients: PropTypes.array,
-        steps: PropTypes.array,
+        Semillas: PropTypes.array,
+        Ingredientes: PropTypes.array,
+        Pasos: PropTypes.array,
         videoUrl: PropTypes.oneOfType([PropTypes.string,
         PropTypes.instanceOf(File)]),
     }).isRequired,
     setData: PropTypes.func.isRequired,
     seedOptions: PropTypes.array.isRequired,
-    ingredientOptions: PropTypes.array.isRequired,
+    ingredientOptions: PropTypes.array.isRequired
 };
 
 export default RecipesModal;

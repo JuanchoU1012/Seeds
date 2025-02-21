@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import '../estilos/usermodal.css'
 const UserModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
     if (!isOpen) return null;
 
@@ -9,7 +9,7 @@ const UserModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
     };
 
     return (
-        <div className="modalEditarUsuariosAdmin" onClick={onClose}>
+        <div className="modalUsuariosAdmin" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.id ? 'Editar Usuario' : 'Registrar Nuevo Usuario'}</h2>

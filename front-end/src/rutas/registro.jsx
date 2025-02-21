@@ -129,7 +129,7 @@ export const Registro = () => {
             </Link>
             <button type="submit" className="botonRegistro">Crear cuenta</button>
           </div>
-          <Link to="/inicioSesion" className="cuentaRegistro">¿ya tienes cuenta? Ingresa</Link>
+          <Link to="/login" className="cuentaRegistro">¿ya tienes cuenta? Ingresa</Link>
         </div>
       </form>
     </div>

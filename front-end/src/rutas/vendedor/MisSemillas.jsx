@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import NavVendedor from '../../components/navegacionVendedor'
-import MenuLateral from '../../components/sidebar'
+import MenuLateral from '../../components/sidebarAdmin'
 import InputSearch from '../../components/buscador';
 import { useNavigate } from 'react-router-dom';
 

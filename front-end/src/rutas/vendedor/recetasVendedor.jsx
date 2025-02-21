@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavVendedor from '../../components/navegacionVendedor'
-import MenuLateral from '../../components/sidebar'
+import MenuLateral from '../../components/sidebarAdmin'
 import '../../estilos/recetasVendedor.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-solid-svg-icons';

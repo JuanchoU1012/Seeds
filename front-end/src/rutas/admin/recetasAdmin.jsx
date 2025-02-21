@@ -1,44 +1,44 @@
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-
-import NavAdmin from '../../components/navegacionAdmin';
-import '../../estilos/recetasAdmin.css';
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+
+import MenuLateralAdmin from "../../components/sidebarAdmin.jsx";
+import NavAdmin from '../../components/navegacionAdmin';
+import RecipesModal from "../../components/RecipeModal";
+import '../../estilos/recetasAdmin.css';
+
+//usertoken
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
-import  RecipesModal from "../../components/RecipeModal";
-import MenuLateralAdmin from "../../components/sidebarAdmin";
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
 export const RecetasAdmin = () => {
-    const [token, setToken] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-
+    const [showEditarModal, setShowEditarModal] = useState(false);
+    const [showNuevoModal, setShowNuevoModal] = useState(false);
     const [dataRecipes, setRecipes] = useState([]);
 
     const [filteredRecetas, setFilteredRecetas] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+
+    const [seedOptions, setSeedOptions] = useState([]); // Define seed options
+    const [ingredientOptions, setIngredientOptions] = useState([]); // Define ingredient options
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+    const [token, setToken] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
     const [dataForm, setDataForm] = useState({
         Nombre: "",
         Descripcion: "",
-        seeds: [],
-        ingredients: [],
+        Semillas: [],
+        Ingredientes: [],
         videoUrl: null,
-        steps: []
+        Pasos: []
     });
-
-
-    const [seedOptions, setSeedOptions] = useState([]); // Define seed options
-
-    const [ingredientOptions, setIngredientOptions] = useState([]); // Define ingredient options
-    const [showEditarModal, setShowEditarModal] = useState(false);
-    const [showNuevoModal, setShowNuevoModal] = useState(false);
-    const [selectedRecipe, setSelectedRecipe] = useState(null);
-
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export const RecetasAdmin = () => {
         fetchData();
     }, []);
 
-    (!userData || token.rol !== 0) ? <U401 /> : null;
+
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -65,7 +65,6 @@ export const RecetasAdmin = () => {
             });
             if (response.status === 200) {
                 const data = await response.json();
-                console.log("Fetched seed data:", data);
                 setRecipes(data);
                 setFilteredRecetas(data);
             }
@@ -93,7 +92,7 @@ export const RecetasAdmin = () => {
                     value: seed.IdSemilla,
                     label: seed.NombreComun
                 }));
-                
+
                 setSeedOptions(objecttoarray);
             }
 
@@ -103,7 +102,7 @@ export const RecetasAdmin = () => {
                     value: ingredient.IdProductosAlter,
                     label: ingredient.Producto
                 }));
-                
+
                 setIngredientOptions(objecttoarray);
             }
         };
@@ -122,20 +121,30 @@ export const RecetasAdmin = () => {
 
     const handleNuevaReceta = async (e) => {
         e.preventDefault();
-
         const formData = new FormData();
-        formData.append('NombreReceta', dataForm.NombreReceta);
+        formData.append('Nombre', dataForm.Nombre);
         formData.append('Descripcion', dataForm.Descripcion);
-        dataForm.IdSemilla.forEach(IdSemilla => formData.append('IdSemilla[]', IdSemilla));
-        dataForm.ingredients.forEach(ingredient => formData.append('IdProducto[]', ingredient));
+        dataForm.Semillas.forEach(Semilla => formData.append('IdSemilla', Semilla));
+        dataForm.Ingredientes.forEach(Ingrediente => formData.append('IdIngrediente', Ingrediente));
 
-        if (dataForm.Video_url) {
-            formData.append('Video_url', dataForm.Video_url);
+        if (dataForm.videoUrl) {
+            formData.append('videourl', dataForm.videoUrl);
         }
         else {
             alert("No se ha seleccionado ningún video.");
             return;
         }
+
+        dataForm.Pasos.forEach((paso, index) => {
+            formData.append(`paso[${index}],[Descripcion]`, paso);
+        });
+        const logFormData = (formData) => {
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+        }
+        logFormData(formData);
+        console.log('data desde receta', dataForm);
         try {
             const response = await fetch(`${API}/recipes/create`, {
                 method: 'POST',
@@ -150,8 +159,8 @@ export const RecetasAdmin = () => {
 
             if (response.status === 201) {
                 alert("Receta creada con éxito");
-                setDataForm({ ...dataForm, NombreReceta: '', Descripcion: '', IdSemilla: [], IdProducto: [], Video_url: null });
-                window.location.reload();
+                // setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null });
+                // window.location.reload();
             }
             else {
                 alert("Error al crear la receta");
@@ -162,7 +171,7 @@ export const RecetasAdmin = () => {
             console.error(e);
         }
     }
-    
+
     const handleEliminar = async (id) => {
         try {
             const response = await fetch(`${API}/recipes/delete/${id}`, {
@@ -189,24 +198,24 @@ export const RecetasAdmin = () => {
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe);
         setDataForm({
-            recipeName: recipe.NombreReceta,
-            description: recipe.Descripcion,
-            seeds: recipe.IdSemilla,
-            ingredients: recipe.IdProducto,
+            Nombre: recipe.Nombre,
+            Descripcion: recipe.Descripcion,
+            Semillas: recipe.IdSemilla ? [recipe.IdSemilla] : [],
+            Ingredientes: recipe.IdProducto ? [recipe.IdProducto] : [],
             videoUrl: recipe.Video_url,
-            steps: []
-
+            Pasos: recipe.Pasos || []
         });
         setShowEditarModal(true);
     };
+    
 
     const handleEditarReceta = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('NombreReceta', dataForm.recipeName);
-        formData.append('Descripcion', dataForm.description);
-        dataForm.IdSemilla.forEach(IdSemilla => formData.append('IdSemilla[]', IdSemilla));
-        dataForm.ingredients.forEach(ingredient => formData.append('IdProducto[]', ingredient));
+        formData.append('NombreReceta', dataForm.Nombre);
+        formData.append('Descripcion', dataForm.Descripcion);
+        dataForm.Semillas.forEach(IdSemilla => formData.append('IdSemilla[]', IdSemilla));
+        dataForm.Ingredientes.forEach(ingredient => formData.append('IdProducto[]', ingredient));
 
         formData.append('Video_url', dataForm.Video_url);
         try {
@@ -237,50 +246,58 @@ export const RecetasAdmin = () => {
         return <div className="text-center mt-5">Loading...</div>;
     }
 
-
-    return(
+    if (!userData || userData.rol !== 0) {
+        return <U401 />;
+    }
+    return (
         <div className="RecetasAdmin">
-            <NavAdmin/>
-            <MenuLateralAdmin/>
+            <NavAdmin />
+            <MenuLateralAdmin />
             <h1>Recetas</h1>
             <div className="search-container">
-                <input className="input-search" 
-                type="text" 
-                placeholder="Buscar..." 
-                value={searchTerm} 
-                onChange={handleSearch}/>
+                <input className="input-search"
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearch} />
             </div>
             <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
-            <table className="recetasAdmin">
+            <table className="CrudrecetasAdmin">
                 <thead>
                     <tr>
                         <th className="tituloCrudRecetas">Nombre Receta</th>
                         <th className="tituloCrudRecetas">Descripcion</th>
                         <th className="tituloCrudRecetas">Ingrediente Principales</th>
                         <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
+                        <th className="tituloCrudRecetas">Video</th>
+                        <th className="tituloCrudRecetas">Pasos</th>
                         <th className="tituloCrudSemllas">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {(!dataRecipes)?
-                    <tr>
-                        <td colSpan="5">No hay recetas disponibles.</td>
-                    </tr>
-                    :
-                    dataRecipes.map((recipe) => (
-                        <tr key={recipe.IdReceta}>
-                            <td>{recipe.NombreReceta}</td>
-                            <td>{recipe.Descripcion}</td>
-                            <td>{recipe.Semillasusadas}</td>
-                            <td>{recipe.ProductosAdicionales}</td>
-                            <td className="accionesRecetas">
-                                <NavLink>
-                                    <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)}/>
-                                </NavLink>
-                                <button onClick={() => handleEliminar(recipe.IdReceta)}>Eliminar</button>
-                            </td>
-                        </tr>                        
-                    ))}
+                    {(!filteredRecetas) ?
+                        <tr>
+                            <td colSpan="5">No hay recetas disponibles.</td>
+                        </tr>
+                        :
+                        filteredRecetas.map((recipe) => (
+                            <tr key={recipe.IdReceta}>
+                                <td>{recipe.Nombre}</td>
+                                <td>{recipe.Descripcion}</td>
+                                <td>{recipe.Semillasusadas}</td>
+                                <td>{recipe.ProductosAdicionales}</td>
+                                <td className="crud-video"><video src={`http://localhost:5000${recipe.videourl}`} controls/></td>
+                                <td>Ver mas</td>
+                                <td className="accionesRecetas">
+                                    <NavLink>
+                                        <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
+                                    </NavLink>
+                                    <NavLink className='eliminarSemillas'>
+                                        <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
+                                    </NavLink>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
 

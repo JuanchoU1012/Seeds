@@ -13,8 +13,16 @@ def get_recipes():
 @RecipesRoutes.route('/recipes/create', methods =['POST'])
 @jwt_required()
 def create_recipes():
-    data = request.get_json()
-    return RecipesController.create_recipes()
+    data = {
+        'Nombre': request.form.get('Nombre'),
+        'Descripcion': request.form.get('Descripcion'),
+        'Semillas':  request.form.getlist('IdSemilla'),
+        'Ingredientes': request.form.getlist('IdIngrediente'),
+        'videourl': request.files.get('videourl'),
+        'Pasos': request.form.getlist('Pasos')
+    }
+    print("dataroute", data)
+    return RecipesController.create_recipes(data)
 
 @RecipesRoutes.route('/recipes/update/<IdReceta>', methods =['PUT'])
 @jwt_required()
