@@ -24,7 +24,12 @@ def create_seed():
 @SeedsRoutes.route('/semillas/update/<IdSemilla>', methods =['PUT'])
 @jwt_required()
 def update_seed(IdSemilla):
-    data = request.get_json()
+    data = {
+        'NombreCientSemilla': request.form.get('NombreCientSemilla'),
+        'NombreComun': request.form.get('NombreComun'),
+        'Descripcion': request.form.get('Descripcion'),
+        'image_url': request.files.get('image_url')
+    }
     return SeedsController.update_seed(IdSemilla, data)
 
 @SeedsRoutes.route('/semillas/delete/<IdSemilla>', methods =['DELETE'])

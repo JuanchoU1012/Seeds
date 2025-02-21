@@ -6,18 +6,22 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import MenuLateralAdmin from "../../components/sidebarAdmin.jsx";
 import NavAdmin from '../../components/navegacionAdmin';
 import RecipesModal from "../../components/RecipeModal";
+import VermasReceta from "../../components/vermasReceta.jsx";
 import '../../estilos/recetasAdmin.css';
 
 //usertoken
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
 export const RecetasAdmin = () => {
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
+    const [showVermasModal, setShowVermasModal] = useState(false);
+
     const [dataRecipes, setRecipes] = useState([]);
 
     const [filteredRecetas, setFilteredRecetas] = useState([])
@@ -67,6 +71,7 @@ export const RecetasAdmin = () => {
                 const data = await response.json();
                 setRecipes(data);
                 setFilteredRecetas(data);
+                console.log(data);
             }
         };
 
@@ -126,24 +131,14 @@ export const RecetasAdmin = () => {
         formData.append('Descripcion', dataForm.Descripcion);
         dataForm.Semillas.forEach(Semilla => formData.append('IdSemilla', Semilla));
         dataForm.Ingredientes.forEach(Ingrediente => formData.append('IdIngrediente', Ingrediente));
+        dataForm.Pasos.forEach(paso => formData.append('Paso', paso));
 
         if (dataForm.videoUrl) {
             formData.append('videourl', dataForm.videoUrl);
         }
         else {
             alert("No se ha seleccionado ningún video.");
-            return;
         }
-
-        dataForm.Pasos.forEach((paso, index) => {
-            formData.append(`paso[${index}],[Descripcion]`, paso);
-        });
-        const logFormData = (formData) => {
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-        }
-        logFormData(formData);
         console.log('data desde receta', dataForm);
         try {
             const response = await fetch(`${API}/recipes/create`, {
@@ -159,8 +154,8 @@ export const RecetasAdmin = () => {
 
             if (response.status === 201) {
                 alert("Receta creada con éxito");
-                // setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null });
-                // window.location.reload();
+                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null });
+                window.location.reload();
             }
             else {
                 alert("Error al crear la receta");
@@ -172,9 +167,9 @@ export const RecetasAdmin = () => {
         }
     }
 
-    const handleEliminar = async (id) => {
+    const handleEliminar = async (IdReceta) => {
         try {
-            const response = await fetch(`${API}/recipes/delete/${id}`, {
+            const response = await fetch(`${API}/recipes/delete/${IdReceta}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -198,26 +193,30 @@ export const RecetasAdmin = () => {
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe);
         setDataForm({
-            Nombre: recipe.Nombre,
-            Descripcion: recipe.Descripcion,
-            Semillas: recipe.IdSemilla ? [recipe.IdSemilla] : [],
-            Ingredientes: recipe.IdProducto ? [recipe.IdProducto] : [],
-            videoUrl: recipe.Video_url,
-            Pasos: recipe.Pasos || []
+            Nombre: recipe.Nombre || "",
+            Descripcion: recipe.Descripcion || "",
+            Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
+            Ingredientes: recipe.IdIngredientes ? recipe.IdIngredientes.split(",").map(IdIngrediente => parseInt(IdIngrediente)) : [],
+            videoUrl: recipe.videoUrl || null,
+            Pasos: recipe.Pasos.split('|').map(paso => paso.split(': ')[1])
         });
+        console.log('edit', recipe);
         setShowEditarModal(true);
     };
+    
     
 
     const handleEditarReceta = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('NombreReceta', dataForm.Nombre);
+        formData.append('Nombre', dataForm.Nombre);
         formData.append('Descripcion', dataForm.Descripcion);
-        dataForm.Semillas.forEach(IdSemilla => formData.append('IdSemilla[]', IdSemilla));
-        dataForm.Ingredientes.forEach(ingredient => formData.append('IdProducto[]', ingredient));
+        dataForm.Semillas.forEach(Semilla => formData.append('IdSemilla', Semilla));
+        dataForm.Ingredientes.forEach(Ingrediente => formData.append('IdIngrediente', Ingrediente));
+        formData.append('videourl', dataForm.videoUrl);
+        dataForm.Pasos.forEach(paso => formData.append('Paso', paso));
 
-        formData.append('Video_url', dataForm.Video_url);
+        console.log('back', formData);
         try {
             const response = await fetch(`${API}/recipes/update/${selectedRecipe.IdReceta}`, {
                 method: 'PUT',
@@ -241,6 +240,11 @@ export const RecetasAdmin = () => {
             console.error(e);
         }
     }
+
+    const handleVermas = (recipe) => {
+        setSelectedRecipe(recipe);
+        setShowVermasModal(true);
+    };
 
     if (isLoading) {
         return <div className="text-center mt-5">Loading...</div>;
@@ -287,7 +291,7 @@ export const RecetasAdmin = () => {
                                 <td>{recipe.Semillasusadas}</td>
                                 <td>{recipe.ProductosAdicionales}</td>
                                 <td className="crud-video"><video src={`http://localhost:5000${recipe.videourl}`} controls/></td>
-                                <td>Ver mas</td>
+                                <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={()=>handleVermas(recipe)}/></NavLink></td>
                                 <td className="accionesRecetas">
                                     <NavLink>
                                         <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
@@ -324,7 +328,12 @@ export const RecetasAdmin = () => {
                 ingredientOptions={ingredientOptions} // Pass ingredient options
             />
 
-
+            {/* ver mas modal */}
+            <VermasReceta
+                isOpen={showVermasModal}
+                onClose={() => setShowVermasModal(false)}
+                data = {selectedRecipe}
+            />
 
         </div>
     )

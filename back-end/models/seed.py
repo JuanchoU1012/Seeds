@@ -45,7 +45,7 @@ class Seeds:
     def get_seed(IdSemilla):
         conn, cursor = connection()
         try:
-            sql = "SELECT s.*, sm.Ruta FROM semillas s INNER JOIN semillas_multimedia sm ON s.IdSemilla = sm.Semillas_IdSemilla WHERE s.IdSemilla = %s"
+            sql = "SELECT s.*, sm.Ruta FROM semillas s LEFT JOIN semillas_multimedia sm ON s.IdSemilla = sm.Semillas_IdSemilla WHERE s.IdSemilla = %s"
             cursor.execute(sql, (IdSemilla,))
             seeds = cursor.fetchone()
             return seeds
@@ -68,7 +68,7 @@ class Seeds:
             cursor.close()
             conn.close()
 
-    def update_seed(IdSemilla, data):
+    def update_seed(IdSemilla, data, image_url):
         conn, cursor = connection()
         try:
             sql = "UPDATE semillas SET NombreCientSemilla = %s, NombreComun = %s, Descripcion = %s WHERE IdSemilla = %s"
@@ -78,25 +78,11 @@ class Seeds:
 
             if data['image_url']:
                 sqlimage = "UPDATE semillas_multimedia SET Ruta = %s WHERE Semillas_IdSemilla = %s"
-                values = (data['urlimage'], IdSemilla)
+                values = (image_url, IdSemilla)
                 cursor.execute(sqlimage, values)
                 conn.commit()
 
             return {"success": True, "message": "Semilla actualizada correctamente"}, 200
-        except Exception as e:
-            return {"success": False, "message": str(e)}, 500
-        finally:
-            cursor.close()
-            conn.close()
-
-    def update_seed_image(IdSemilla, ruta):
-        conn, cursor = connection()
-        try:
-            sql = "UPDATE semillas_multimedia SET Ruta = %s WHERE Semillas_IdSemilla = %s"
-            values = (ruta, IdSemilla)
-            cursor.execute(sql, values)
-            conn.commit()
-            return {"success": True, "message": "Imagen de semilla actualizada correctamente"}, 200
         except Exception as e:
             return {"success": False, "message": str(e)}, 500
         finally:

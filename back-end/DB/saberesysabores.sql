@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`accesousuarios` (
   PRIMARY KEY (`IdAccesoUsuario`, `Email`),
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 22
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`semillas` (
   `Descripcion` VARCHAR(300) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
   PRIMARY KEY (`IdSemilla`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 27
+AUTO_INCREMENT = 32
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`recetas` (
   `Descripcion` VARCHAR(200) CHARACTER SET 'utf8mb3' NOT NULL,
   PRIMARY KEY (`IdReceta`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 37
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -202,8 +202,11 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`pasosrecetas` (
   INDEX `fk_PasosRecetas_Recetas1_idx` (`Recetas_IdReceta` ASC) VISIBLE,
   CONSTRAINT `fk_PasosRecetas_Recetas1`
     FOREIGN KEY (`Recetas_IdReceta`)
-    REFERENCES `saberesysabores`.`recetas` (`IdReceta`))
+    REFERENCES `saberesysabores`.`recetas` (`IdReceta`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 17
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -248,9 +251,8 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `saberesysabores`.`recetas_has_semillas` (
   `Recetas_IdReceta` INT NOT NULL,
   `Semillas_IdSemilla` INT NOT NULL,
-  PRIMARY KEY (`Recetas_IdReceta`, `Semillas_IdSemilla`),
-  INDEX `fk_Recetas_has_Semillas_Semillas1_idx` (`Semillas_IdSemilla` ASC) VISIBLE,
-  INDEX `fk_Recetas_has_Semillas_Recetas1_idx` (`Recetas_IdReceta` ASC) VISIBLE,
+  INDEX `fk_Recetas_has_Semillas_Semillas1_idx` (`Semillas_IdSemilla` ASC) INVISIBLE,
+  INDEX `fk_Recetas_has_Semillas_Recetas1_idx` (`Recetas_IdReceta` ASC) INVISIBLE,
   CONSTRAINT `fk_Recetas_has_Semillas_Recetas1`
     FOREIGN KEY (`Recetas_IdReceta`)
     REFERENCES `saberesysabores`.`recetas` (`IdReceta`)
@@ -280,6 +282,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`recetas_multimedia` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -298,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`semillas_multimedia` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 23
+AUTO_INCREMENT = 28
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -330,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `saberesysabores`.`vw_inventario` (`IdInventario` INT
 -- -----------------------------------------------------
 -- Placeholder table for view `saberesysabores`.`vw_recetas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `saberesysabores`.`vw_recetas` (`IdReceta` INT, `Nombre` INT, `Descripcion` INT, `NumeroPaso` INT, `Instruccion` INT, `TiempoMin` INT, `IdSemilla` INT, `NombreCientSemilla` INT, `RutaImagen` INT, `ProductoAlternativo` INT);
+CREATE TABLE IF NOT EXISTS `saberesysabores`.`vw_recetas` (`IdReceta` INT, `Nombre` INT, `Descripcion` INT, `Pasos` INT, `IdSemillas` INT, `Semillasusadas` INT, `IdIngredientes` INT, `ProductosAdicionales` INT, `Ruta` INT);
 
 -- -----------------------------------------------------
 -- View `saberesysabores`.`vw_inventario`
@@ -344,7 +347,7 @@ CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY D
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `saberesysabores`.`vw_recetas`;
 USE `saberesysabores`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `saberesysabores`.`vw_recetas` AS select `r`.`IdReceta` AS `IdReceta`,`r`.`Nombre` AS `Nombre`,`r`.`Descripcion` AS `Descripcion`,`pr`.`NumeroPaso` AS `NumeroPaso`,`pr`.`Instruccion` AS `Instruccion`,`pr`.`TiempoMin` AS `TiempoMin`,`sm`.`IdSemilla` AS `IdSemilla`,`sm`.`NombreCientSemilla` AS `NombreCientSemilla`,`rm`.`Ruta` AS `RutaImagen`,`p`.`Producto` AS `ProductoAlternativo` from ((((((`saberesysabores`.`recetas` `r` join `saberesysabores`.`pasosrecetas` `pr` on((`r`.`IdReceta` = `pr`.`Recetas_IdReceta`))) join `saberesysabores`.`recetas_multimedia` `rm` on((`r`.`IdReceta` = `rm`.`Recetas_IdReceta`))) join `saberesysabores`.`recetas_has_semillas` `rhs` on((`r`.`IdReceta` = `rhs`.`Recetas_IdReceta`))) join `saberesysabores`.`semillas` `sm` on((`rhs`.`Semillas_IdSemilla` = `sm`.`IdSemilla`))) join `saberesysabores`.`recetas_has_productosalterrecetas` `rhp` on((`r`.`IdReceta` = `rhp`.`Recetas_IdReceta`))) join `saberesysabores`.`productosalterrecetas` `p` on((`rhp`.`ProductosAlterRecetas_IdProductosAlter` = `p`.`IdProductosAlter`)));
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `saberesysabores`.`vw_recetas` AS select `r`.`IdReceta` AS `IdReceta`,`r`.`Nombre` AS `Nombre`,`r`.`Descripcion` AS `Descripcion`,coalesce(group_concat(distinct concat(`pr`.`NumeroPaso`,': ',`pr`.`Instruccion`) order by `pr`.`NumeroPaso` ASC separator ' | '),'No se encontraron pasos') AS `Pasos`,coalesce(group_concat(distinct `s`.`IdSemilla` separator ', ')) AS `IdSemillas`,coalesce(group_concat(distinct `s`.`NombreComun` separator ', '),'No se encontraron semillas') AS `Semillasusadas`,coalesce(group_concat(distinct `p`.`IdProductosAlter` separator ', ')) AS `IdIngredientes`,coalesce(group_concat(distinct `p`.`Producto` separator ', '),'No se encontraron productos adicionales') AS `ProductosAdicionales`,`rm`.`Ruta` AS `Ruta` from ((((((`saberesysabores`.`recetas` `r` left join `saberesysabores`.`recetas_has_semillas` `rs` on((`r`.`IdReceta` = `rs`.`Recetas_IdReceta`))) left join `saberesysabores`.`semillas` `s` on((`rs`.`Semillas_IdSemilla` = `s`.`IdSemilla`))) left join `saberesysabores`.`recetas_has_productosalterrecetas` `rp` on((`r`.`IdReceta` = `rp`.`Recetas_IdReceta`))) left join `saberesysabores`.`productosalterrecetas` `p` on((`rp`.`ProductosAlterRecetas_IdProductosAlter` = `p`.`IdProductosAlter`))) left join `saberesysabores`.`recetas_multimedia` `rm` on((`r`.`IdReceta` = `rm`.`Recetas_IdReceta`))) left join `saberesysabores`.`pasosrecetas` `pr` on((`r`.`IdReceta` = `pr`.`Recetas_IdReceta`))) group by `rm`.`Ruta`,`r`.`IdReceta`,`r`.`Nombre`,`r`.`Descripcion`;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

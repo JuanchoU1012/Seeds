@@ -19,7 +19,7 @@ def create_recipes():
         'Semillas':  request.form.getlist('IdSemilla'),
         'Ingredientes': request.form.getlist('IdIngrediente'),
         'videourl': request.files.get('videourl'),
-        'Pasos': request.form.getlist('Pasos')
+        'Pasos': request.form.getlist('Paso')
     }
     print("dataroute", data)
     return RecipesController.create_recipes(data)
@@ -27,7 +27,15 @@ def create_recipes():
 @RecipesRoutes.route('/recipes/update/<IdReceta>', methods =['PUT'])
 @jwt_required()
 def update_recipes(IdReceta):
-    data = request.get_json()
+    data = {
+        'Nombre': request.form.get('Nombre'),
+        'Descripcion': request.form.get('Descripcion'),
+        'Semillas':  request.form.getlist('IdSemilla'),
+        'Ingredientes': request.form.getlist('IdIngrediente'),
+        'videourl': request.files.get('videourl'),
+        'Pasos': request.form.getlist('Paso')
+    }
+    # print("dataroute", data)
     return RecipesController.update_recipes(IdReceta, data)
 
 @RecipesRoutes.route('/recipes/delete/<IdReceta>', methods =['DELETE'])

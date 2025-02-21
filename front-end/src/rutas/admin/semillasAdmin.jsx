@@ -6,6 +6,7 @@ import { faPencil, faMagnifyingGlass, faTrash} from '@fortawesome/free-solid-svg
 import MenuLateralAdmin from '../../components/sidebarAdmin.jsx';
 import NavAdmin from '../../components/navegacionAdmin';
 import SeedModal from '../../components/SeedModal';
+
 import '../../estilos/ProductosAdmin.css';
 
 // usertoken
@@ -144,6 +145,7 @@ const handleSearch = (e) => {
             console.error('Error:', error);
         }
     };
+    
     const handleEditar = (semilla) => {
         setSelectedSemilla(semilla);
         setDataForm({

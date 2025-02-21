@@ -4,28 +4,38 @@ import PropTypes from 'prop-types';
 import Select from 'react-select'; // Import Select from react-select
 import '../estilos/recipemodal.css'
 
-const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {  
+const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {
+    // Add validation before form submission
+
+    const [Pasos, setPasos] = useState(data.Pasos);
+
+    const [preview, setPreview] = useState(null);
+    
+    useEffect(() => {
+        setPasos(data.Pasos);
+        if (typeof data.videoUrl === 'string') {
+            setPreview(`http://localhost:5000${data.videoUrl}`);
+        } else {
+            setPreview(null);
+        }
+    }, [data]);
+
+    // console.log('modaldata',data)
+    if (!isOpen) return null;
+
+    console.log(Pasos)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
     };
 
-    // Add validation before form submission
-  
-    const [Pasos, setPasos] = useState(data.Pasos);
-
-    const [preview, setPreview] = useState(null);
 
     const handleVideoChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        setData({ ...data, videoUrl: file }); 
+        setData({ ...data, videoUrl: file });
         setPreview(URL.createObjectURL(file));
     };
-
-    useEffect(() => {
-        setPasos(data.Pasos || ['']); // Sync when data updates
-    }, [data]);
 
     const handleStepChange = (index, value) => {
         const newPasos = [...Pasos];
@@ -56,7 +66,6 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
         setData({ ...data, Ingredientes: values });
     };
 
-    if (!isOpen) return null;
 
     return (
         <div className="modalReceta" onClick={onClose}>
@@ -65,7 +74,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                 <h2>{data.IdReceta ? 'Editar Receta' : 'Nueva Receta'}</h2>
                 <form onSubmit={onSubmit} className='modal-form'>
                     <input
-                    className='input-modal'
+                        className='input-modal'
                         type="text"
                         name="Nombre"
                         value={data.Nombre}
@@ -74,7 +83,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     />
 
                     <input
-                    className='input-modal'
+                        className='input-modal'
                         type="text"
                         name="Descripcion"
                         value={data.Descripcion}
@@ -91,9 +100,10 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     />
                     {preview && (
                         <div className="preview-container">
-                            <video src={preview} alt="Preview" width="200" controls/>
+                            <video src={preview} alt="Preview" width="200" controls />
                         </div>
                     )}
+
 
                     <Select
                         isMulti
@@ -117,23 +127,27 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                         placeholder="Seleccionar ingredientes..."
                     />
 
-                    {Pasos.map((step, index) => (
-                        <div key={index}>
-                            <label>Paso {index + 1}:</label>
-                            <input
-                            className='input-modal'
-                                type="text"
-                                value={step}
-                                onChange={(e) => handleStepChange(index, e.target.value)}
-                                placeholder={`Paso ${index + 1}`}
-                            />
-                            <button type="button" onClick={() => removeStep(index)}>🗑️</button>
-                        </div>
-                    ))}
-                    <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
+{!data.IdReceta && (
+    <>
+        {Pasos.map((paso, index) => (
+            <div key={index}>
+                <label>Paso {index + 1}:</label>
+                <input
+                    className='input-modal'
+                    type="text"
+                    value={paso}
+                    onChange={(e) => handleStepChange(index, e.target.value)}
+                    placeholder={`Paso ${index + 1}`}
+                />
+                <button type="button" onClick={() => removeStep(index)}>🗑️</button>
+            </div>
+        ))}
+        <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
+    </>
+)}
+
 
                     <button type="submit" className='btn-modal'>Guardar Receta</button>
-
                 </form>
             </div>
         </div>

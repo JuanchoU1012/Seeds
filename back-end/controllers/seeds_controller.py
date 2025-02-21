@@ -68,12 +68,16 @@ class SeedsController():
     
     
     def update_seed(IdSemilla, data):
-        
         if not data['image_url']:
-            return {"error": "No image file"}, 400
+            return Seeds.update_seed(IdSemilla, data, None)
         
-        if data['image_url'].filename == '':
-            return {"error": "No selected file"}, 400
+        image = Seeds.get_seed(IdSemilla)
+        print(image)
+        if image:
+            file_path = os.path.join(current_app.root_path, 'static', image['Ruta'].lstrip('/'))
+            print(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
         if not allowed_file(data['image_url'].filename):
             return {"error": "File type not allowed"}, 400
@@ -87,11 +91,11 @@ class SeedsController():
 
         # Generar un nombre único y guardar el archivo
         filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
-        upload_folder = current_app.config['UPLOAD_FOLDER']
+        upload_folder = current_app.config['UPLOAD_FOLDER_SEED']
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)
         data['image_url'].save(file_path)
 
     # URL relativa de la imagen
         image_url = f"/uploads/seeds/{filename}"
-        return Seeds.update_seed(data, image_url)
+        return Seeds.update_seed(IdSemilla, data, image_url)
