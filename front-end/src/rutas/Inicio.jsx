@@ -1,6 +1,7 @@
 import React from "react";
 import '../estilos/inicioPagina.css';
 import Nav from '../components/navegacion'
+import Banner from '../components/banner'
 import logo from '../imagenes/logo.png'
 import PiePagina from '../components/piePagina'
 import Vision from '../imagenes/vision.png'
@@ -9,7 +10,7 @@ export const Inicio = () => {
   return (
     <div className="principio">
       <Nav/>
-      <div className="imagenInicio">
+      {/* <div className="imagenInicio">
         <img
           src="https://i.pinimg.com/736x/8b/3b/29/8b3b29ef215f312f30dcf915b933a57e.jpg"
           alt="Mi imagen" className="imagenSuperior"
@@ -17,7 +18,8 @@ export const Inicio = () => {
           <div className="cuadritoTexto">
               <h3>Saberes y sabores</h3>
           </div>
-        </div>
+        </div> */}
+        <Banner/>
         <div className="primerTexto">
             <div className="textoInicio">
               <p className="parrafoInicio">

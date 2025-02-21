@@ -79,3 +79,15 @@
     border-radius: 5px;
     width: 101%;
 }
+
+@media (max-width: 800px){
+    .contenedorImagenLogin{
+        display: none;
+    }
+    .contenedorFormulario{
+        width: 100%;
+    }
+    .inputLogin {
+        width: 76%;
+    }
+}

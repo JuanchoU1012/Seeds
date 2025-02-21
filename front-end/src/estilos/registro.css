@@ -34,7 +34,7 @@
 
 .inputRegistro {
     background-color: #FFF;
-    width: 85%;
+    width: 90%;
     padding: 20px;
     border: none;
     margin-bottom: 3%;
@@ -79,6 +79,38 @@
     margin-left: -90%;
     margin-top: 18%;
     width: 90%;
+}
+.claves{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.selectRegistro{
+    background-color: #FFF;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    margin-bottom: 3%;
+    border-radius: 8px;
+    margin-right: 1%;
+}
+
+@media (max-width: 800px){
+    .imagenRegistro{
+        display: none;
+    }
+    .formularioRegistro{
+        width: 100%;
+    }
+    .inputRegistro{
+        width: 75%;
+    }
+    .selectRegistro{
+        width: 85%;
+    }
+    .inputRegistro2{
+        width: 32%;
+    }
 }
 
 

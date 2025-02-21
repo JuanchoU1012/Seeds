@@ -87,7 +87,7 @@ export const Registro = () => {
           {/* <span className="input-group-text">
             <i className="bi bi-person-fill"></i>
           </span> */}
-          <select className="inputRegistro" name="rol" onChange={handleChange} required>
+          <select className="selectRegistro" name="rol" onChange={handleChange} required>
             <option value="">Selecciona tu rol</option>
             <option value="0">Admin</option>
             <option value="1">Usuario Comûn</option>
@@ -98,6 +98,8 @@ export const Registro = () => {
           {/* <span className="input-group-text">
             <i className="bi bi-lock"></i>
           </span> */}
+          <div className="claves">
+
           <input
             type="password"
             className="inputRegistro2"
@@ -105,12 +107,12 @@ export const Registro = () => {
             name="password"
             onChange={handleChange}
             required
-          />
+            />
           
 
           {/* <span className="input-group-text">
             <i className="bi bi-lock"></i>
-          </span> */}
+            </span> */}
           <input
             type="password"
             placeholder="Confirma tu contraseña"
@@ -118,7 +120,8 @@ export const Registro = () => {
             value={passwordConfirm}
             onChange={(e) => { setPasswordConfirm(e.target.value) }}
             required
-          />
+            />
+            </div>
 
           <div className="botonesRegistro">
             <Link to="/" className="botonVolverinicio">
