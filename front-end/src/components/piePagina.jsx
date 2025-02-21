@@ -48,8 +48,23 @@ const PiePagina = () => {
 
         </form>
       </div>
+        <div className="contactosFooterResponsive">
+          {/* <img src={Logo} alt="" className='logoFooter'/> */}
+          <p className='iconosContactos'>
+            <FontAwesomeIcon icon={faPhone} style={{color: "#3e123e",}} className='iconosFooter' />
+            <span> 123456789 </span>
+          </p>
+          <p className='iconosContactos'>
+            <FontAwesomeIcon icon={faEnvelope}style={{color: "#3e123e",}} className='iconosFooter' />          
+            <span> ejemplo@correo.com </span>
+          </p>
+          <p className='iconosContactos'>
+          <FontAwesomeIcon icon={faLocationDot} style={{color: "#3e123e",}} className='iconosFooter'/> 
+          <span> Calle 123, Ciudad </span>
+          </p>
+        </div>
     <footer className="footer">
-      <p>&copy; 2024  Todos los derechos reservados.</p>
+      <p>&copy; 2025  Todos los derechos reservados.</p>
       <div className="social-icons">
         <a  target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebook} /></a>
         <a target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faXTwitter} /></a>

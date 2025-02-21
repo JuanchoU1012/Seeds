@@ -1,0 +1,29 @@
+.container401{
+    display: grid;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.img401{
+    height: 60vh;
+    width: 100%;
+}
+.error-actions{
+    width: 100%;
+    margin-top: 4%;
+}
+.volver401{
+    padding: 10px 30px 10px 30px;
+    margin-right: 2%;
+    background-color: #969696;
+    border-radius: 8px;
+}
+
+@media (max-width: 800px){
+    .img401{
+        width: 100%;
+    }
+    .container401{
+        width: 100%;
+    }
+}
