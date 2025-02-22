@@ -212,4 +212,36 @@ class Recipes:
         except Exception as e:
             conn.rollback()
             return {"success": False, "message": str(e)}, 500
+        finally:
+            cursor.close()
+            conn.close()
     
+    def cantidades(data):
+        conn, cursor = connection()
+        print(data)
+        try:
+            
+            for recipe in data:
+                IdReceta = recipe['IdReceta']
+                print(IdReceta)
+                IdSemilla = recipe.get('IdSemilla')
+                print(IdSemilla)
+                IdIngrediente = recipe.get('IdIngrediente')
+                print(IdIngrediente)
+
+                if IdSemilla is not None:
+                        Cantidad = recipe['cantidad']
+                        cursor.execute("UPDATE recetas_has_semillas SET Cantidad = %s WHERE Recetas_IdReceta = %s AND Semillas_IdSemilla = %s", (Cantidad, IdReceta, IdSemilla))
+                        conn.commit()
+
+                if IdIngrediente is not None:
+                        Cantidad = recipe['cantidad']
+                        cursor.execute("UPDATE recetas_has_productosalterrecetas SET Cantidad = %s WHERE Recetas_IdReceta = %s AND ProductosAlterRecetas_IdProductosAlter = %s", (Cantidad, IdReceta, IdIngrediente))
+                        conn.commit()
+            return {"success": True, "message": "Cantidad actualizada correctamente"}, 200
+        except Exception as e:
+            conn.rollback()
+            return {"success": False, "message": str(e)}, 500
+        finally:
+            cursor.close()
+            conn.close()

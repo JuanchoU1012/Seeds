@@ -133,7 +133,7 @@ export const RecetasAdmin = () => {
         dataForm.Ingredientes.forEach(Ingrediente => formData.append('IdIngrediente', Ingrediente));
         dataForm.Pasos.forEach(paso => formData.append('Paso', paso));
 
-        if (dataForm.videoUrl) {
+        if (dataForm.videoUrl && dataForm.videoUrl instanceof File) {
             formData.append('videourl', dataForm.videoUrl);
         }
         else {
@@ -197,14 +197,14 @@ export const RecetasAdmin = () => {
             Descripcion: recipe.Descripcion || "",
             Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
             Ingredientes: recipe.IdIngredientes ? recipe.IdIngredientes.split(",").map(IdIngrediente => parseInt(IdIngrediente)) : [],
-            videoUrl: recipe.videoUrl || null,
+            videoUrl: recipe.videoUrl ? `http://localhost:5000${recipe.videoUrl}` : null,
             Pasos: recipe.Pasos.split('|').map(paso => paso.split(': ')[1])
         });
         console.log('edit', recipe);
         setShowEditarModal(true);
     };
-    
-    
+
+
 
     const handleEditarReceta = async (e) => {
         e.preventDefault();
@@ -258,6 +258,7 @@ export const RecetasAdmin = () => {
         <div className="RecetasAdmin">
             <NavAdmin />
             <MenuLateralAdmin />
+            <div className="container">
             <h1>Recetas</h1>
             <div className="search-container">
                 <input className="input-search"
@@ -276,7 +277,7 @@ export const RecetasAdmin = () => {
                         <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
                         <th className="tituloCrudRecetas">Video</th>
                         <th className="tituloCrudRecetas">Pasos</th>
-                        <th className="tituloCrudSemllas">Acciones</th>
+                        <th className="tituloCrudRecetas">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -291,8 +292,14 @@ export const RecetasAdmin = () => {
                                 <td>{recipe.Descripcion}</td>
                                 <td>{recipe.Semillasusadas}</td>
                                 <td>{recipe.ProductosAdicionales}</td>
-                                <td className="crud-video"><video src={`http://localhost:5000${recipe.videourl}`} controls/></td>
-                                <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={()=>handleVermas(recipe)}/></NavLink></td>
+                                <td className="crud-video">
+                                    {recipe.videourl ? (
+                                        <video src={`http://localhost:5000${recipe.videourl}`} controls />
+                                    ) : (
+                                        <span>No hay video</span>
+                                    )}
+                                </td>
+                                <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
                                 <td className="accionesRecetas">
                                     <NavLink>
                                         <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
@@ -333,9 +340,9 @@ export const RecetasAdmin = () => {
             <VermasReceta
                 isOpen={showVermasModal}
                 onClose={() => setShowVermasModal(false)}
-                data = {selectedRecipe}
+                data={selectedRecipe}
             />
-
+</div>
         </div>
     )
 }

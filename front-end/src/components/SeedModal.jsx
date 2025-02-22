@@ -51,7 +51,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
                         onChange={handleChange}
                         placeholder="Descripción de la Semilla"
                     />
-
+    
                     <input
                         onChange={handleImageChange}
                         className="inputProductoEditarAdmin"

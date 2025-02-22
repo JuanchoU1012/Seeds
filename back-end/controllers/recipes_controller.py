@@ -91,8 +91,15 @@ class RecipesController:
             return False
         recipes_with_videos=[]
         for recipe in recipes:
+            print(recipe)
             recipe_data = dict(recipe)
             video_path = recipe['Ruta'] if recipe else None
             recipe_data['videourl'] = f"/static{video_path}" if video_path else None
             recipes_with_videos.append(recipe_data)
         return prepare_for_json(recipes_with_videos)
+    
+    def cantidades(data):
+        print("data", data)
+        for recipe in data['actualizaciones']:
+            print(recipe)
+        return Recipes.cantidades(data['actualizaciones'])

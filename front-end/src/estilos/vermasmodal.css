@@ -9,44 +9,139 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .modal-content {
     background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    width: 80%;
+    border-radius: 10px;
+    padding: 25px;
+    width: 90%;
     max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
+    text-align: center;
 }
 
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Botón de cierre mejorado */
 .close-modal {
     position: absolute;
     top: 10px;
     right: 10px;
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: bold;
     cursor: pointer;
-}
-
-.modal-content h3 {
-    font-size: 1.5em;
-    margin: 10px 0;
-}
-
-.modal-content p {
-    margin: 5px 0;
-}
-
-.preview-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    transition: color 0.2s ease-in-out;
 }
 
 .close-modal:hover {
-    color: red; /* Change color on hover */
+    color: red;
+}
+
+/* Títulos estilizados */
+.modal-content h3 {
+    font-size: 1.6em;
+    margin: 12px 0;
+    font-weight: bold;
+}
+
+/* Secciones alineadas */
+.section {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.seccion-titulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+/* Semillas e Ingredientes alineados */
+.item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+/* Inputs de cantidad mejorados */
+.input-modal-cantidad {
+    width: 60px;
+    height: 28px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.input-modal-cantidad:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Estilos de video */
+.preview-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.preview-container video {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Pasos estilizados */
+.steps-list {
+    list-style-type: decimal;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.steps-list li {
+    margin-bottom: 5px;
+}
+
+/* Botón de "Guardar Cambios" estilizado */
+.guardar-cambios {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.guardar-cambios:hover {
+    background-color: #218838;
 }

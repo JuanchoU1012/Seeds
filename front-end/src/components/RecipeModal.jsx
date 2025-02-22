@@ -11,14 +11,19 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
 
     const [preview, setPreview] = useState(null);
 
+
     useEffect(() => {
-        setPasos(data.Pasos);
-        if (typeof data.videoUrl === 'string') {
-            setPreview(`http://localhost:5000${data.videoUrl}`);
-        } else {
-            setPreview(null);
-        }
-    }, [data]);
+    setPasos(data.Pasos);
+
+    if (data.videoUrl instanceof File) {
+        setPreview(URL.createObjectURL(data.videoUrl));
+    } else if (typeof data.videoUrl === 'string') {
+        setPreview(`http://localhost:5000${data.videoUrl}`);    
+    } else {
+        setPreview(null);
+    }
+}, [data.videoUrl]);
+
 
     // console.log('modaldata',data)
     if (!isOpen) return null;
@@ -145,7 +150,6 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                             <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
                         </>
                     )}
-
 
                     <button type="submit" className='btn-modal'>Guardar Receta</button>
                 </form>

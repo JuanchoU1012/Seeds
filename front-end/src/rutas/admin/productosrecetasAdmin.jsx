@@ -1,36 +1,30 @@
-import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import '../../estilos/ProductosAdmin.css';
 import MenuLateral from '../../components/sidebarAdmin';
 import NavAdmin from '../../components/navegacionAdmin';
-import SeedModal from '../../components/SeedModal';
+import IngredienteModal from '../../components/IngredienteModal.jsx';
 import { useEffect, useState } from "react";
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
 export const ProductosRecetasAdmin = () => {
-    const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
     const [userData, setUserData] = useState(null);
     const [token, setToken] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [dataForm, setDataForm] = useState({
-        NombreCientSemilla: "",
-        NombreComun: "",
-        Descripcion: "",
-        image_url: null
+        Nombre: ''
     });
-    const [dataSemillas, setDataSemillas] = useState([]); // Ensure this is initialized as an empty array
-    const [selectedSemilla, setSelectedSemilla] = useState(null);
+    const [dataProductos, setDataProductos] = useState([]); // Ensure this is initialized as an empty array
     const [Err, setErr] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
-            // console.log("Fetching user info and token...");
             const UserData = await getUserInfo();
             const Token = await getTokenInfo();
             setUserData(UserData);
@@ -44,7 +38,7 @@ export const ProductosRecetasAdmin = () => {
         const fetchData = async () => {
         // console.log("Fetching seed data...");
         try{
-            const response = await fetch(`${API}/semillas/get`, {
+            const response = await fetch(`${API}/products/get`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -54,56 +48,42 @@ export const ProductosRecetasAdmin = () => {
             })
             if (response.ok){
                 const data = await response.json();
-                console.log("Fetched seed data:", data);
-                setDataSemillas(data);
+                setDataProductos(data);
             }
             else{
                 const data = await response.json();
-                console.error("Failed to fetch seed data:", data);
-                setErr(data.message || "Error al obtener datos de semillas.");
+                console.error("Failed to fetch ingredient data:", data);
+                setErr(data.message || "Error al obtener datos de ingredientes.");
             }
         }
         catch (error) {
-            console.error("Error fetching seed data:", error);
+            console.error("Error fetching ingredient data:", error);
         }
     }
     fetchData();
 }, []);
 
-    const handleNuevaSemilla = async (e) => {
+    const handleNuevoProducto = async (e) => {
         e.preventDefault();
-    
-        const formData = new FormData();
-        formData.append("NombreCientSemilla", dataForm.NombreCientSemilla);
-        formData.append("NombreComun", dataForm.NombreComun);
-        formData.append("Descripcion", dataForm.Descripcion);
-        
-        // Ensure a file is selected before appending
-        if (dataForm.image_url) {
-            formData.append("image_url", dataForm.image_url); // 🔥 FIX: Field name matches Flask backend
-        } else {
-            alert("Please select an image file.");
-            return;
-        }
         try {
-            const response = await fetch(`${API}/semillas/create`, {
+            const response = await fetch(`${API}/products/create`, {
                 method: "POST",
                 credentials: 'include',
                 headers: {
-                    "Accept": "application/json",
+                    "Content-Type": "application/json",
                     "X-CSRF-TOKEN": token
                 },
-                body: formData
+                body: JSON.stringify(dataForm)
             });
     
             const result = await response.json();
     
             if (response.status === 201) {
                 alert("Semilla creada exitosamente.");
-                setDataForm({ NombreCientSemilla: "", NombreComun: "", Descripcion: "", url_imagen: null });
+                setDataForm({Producto: ''});
                 window.location.reload();
             } else {
-                setErr(result.error || "Error al crear la semilla.");
+                setErr(result.error || "Error al crear el ingrediente.");
                 console.log(result);
             }
         } catch (e) {
@@ -114,7 +94,7 @@ export const ProductosRecetasAdmin = () => {
 
     const handleEliminar = async (id) => {
         try {
-            const response = await fetch(`${API}/semillas/delete/${id}`, {
+            const response = await fetch(`${API}/products/delete/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -123,47 +103,7 @@ export const ProductosRecetasAdmin = () => {
                 }
             });
             if (response.status === 200) {
-                setDataSemillas(dataSemillas.filter(semilla => semilla.IdSemilla !== id));
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-    const handleEditar = (semilla) => {
-        setSelectedSemilla(semilla);
-        setDataForm({
-            NombreCientSemilla: semilla.NombreCientSemilla,
-            NombreComun: semilla.NombreComun,
-            Descripcion: semilla.Descripcion,
-            image_url: null
-        });
-        setShowEditarModal(true);
-    };
-
-    const handleUpdateSemilla = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("NombreCientSemilla", dataForm.NombreCientSemilla);
-        formData.append("NombreComun", dataForm.NombreComun);
-        formData.append("Descripcion", dataForm.Descripcion);
-        formData.append("image_url", dataForm.image_url);
-
-        try {
-            const response = await fetch(`${API}/semillas/update/${selectedSemilla.IdSemilla}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': token
-                },
-                body: formData
-            });
-            if (response.status === 200) {
-                setDataSemillas(dataSemillas.map(semilla => 
-                    semilla.IdSemilla === selectedSemilla.IdSemilla ? 
-                    { ...semilla, ...dataForm } : semilla
-                ));
-                setShowEditarModal(false);
+                setDataProductos(dataProductos.filter(ingrediente => ingrediente.IdProductosAlter !== id));
             }
         } catch (error) {
             console.error('Error:', error);
@@ -183,58 +123,40 @@ export const ProductosRecetasAdmin = () => {
             {Err && <div>{Err}</div>}
             <NavAdmin />
             <MenuLateral />
-            <h1>Semillas</h1>
-            <input type="text" className="buscarSemillasAdmin" />
-            <button className="botonBuscarSemillasAdmin"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-            <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Semilla</button>
+            <h1>Ingredienetes Secundarios Recetas</h1>
+            <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nuevo Ingrediente</button>
             <table className="CrudSemillasAdmin">
                 <thead>
                     <tr>
-                        <th className="tituloCrudSemillas">Nombre Científico</th>
-                        <th className="tituloCrudSemillas">Nombre Común</th>
-                        <th className="tituloCrudSemillas">Descripción</th>
-                        <th className="tituloCrudSemillas">Imagen</th>
+                        <th className="tituloCrudSemillas" >Semilla</th>
+                        <th className="tituloCrudSemillas">Ingrediente</th>
                         <th className="tituloCrudSemillas">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {(!dataSemillas)?
+                    {(!dataProductos)?
                         <tr>
-                            <td colSpan="5">No hay semillas disponibles.</td>
+                            <td colSpan="5">No hay Ingredientes secundarios disponibles.</td>
                         </tr>
                     :
-                    dataSemillas.map((semilla) => (
-                        <tr key={semilla.IdSemilla}>
-                            <td>{semilla.NombreCientSemilla}</td>
-                            <td>{semilla.NombreComun}</td>
-                            <td>{semilla.Descripcion}</td>
-                            <td><img src={`http://localhost:5000${semilla.image_url}`} alt={semilla.NombreComun} />
-                            </td>
+                    dataProductos.map((ingrediente) => (
+                        <tr key={ingrediente.IdProductosAlter}>
+                            <td>{ingrediente.Producto}</td>
                             <td className="accionesSemillasAdmin">
-                                <NavLink>
-                                    <FontAwesomeIcon icon={faPencil} onClick={() => handleEditar(semilla)} />
-                                </NavLink>
-                                <button onClick={() => handleEliminar(semilla.IdSemilla)}>Eliminar</button>
+                                <NavLink className='eliminarSemillas'>
+                                        <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(ingrediente.IdProductosAlter)} />
+                                    </NavLink>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            {/* Edit Modal */}
-            <SeedModal 
-                isOpen={showEditarModal} 
-                onClose={() => setShowEditarModal(false)} 
-                onSubmit={handleUpdateSemilla} 
-                data={dataForm} 
-                setData={setDataForm} 
-            />
-
             {/* New Modal */}
-            <SeedModal 
+            <IngredienteModal
                 isOpen={showNuevoModal} 
                 onClose={() => setShowNuevoModal(false)} 
-                onSubmit={handleNuevaSemilla} 
+                onSubmit={handleNuevoProducto} 
                 data={dataForm} 
                 setData={setDataForm} 
             />

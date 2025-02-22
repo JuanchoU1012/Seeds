@@ -53,4 +53,16 @@ def get_products():
 @jwt_required()
 def create_products():
     data = request.get_json()
-    return RecipesController.create_products()
+    print("data route", data)
+    return RecipeProductController.create_product(data)
+
+@RecipesRoutes.route('/products/delete/<IdProducto>', methods =['DELETE'])
+@jwt_required()
+def delete_products(IdProducto):
+    return RecipeProductController.delete_product(IdProducto)
+
+@RecipesRoutes.route("/recipes/cantidades", methods =['POST'])
+def cantidades():
+    data = request.get_json()
+    return RecipesController.cantidades(data)
+    

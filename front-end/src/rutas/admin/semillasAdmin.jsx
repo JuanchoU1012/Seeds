@@ -200,6 +200,7 @@ const handleSearch = (e) => {
             {Err && <div>{Err}</div>}
             <NavAdmin />
             <MenuLateralAdmin />
+            <div className="container">
             <h1>Semillas</h1>
             <div className="search-container">
                 <input className="input-search" 
@@ -209,7 +210,7 @@ const handleSearch = (e) => {
                 onChange={handleSearch}/>
             </div>
             <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Semilla</button>
-            <table className="CrudSemillasAdmin">
+            <table className="crudSemillasAdmin">
                 <thead>
                     <tr>
                         <th className="tituloCrudSemillas">Nombre Científico</th>
@@ -263,6 +264,7 @@ const handleSearch = (e) => {
                 data={dataForm} 
                 setData={setDataForm} 
             />
+        </div>
         </div>
     );
 };
