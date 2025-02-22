@@ -17,6 +17,11 @@
     margin-right: 2%;
     background-color: #969696;
     border-radius: 8px;
+    color: #fff;
+}
+.volver401:hover{
+    color: #fff;
+    background-color: #c6c6c6;
 }
 
 @media (max-width: 800px){

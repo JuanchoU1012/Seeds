@@ -9,10 +9,6 @@ def hash_password(password):
     return hashed_password
 
 class Users:
-    def __init__(self, email=None, password=None, rol=None):
-        self.email = email
-        self.password = password
-        self.rol = rol
     def create_user(data):
         conn, cursor = connection()
         try:

@@ -81,7 +81,7 @@ export const InicioSesion = () => {
                   <h1 className="tituloInicio">Inicio de sesion</h1>
                   <br /><br />
                   <div className="inputs">
-                  <FontAwesomeIcon icon={faEnvelope} className="iconosLogin"/>
+                  {/* <FontAwesomeIcon icon={faEnvelope} className="iconosLogin"/> */}
                       <input
                           type="email"
                           placeholder="Correo electrónico"

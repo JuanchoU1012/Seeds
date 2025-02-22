@@ -41,9 +41,27 @@
   position: relative;
   bottom: 30px;
 }
+.borrarMisSemillas{
+  background-color: #e11010c0;
+  color: #fff;
+  margin-bottom: 2%;
+  border-radius: 8px;
+  width: 70%;
+  margin-left: 15%;
+  height: 38px;
+}
+.botonEditarProductosAdmin{
+  color: #fff;
+}
 
 @media (max-width: 800px){
   .modal-content{
     width: 75%;
+  }
+  .input-search{
+    width: 165px;
+  }
+  .crudVendedorSemillas{
+    width: 90%;
   }
 }

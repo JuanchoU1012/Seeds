@@ -6,7 +6,7 @@ import MenuLateral from '../../components/sidebar'
 
 import '../../estilos/misSemillas.css'
   
-const MisSemillas = () => {
+const ProductosVendedor = () => {
     // const [dataProductos, setDataProductos] = useState([])
     // const [nombre, setNombre] = useState('')
     // const [imagen, setImagen] = useState('')
@@ -70,9 +70,7 @@ const MisSemillas = () => {
                     <button className="verMasMisProductos" 
                     // onClick={() => handleEditar(item)}
                     >Editar</button>
-                    <button className="borrarMisSemillas"
-                    //  onClick={() => handleEliminar(item.id)}
-                     >Borrar</button>
+
 
                     </div>
 {/*               ))} */}
@@ -90,4 +88,4 @@ const MisSemillas = () => {
 
 }
 
-export default MisSemillas
+export default ProductosVendedor

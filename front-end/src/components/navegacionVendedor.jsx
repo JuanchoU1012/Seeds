@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import '../estilos/navegacioVendedor.css';
-import logo from '../imagenes/logo.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { logout } from "../../helpers/logout";
+import React, { useState } from "react"
+import { NavLink } from "react-router-dom"
+import '../estilos/navegacioVendedor.css'
+import logo from '../imagenes/logo.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+
 
 
 const NavVendedor = () => {
@@ -22,17 +21,15 @@ const NavVendedor = () => {
 
                     </ul>
                     <div className="salirVendedor">
-                        <button className="botonIconoVendedor"onClick={handleNuevoReceta} >
-                            <FontAwesomeIcon icon={faUser} className="iconosVendedor"/>
-                        </button>
                         <NavLink className='linkVendedor' to="/"><FontAwesomeIcon icon={faRightFromBracket} className="iconosVendedor"/></NavLink>
                     </div>
                         
                 </nav>
             </header>
 
+
         </div>
     )
 }
 
-export default NavVendedor;
+export default NavVendedor

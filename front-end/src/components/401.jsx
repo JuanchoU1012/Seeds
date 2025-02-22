@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../estilos/401.css'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
