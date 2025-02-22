@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavVendedor from '../../components/navegacioVendedor'
 import MenuLateral from '../../components/sidebar'
-// import GaleriaMisProductos from '../../components/galeria'
 import InputSearch from '../../components/buscador';
 
 
@@ -26,7 +25,7 @@ export const MisProductos = () => {
                 {dataProductos.map((item) => (
                     <div className="cardMisProductos" key={item.id}>
                     <td className="nombreMisProductos">{item.nombre}</td>
-                    <td className="inventarioMisProductos">7</td>
+                    <td className="inventarioMisProductos"></td>
                     <td>
                             <img 
                                 className="imagenMisProductos"

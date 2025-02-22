@@ -1,17 +1,21 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import '../../estilos/usuariosAdmin.css';
-import MenuLateral from '../../components/sidebarAdmin';
-import NavAdmin from '../../components/navegacionAdmin';
-import UserModal from '../../components/UserModal';
+import { useState, useEffect } from "react"
+import { NavLink } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import '../../estilos/usuariosAdmin.css'
+import MenuLateral from '../../components/sidebarAdmin'
+import NavAdmin from '../../components/navegacionAdmin'
+import UserModal from '../../components/UserModal'
 
+<<<<<<< HEAD
+const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
+=======
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
 
 const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000';
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
 export const UsuariosAdmin = () => {
 
@@ -22,12 +26,21 @@ export const UsuariosAdmin = () => {
         email: "",
         password: "",
         rol: ""
+<<<<<<< HEAD
+    })
+    const [dataUsuarios, setDataUsuarios] = useState([])
+    const [selectedUsuario, setSelectedUsuario] = useState(null)
+    const [showEditarModal, setShowEditarModal] = useState(false)
+    const [showNuevoModal, setShowNuevoModal] = useState(false)
+    
+=======
     });
     const [selectedUsuario, setSelectedUsuario] = useState(null);
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
 
     const [dataUsuarios, setDataUsuarios] = useState([]);
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     const [filteredUsuarios, setFilteredUsuarios] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
 
@@ -43,20 +56,26 @@ export const UsuariosAdmin = () => {
     }, [])
 
     const handleSearch = (e) => {
-        const value = e.target.value.toLowerCase();
-        setSearchTerm(value);
-        const filtered = filteredUsuarios.filter(semilla => semilla.NombreComun.toLowerCase().includes(value));
-        setFilteredUsuarios(filtered);
-    };
+        const value = e.target.value.toLowerCase()
+        setSearchTerm(value)
+        const filtered = filteredUsuarios.filter(semilla => semilla.NombreComun.toLowerCase().includes(value))
+        setFilteredUsuarios(filtered)
+    }
 
     const validateFormData = () => {
+<<<<<<< HEAD
+        return FormData.email && FormData.password && FormData.rol
+    }
+    
+=======
         return FormData.email && FormData.password && FormData.rol;
     };
 
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
     const handleNuevoUsuario = async (e) => {
-        e.preventDefault();
-        if (!validateFormData()) return;
+        e.preventDefault()
+        if (!validateFormData()) return
         try {
             const response = await fetch(`${API}/registro`, {
                 method: "POST",
@@ -70,25 +89,31 @@ export const UsuariosAdmin = () => {
                     password: FormData.password,
                     rol: FormData.rol
                 }),
-            });
+            })
 
             if (response.status === 201) {
-                alert(response.text);
-                setFormData({ email: "", password: "", rol: "" });
-                window.location.reload();
+                alert(response.text)
+                setFormData({ email: "", password: "", rol: "" })
+                window.location.reload()
             } else {
-                const errorData = await response.json();
-                console.error(errorData.message || "Registration failed");
+                const errorData = await response.json()
+                console.error(errorData.message || "Registration failed")
             }
         } catch (err) {
-            console.error(err.message || "An error occurred");
+            console.error(err.message || "An error occurred")
         }
-    };
+    }
 
     useEffect(() => {
+<<<<<<< HEAD
+            const fetchData = async () => {
+            // console.log("Fetching seed data...")
+            try{
+=======
         const fetchData = async () => {
             // console.log("Fetching seed data...");
             try {
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 const response = await fetch(`${API}/users/get`, {
                     method: 'GET',
                     credentials: 'include',
@@ -98,24 +123,30 @@ export const UsuariosAdmin = () => {
                     }
                 })
                 if (response.status === 200) {
-                    const data = await response.json();
-                    setDataUsuarios(data);
-                    setFilteredUsuarios(data);
+                    const data = await response.json()
+                    setDataUsuarios(data)
+                    setFilteredUsuarios(data)
                 }
+<<<<<<< HEAD
+                else{
+                    const data = await response.json()
+                    console.error("Failed to fetch user data:", data)
+=======
                 else {
                     const data = await response.json();
                     console.error("Failed to fetch user data:", data);
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 }
             }
             catch (error) {
-                console.error("Error fetching seed data:", error);
+                console.error("Error fetching seed data:", error)
             }
         }
-        fetchData();
-    }, []);
+        fetchData()
+    }, [])
 
     const handleUpdate = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
             const response = await fetch(`${API}/actualizar_usuario`, {
                 method: 'POST',
@@ -125,22 +156,26 @@ export const UsuariosAdmin = () => {
                     Email: selectedUsuario.Email,
                     Rol: selectedUsuario.Rol
                 })
-            });
+            })
 
             if (response.ok) {
-                const updatedUsuarios = await response.json();
-                setDataUsuarios(updatedUsuarios);
-                setShowEditarModal(false);
-                alert('Usuario actualizado correctamente');
+                const updatedUsuarios = await response.json()
+                setDataUsuarios(updatedUsuarios)
+                setShowEditarModal(false)
+                alert('Usuario actualizado correctamente')
             } else {
-                console.error("Error al actualizar el usuario");
+                console.error("Error al actualizar el usuario")
             }
         } catch (error) {
-            console.error("Error al hacer la petición:", error);
+            console.error("Error al hacer la petición:", error)
         }
-    };
+    }
 
     const handleEditar = (usuario) => {
+<<<<<<< HEAD
+        setSelectedUsuario(usuario)
+        setShowEditarModal(true)
+=======
         setSelectedUsuario(usuario);
         setShowEditarModal(true);
     };
@@ -151,6 +186,7 @@ export const UsuariosAdmin = () => {
 
     if (!userData || userData.rol !== 0) {
         return <U401 />;
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     }
 
     return (
@@ -165,7 +201,7 @@ export const UsuariosAdmin = () => {
                     value={searchTerm}
                     onChange={handleSearch} />
             </div>
-            <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
+            <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nuevo usuario</button>
             <table className="crudUsuariosAdmin">
                 <thead>
                     <tr>
@@ -222,5 +258,5 @@ export const UsuariosAdmin = () => {
                 setData={setFormData}
             />
         </div>
-    );
-};
+    )
+}

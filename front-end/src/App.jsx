@@ -6,15 +6,16 @@ import { InicioSesion } from './rutas/inicioSesion'
 import { Registro } from './rutas/registro'
 import { InicioTienda } from './rutas/InicioTienda'
 import { Cartilla } from './rutas/cartilla'
+import { Historias } from './rutas/historias'
 
 import { UsuariosAdmin } from './rutas/admin/usuariosAdmin'
 import { RecetasAdmin }  from './rutas/admin/recetasAdmin'
 import { SemillasAdmin } from './rutas/admin/semillasAdmin'
 import { ProductosRecetasAdmin } from './rutas/admin/productosrecetasAdmin'
 
-import {MisSemillas} from './rutas/vendedor/MisSemillas'
-import {RecetasVendedor} from './rutas/vendedor/recetasVendedor'
-import {TiendaVendedor} from './rutas/vendedor/tiendaVendedor'
+import  MisSemillas  from './rutas/vendedor/MisSemillas'
+import RecetasVendedor from './rutas/vendedor/recetasVendedor'
+import ProductosVendedor from './rutas/vendedor/productosVendedor'
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/registro" element={<Registro />} />
         <Route path='/cartilla' element={<Cartilla />}/>
         <Route path="/InicioTienda" element={<InicioTienda />} />
+        <Route path="/historias" element={<Historias />} />
         
 
         {/* Admin Paths */}
@@ -39,9 +41,9 @@ function App() {
         <Route path='/semillasAdmin' element= {<SemillasAdmin/>}/>
         
         {/* Vendedor Paths */}
-        <Route path="/RecetasVendedor" element={<RecetasVendedor />} />
+        <Route path="/recetasVendedor" element={<RecetasVendedor />} />
         <Route path="/misSemillasVendedor" element={<MisSemillas />} />
-        <Route path="/TiendaVendedor" element={<TiendaVendedor />} />
+        <Route path="/productosVendedor" element={<ProductosVendedor />} />
 
         
       </Routes>
