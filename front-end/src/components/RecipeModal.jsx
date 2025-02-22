@@ -10,7 +10,7 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
     const [Pasos, setPasos] = useState(data.Pasos);
 
     const [preview, setPreview] = useState(null);
-    
+
     useEffect(() => {
         setPasos(data.Pasos);
         if (typeof data.videoUrl === 'string') {
@@ -127,24 +127,24 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                         placeholder="Seleccionar ingredientes..."
                     />
 
-{!data.IdReceta && (
-    <>
-        {Pasos.map((paso, index) => (
-            <div key={index}>
-                <label>Paso {index + 1}:</label>
-                <input
-                    className='input-modal'
-                    type="text"
-                    value={paso}
-                    onChange={(e) => handleStepChange(index, e.target.value)}
-                    placeholder={`Paso ${index + 1}`}
-                />
-                <button type="button" onClick={() => removeStep(index)}>🗑️</button>
-            </div>
-        ))}
-        <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
-    </>
-)}
+                    {!data.IdReceta && (
+                        <>
+                            {Pasos.map((paso, index) => (
+                                <div key={index}>
+                                    <label>Paso {index + 1}:</label>
+                                    <input
+                                        className='input-modal'
+                                        type="text"
+                                        value={paso}
+                                        onChange={(e) => handleStepChange(index, e.target.value)}
+                                        placeholder={`Paso ${index + 1}`}
+                                    />
+                                    <button type="button" onClick={() => removeStep(index)}>🗑️</button>
+                                </div>
+                            ))}
+                            <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
+                        </>
+                    )}
 
 
                     <button type="submit" className='btn-modal'>Guardar Receta</button>

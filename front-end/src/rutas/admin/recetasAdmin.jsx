@@ -229,12 +229,13 @@ export const RecetasAdmin = () => {
             })
             if (response.status === 200) {
                 alert("Receta editada con éxito");
+                setShowEditarModal(false);
+                window.location.reload();
 
             }
             else {
                 alert("Error al editar la receta");
             }
-            setShowEditarModal(false);
         }
         catch (e) {
             console.error(e);

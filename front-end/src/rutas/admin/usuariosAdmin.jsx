@@ -7,22 +7,53 @@ import MenuLateral from '../../components/sidebarAdmin'
 import NavAdmin from '../../components/navegacionAdmin'
 import UserModal from '../../components/UserModal'
 
+<<<<<<< HEAD
 const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
+=======
+import { getUserInfo } from '../../../helpers/getuserinfo';
+import { getTokenInfo } from '../../../helpers/getjwt';
+import { U401 } from '../../components/401';
+
+const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000';
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
 export const UsuariosAdmin = () => {
+
+    const [token, setToken] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [FormData, setFormData] = useState({
         email: "",
         password: "",
         rol: ""
+<<<<<<< HEAD
     })
     const [dataUsuarios, setDataUsuarios] = useState([])
     const [selectedUsuario, setSelectedUsuario] = useState(null)
     const [showEditarModal, setShowEditarModal] = useState(false)
     const [showNuevoModal, setShowNuevoModal] = useState(false)
     
+=======
+    });
+    const [selectedUsuario, setSelectedUsuario] = useState(null);
+    const [showEditarModal, setShowEditarModal] = useState(false);
+    const [showNuevoModal, setShowNuevoModal] = useState(false);
+
+    const [dataUsuarios, setDataUsuarios] = useState([]);
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     const [filteredUsuarios, setFilteredUsuarios] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
 
+    useEffect(()=>{
+        const fetchdata = async () =>{
+            const userdata = await getUserInfo();
+            const token = await getTokenInfo();
+            setUserData(userdata);
+            setToken(token);
+            setIsLoading(false);
+        }
+        fetchdata();
+    }, [])
 
     const handleSearch = (e) => {
         const value = e.target.value.toLowerCase()
@@ -32,9 +63,15 @@ export const UsuariosAdmin = () => {
     }
 
     const validateFormData = () => {
+<<<<<<< HEAD
         return FormData.email && FormData.password && FormData.rol
     }
     
+=======
+        return FormData.email && FormData.password && FormData.rol;
+    };
+
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
     const handleNuevoUsuario = async (e) => {
         e.preventDefault()
@@ -68,9 +105,15 @@ export const UsuariosAdmin = () => {
     }
 
     useEffect(() => {
+<<<<<<< HEAD
             const fetchData = async () => {
             // console.log("Fetching seed data...")
             try{
+=======
+        const fetchData = async () => {
+            // console.log("Fetching seed data...");
+            try {
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 const response = await fetch(`${API}/users/get`, {
                     method: 'GET',
                     credentials: 'include',
@@ -84,9 +127,15 @@ export const UsuariosAdmin = () => {
                     setDataUsuarios(data)
                     setFilteredUsuarios(data)
                 }
+<<<<<<< HEAD
                 else{
                     const data = await response.json()
                     console.error("Failed to fetch user data:", data)
+=======
+                else {
+                    const data = await response.json();
+                    console.error("Failed to fetch user data:", data);
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 }
             }
             catch (error) {
@@ -123,8 +172,21 @@ export const UsuariosAdmin = () => {
     }
 
     const handleEditar = (usuario) => {
+<<<<<<< HEAD
         setSelectedUsuario(usuario)
         setShowEditarModal(true)
+=======
+        setSelectedUsuario(usuario);
+        setShowEditarModal(true);
+    };
+    
+    if (isLoading) {
+        return <div className="text-center mt-5">Loading...</div>;
+    }
+
+    if (!userData || userData.rol !== 0) {
+        return <U401 />;
+>>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     }
 
     return (
@@ -133,11 +195,11 @@ export const UsuariosAdmin = () => {
             <MenuLateral />
             <h1>Usuarios</h1>
             <div className="search-container">
-                <input className="input-search" 
-                type="text" 
-                placeholder="Buscar..." 
-                value={searchTerm} 
-                onChange={handleSearch}/>
+                <input className="input-search"
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearch} />
             </div>
             <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nuevo usuario</button>
             <table className="crudUsuariosAdmin">
@@ -150,11 +212,24 @@ export const UsuariosAdmin = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredUsuarios.map((user) => (
+                    {(!filteredUsuarios)?
+                    <tr>
+                        <td colSpan="5">No hay usuarios</td>
+                    </tr> 
+                    : 
+                    filteredUsuarios.map((user) => (
                         <tr key={user.IdAccesoUsuario}>
                             <td>{user.IdAccesoUsuario}</td>
                             <td>{user.Email}</td>
-                            <td>{user.Rol}</td>
+                            <td>
+                                {user.Rol === 0 ? (
+                                    <span>Administrador</span>
+                                ) : user.Rol === 1 ? (
+                                    <span>Vendedor</span>
+                                ) : (
+                                    <span>Cleinte</span>
+                                )}
+                            </td>
                             <td className="accionesUsuariosAdmin">
                                 <NavLink className='actulizarUsuarios' onClick={() => handleEditar(user)}>
                                     <FontAwesomeIcon icon={faPencil} style={{ color: "#000000" }} />
@@ -166,21 +241,21 @@ export const UsuariosAdmin = () => {
             </table>
 
             {/* Modal para "Editar" */}
-            <UserModal 
-                isOpen={showEditarModal} 
-                onClose={() => setShowEditarModal(false)} 
-                onSubmit={handleUpdate} 
-                data={selectedUsuario} 
-                setData={setSelectedUsuario} 
+            <UserModal
+                isOpen={showEditarModal}
+                onClose={() => setShowEditarModal(false)}
+                onSubmit={handleUpdate}
+                data={selectedUsuario}
+                setData={setSelectedUsuario}
             />
 
             {/* Modal para nuevo usuario */}
-            <UserModal 
-                isOpen={showNuevoModal} 
-                onClose={() => setShowNuevoModal(false)} 
-                onSubmit={handleNuevoUsuario} 
-                data={FormData} 
-                setData={setFormData} 
+            <UserModal
+                isOpen={showNuevoModal}
+                onClose={() => setShowNuevoModal(false)}
+                onSubmit={handleNuevoUsuario}
+                data={FormData}
+                setData={setFormData}
             />
         </div>
     )
