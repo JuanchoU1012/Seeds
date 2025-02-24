@@ -14,6 +14,7 @@ from flask_cors import CORS
 from routes.user_routes import UserRoutes
 from routes.seeds_routes import SeedsRoutes
 from routes.recipes_routes import RecipesRoutes
+from routes.sellers_routes import SellersRoutes
 
 from flask_jwt_extended import JWTManager
 import os
@@ -57,7 +58,7 @@ def index():
 app.register_blueprint(UserRoutes)
 app.register_blueprint(SeedsRoutes)
 app.register_blueprint(RecipesRoutes)
-
+app.register_blueprint(SellersRoutes)
 
 if __name__ == '__main__':
     app.run(debug=True)

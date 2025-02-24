@@ -1,41 +1,43 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-}
 
-.tituloCrudRecetas{
+
+.tituloCrudRecetas {
     border-bottom: 0.5px solid;
     width: 170px;
 }
 
-.crud-video video{
+.crud-video video {
     max-width: fit-content;
     width: 100%;
     height: 100%;
     border-radius: 9px;
 }
 
-.actulizarRecetas{
+.actulizarRecetas {
     background-color: #00AF00;
     padding: 2px;
     font-size: 27px;
     border-radius: 15%;
     position: relative;
     top: 12px;
-
 }
 
-.botonNuevaRecetaAdmin{
+.buscarRecetasAdmin {
+    background: #D9D9D9;
+    width: 190px;
+    height: 40px;
+    border-radius: 7px;
+    position: relative;
+    bottom: 0px;
+}
+
+.botonNuevaRecetaAdmin {
     background: #a5a0a082;
     position: relative;
     right: 20%;
     bottom: 25px;
 }
 
-  .eliminarRecetas{
+.eliminarRecetas {
     background-color: rgb(180, 30, 30);
     padding: 2px;
     font-size: 25px;
@@ -43,9 +45,13 @@
     position: relative;
     top: 12px;
     margin-left: 2%;
-  }
+}
 
-/* Ajuste de la tabla */
+.crudRecetasAdmin {
+    width: 80%;
+    position: relative;
+    left: 18.5%;
+}
 
 /* Asegurar que los videos no se expandan demasiado */
 .crud-video video {
@@ -85,19 +91,19 @@
     }
 }
 
-  @media  (max-width: 1000px){
+@media (max-width: 1000px) {
     .crudRecetasAdmin {
         left: 6.5%;
         font-size: 15px;
     }
-    .actulizarRecetas, .eliminarRecetas{
+    .actulizarRecetas, .eliminarRecetas {
         font-size: 20px;
     }
     .modal-content {
         width: 60%;
     }
-    .recetasAdmin{
+    .recetasAdmin {
         margin-left: 3%;
         font-size: 14px;
     }
-  }
+}

@@ -7,15 +7,12 @@ import MenuLateral from '../../components/sidebarAdmin'
 import NavAdmin from '../../components/navegacionAdmin'
 import UserModal from '../../components/UserModal'
 
-<<<<<<< HEAD
-const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
-=======
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
 
+
 const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000';
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
 export const UsuariosAdmin = () => {
 
@@ -26,21 +23,12 @@ export const UsuariosAdmin = () => {
         email: "",
         password: "",
         rol: ""
-<<<<<<< HEAD
     })
     const [dataUsuarios, setDataUsuarios] = useState([])
     const [selectedUsuario, setSelectedUsuario] = useState(null)
     const [showEditarModal, setShowEditarModal] = useState(false)
     const [showNuevoModal, setShowNuevoModal] = useState(false)
     
-=======
-    });
-    const [selectedUsuario, setSelectedUsuario] = useState(null);
-    const [showEditarModal, setShowEditarModal] = useState(false);
-    const [showNuevoModal, setShowNuevoModal] = useState(false);
-
-    const [dataUsuarios, setDataUsuarios] = useState([]);
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     const [filteredUsuarios, setFilteredUsuarios] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
 
@@ -63,15 +51,9 @@ export const UsuariosAdmin = () => {
     }
 
     const validateFormData = () => {
-<<<<<<< HEAD
         return FormData.email && FormData.password && FormData.rol
     }
     
-=======
-        return FormData.email && FormData.password && FormData.rol;
-    };
-
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
 
     const handleNuevoUsuario = async (e) => {
         e.preventDefault()
@@ -105,15 +87,9 @@ export const UsuariosAdmin = () => {
     }
 
     useEffect(() => {
-<<<<<<< HEAD
             const fetchData = async () => {
             // console.log("Fetching seed data...")
             try{
-=======
-        const fetchData = async () => {
-            // console.log("Fetching seed data...");
-            try {
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 const response = await fetch(`${API}/users/get`, {
                     method: 'GET',
                     credentials: 'include',
@@ -127,15 +103,9 @@ export const UsuariosAdmin = () => {
                     setDataUsuarios(data)
                     setFilteredUsuarios(data)
                 }
-<<<<<<< HEAD
                 else{
                     const data = await response.json()
                     console.error("Failed to fetch user data:", data)
-=======
-                else {
-                    const data = await response.json();
-                    console.error("Failed to fetch user data:", data);
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
                 }
             }
             catch (error) {
@@ -172,10 +142,6 @@ export const UsuariosAdmin = () => {
     }
 
     const handleEditar = (usuario) => {
-<<<<<<< HEAD
-        setSelectedUsuario(usuario)
-        setShowEditarModal(true)
-=======
         setSelectedUsuario(usuario);
         setShowEditarModal(true);
     };
@@ -186,7 +152,6 @@ export const UsuariosAdmin = () => {
 
     if (!userData || userData.rol !== 0) {
         return <U401 />;
->>>>>>> b0daa51503e12150887ffcca87f12e0223a7a225
     }
 
     return (
