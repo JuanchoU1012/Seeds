@@ -200,7 +200,7 @@ const handleSearch = (e) => {
             {Err && <div>{Err}</div>}
             <NavAdmin />
             <MenuLateralAdmin />
-            <div className="container">
+            {/* <div className="container"> */}
             <h1>Semillas</h1>
             <div className="search-container">
                 <input className="input-search" 
@@ -265,6 +265,6 @@ const handleSearch = (e) => {
                 setData={setDataForm} 
             />
         </div>
-        </div>
+        // </div>
     );
 };

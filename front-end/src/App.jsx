@@ -3,6 +3,8 @@ import './App.css'
 
 import { Inicio }  from './rutas/Inicio'
 import { InicioSesion } from './rutas/inicioSesion'
+import  RegistrarInfo  from './rutas/vendedor/registrarInfo'
+
 import { Registro } from './rutas/registro'
 import { InicioTienda } from './rutas/InicioTienda'
 import { Cartilla } from './rutas/cartilla'
@@ -29,6 +31,7 @@ function App() {
         <Route path="/" element={<Inicio/>} />
         <Route path="/inicioSesion" element={<InicioSesion />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path='/infovendedor' element={<RegistrarInfo />}/>
         <Route path='/cartilla' element={<Cartilla />}/>
         <Route path="/InicioTienda" element={<InicioTienda />} />
         <Route path="/historias" element={<Historias />} />

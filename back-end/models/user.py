@@ -9,6 +9,7 @@ def hash_password(password):
     return hashed_password
 
 class Users:
+    
     def create_user(data):
         conn, cursor = connection()
         try:

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import MenuLateralAdmin from "../../components/sidebarAdmin.jsx";
+import MenuLateralAdmin from "../../components/sidebarAdmin";
 import NavAdmin from '../../components/navegacionAdmin';
 import RecipesModal from "../../components/RecipeModal";
-import VermasReceta from "../../components/vermasReceta.jsx";
+import VermasReceta from "../../components/vermasReceta";
 import '../../estilos/recetasAdmin.css';
 
 //usertoken
@@ -23,18 +23,14 @@ export const RecetasAdmin = () => {
     const [showVermasModal, setShowVermasModal] = useState(false);
 
     const [dataRecipes, setRecipes] = useState([]);
-
-    const [filteredRecetas, setFilteredRecetas] = useState([])
-    const [searchTerm, setSearchTerm] = useState("")
-
-    const [seedOptions, setSeedOptions] = useState([]); // Define seed options
-    const [ingredientOptions, setIngredientOptions] = useState([]); // Define ingredient options
+    const [filteredRecetas, setFilteredRecetas] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [seedOptions, setSeedOptions] = useState([]);
+    const [ingredientOptions, setIngredientOptions] = useState([]);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
-
     const [token, setToken] = useState(null);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
     const [dataForm, setDataForm] = useState({
         Nombre: "",
         Descripcion: "",
@@ -43,7 +39,6 @@ export const RecetasAdmin = () => {
         videoUrl: null,
         Pasos: []
     });
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,8 +50,6 @@ export const RecetasAdmin = () => {
         };
         fetchData();
     }, []);
-
-
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -114,7 +107,6 @@ export const RecetasAdmin = () => {
 
         fetchRecipes();
         fetchOptions();
-
     }, []);
 
     const handleSearch = (e) => {
@@ -135,8 +127,7 @@ export const RecetasAdmin = () => {
 
         if (dataForm.videoUrl && dataForm.videoUrl instanceof File) {
             formData.append('videourl', dataForm.videoUrl);
-        }
-        else {
+        } else {
             alert("No se ha seleccionado ningún video.");
         }
         console.log('data desde receta', dataForm);
@@ -149,23 +140,21 @@ export const RecetasAdmin = () => {
                     "X-CSRF-TOKEN": token
                 },
                 body: formData
-            })
+            });
             const result = await response.json();
 
             if (response.status === 201) {
                 alert("Receta creada con éxito");
                 setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null });
                 window.location.reload();
-            }
-            else {
+            } else {
                 alert("Error al crear la receta");
                 console.log(result);
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     const handleEliminar = async (IdReceta) => {
         try {
@@ -176,19 +165,17 @@ export const RecetasAdmin = () => {
                     'Accept': 'application/json',
                     "X-CSRF-TOKEN": token
                 }
-            })
+            });
             if (response.status === 200) {
                 alert("Receta eliminada con éxito");
                 window.location.reload();
-            }
-            else {
+            } else {
                 alert("Error al eliminar la receta");
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe);
@@ -203,8 +190,6 @@ export const RecetasAdmin = () => {
         console.log('edit', recipe);
         setShowEditarModal(true);
     };
-
-
 
     const handleEditarReceta = async (e) => {
         e.preventDefault();
@@ -226,21 +211,18 @@ export const RecetasAdmin = () => {
                     "X-CSRF-TOKEN": token
                 },
                 body: formData
-            })
+            });
             if (response.status === 200) {
                 alert("Receta editada con éxito");
                 setShowEditarModal(false);
                 window.location.reload();
-
-            }
-            else {
+            } else {
                 alert("Error al editar la receta");
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     const handleVermas = (recipe) => {
         setSelectedRecipe(recipe);
@@ -257,92 +239,90 @@ export const RecetasAdmin = () => {
     return (
         <div className="RecetasAdmin">
             <NavAdmin />
-            <MenuLateralAdmin />
-            <div className="container">
-            <h1>Recetas</h1>
-            <div className="search-container">
-                <input className="input-search"
-                    type="text"
-                    placeholder="Buscar..."
-                    value={searchTerm}
-                    onChange={handleSearch} />
-            </div>
-            <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
-            <table className="CrudrecetasAdmin">
-                <thead>
-                    <tr>
-                        <th className="tituloCrudRecetas">Nombre Receta</th>
-                        <th className="tituloCrudRecetas">Descripcion</th>
-                        <th className="tituloCrudRecetas">Ingrediente Principales</th>
-                        <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
-                        <th className="tituloCrudRecetas">Video</th>
-                        <th className="tituloCrudRecetas">Pasos</th>
-                        <th className="tituloCrudRecetas">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {(!filteredRecetas) ?
+            <MenuLateralAdmin/>
+            
+                <h1>Recetas</h1>
+                <div className="search-container">
+                    <input className="buscarRecetasAdmin"
+                        type="text"
+                        placeholder="Buscar..."
+                        value={searchTerm}
+                        onChange={handleSearch} />
+                </div>
+                <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
+                <table className="crudRecetasAdmin">
+                    <thead>
                         <tr>
-                            <td colSpan="5">No hay recetas disponibles.</td>
+                            <th className="tituloCrudRecetas">Nombre Receta</th>
+                            <th className="tituloCrudRecetas">Descripcion</th>
+                            <th className="tituloCrudRecetas">Ingrediente Principales</th>
+                            <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
+                            <th className="tituloCrudRecetas">Video</th>
+                            <th className="tituloCrudRecetas">Pasos</th>
+                            <th className="tituloCrudRecetas">Acciones</th>
                         </tr>
-                        :
-                        filteredRecetas.map((recipe) => (
-                            <tr key={recipe.IdReceta}>
-                                <td>{recipe.Nombre}</td>
-                                <td>{recipe.Descripcion}</td>
-                                <td>{recipe.Semillasusadas}</td>
-                                <td>{recipe.ProductosAdicionales}</td>
-                                <td className="crud-video">
-                                    {recipe.videourl ? (
-                                        <video src={`http://localhost:5000${recipe.videourl}`} controls />
-                                    ) : (
-                                        <span>No hay video</span>
-                                    )}
-                                </td>
-                                <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
-                                <td className="accionesRecetas">
-                                    <NavLink>
-                                        <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
-                                    </NavLink>
-                                    <NavLink className='eliminarSemillas'>
-                                        <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
-                                    </NavLink>
-                                </td>
+                    </thead>
+                    <tbody>
+                        {(!filteredRecetas) ?
+                            <tr>
+                                <td colSpan="5">No hay recetas disponibles.</td>
                             </tr>
-                        ))}
-                </tbody>
-            </table>
+                            :
+                            filteredRecetas.map((recipe) => (
+                                <tr key={recipe.IdReceta}>
+                                    <td>{recipe.Nombre}</td>
+                                    <td>{recipe.Descripcion}</td>
+                                    <td>{recipe.Semillasusadas}</td>
+                                    <td>{recipe.ProductosAdicionales}</td>
+                                    <td className="crud-video">
+                                        {recipe.videourl ? (
+                                            <video src={`http://localhost:5000${recipe.videourl}`} controls />
+                                        ) : (
+                                            <span>No hay video</span>
+                                        )}
+                                    </td>
+                                    <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
+                                    <td className="accionesRecetas">
+                                        <NavLink>
+                                            <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
+                                        </NavLink>
+                                        <NavLink className='eliminarSemillas'>
+                                            <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
+                                        </NavLink>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
 
-            {/* {New Modal} */}
-            <RecipesModal
-                isOpen={showNuevoModal}
-                onClose={() => setShowNuevoModal(false)}
-                onSubmit={handleNuevaReceta}
-                data={dataForm}
-                setData={setDataForm}
-                seedOptions={seedOptions} // Pass seed options
-                ingredientOptions={ingredientOptions} // Pass ingredient options
-            />
+                {/* {New Modal} */}
+                <RecipesModal
+                    isOpen={showNuevoModal}
+                    onClose={() => setShowNuevoModal(false)}
+                    onSubmit={handleNuevaReceta}
+                    data={dataForm}
+                    setData={setDataForm}
+                    seedOptions={seedOptions} // Pass seed options
+                    ingredientOptions={ingredientOptions} // Pass ingredient options
+                />
 
+                {/* {Edit Modal} */}
+                <RecipesModal
+                    isOpen={showEditarModal}
+                    onClose={() => setShowEditarModal(false)}
+                    onSubmit={handleEditarReceta}
+                    data={dataForm}
+                    setData={setDataForm}
+                    seedOptions={seedOptions} // Pass seed options
+                    ingredientOptions={ingredientOptions} // Pass ingredient options
+                />
 
-            {/* {Edit Modal} */}
-            <RecipesModal
-                isOpen={showEditarModal}
-                onClose={() => setShowEditarModal(false)}
-                onSubmit={handleEditarReceta}
-                data={dataForm}
-                setData={setDataForm}
-                seedOptions={seedOptions} // Pass seed options
-                ingredientOptions={ingredientOptions} // Pass ingredient options
-            />
-
-            {/* ver mas modal */}
-            <VermasReceta
-                isOpen={showVermasModal}
-                onClose={() => setShowVermasModal(false)}
-                data={selectedRecipe}
-            />
-</div>
-        </div>
-    )
-}
+                {/* ver mas modal */}
+                <VermasReceta
+                    isOpen={showVermasModal}
+                    onClose={() => setShowVermasModal(false)}
+                    data={selectedRecipe}
+                />
+            </div>
+    );
+};
