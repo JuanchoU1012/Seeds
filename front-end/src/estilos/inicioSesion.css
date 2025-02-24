@@ -90,4 +90,8 @@
     .inputLogin {
         width: 76%;
     }
+    .error{
+        width: 70%;
+        margin-left: 12%;
+    }
 }

@@ -63,7 +63,7 @@ export const InicioSesion = () => {
                 }
             } else {
               setErrorMessage(data.message || 'Error al iniciar sesión');
-              alert("Invalid Credentials")
+              alert("Credenciales invalidas")
             }
         } catch (error) {
           setErrorMessage('Error de red. Intenta nuevamente más tarde.');

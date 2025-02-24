@@ -1,16 +1,16 @@
-<<<<<<< HEAD
-import '../../estilos/ProductosAdmin.css';
-import MenuLateral from '../../components/sidebarAdmin';
-import NavAdmin from '../../components/navegacionAdmin';
-import IngredienteModal from '../../components/IngredienteModal.jsx';
-import { useEffect, useState } from "react";
-import { getUserInfo } from '../../../helpers/getuserinfo';
-import { getTokenInfo } from '../../../helpers/getjwt';
-import { U401 } from '../../components/401';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
-=======
+// <<<<<<< HEAD
+// import '../../estilos/ProductosAdmin.css';
+// import MenuLateral from '../../components/sidebarAdmin';
+// import NavAdmin from '../../components/navegacionAdmin';
+// import IngredienteModal from '../../components/IngredienteModal.jsx';
+// import { useEffect, useState } from "react";
+// import { getUserInfo } from '../../../helpers/getuserinfo';
+// import { getTokenInfo } from '../../../helpers/getjwt';
+// import { U401 } from '../../components/401';
+// import { faTrash } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { NavLink } from 'react-router-dom';
+
 import { NavLink } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
@@ -22,33 +22,30 @@ import { useEffect, useState } from "react"
 import { getUserInfo } from '../../../helpers/getuserinfo'
 import { getTokenInfo } from '../../../helpers/getjwt'
 import { U401 } from '../../components/401'
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
 
 const API = import.meta.env.VITE_REACT_APP_API
 
 export const ProductosRecetasAdmin = () => {
-<<<<<<< HEAD
-    const [showNuevoModal, setShowNuevoModal] = useState(false);
-    const [userData, setUserData] = useState(null);
-    const [token, setToken] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [dataForm, setDataForm] = useState({
-        Nombre: ''
-    });
-    const [dataProductos, setDataProductos] = useState([]); // Ensure this is initialized as an empty array
-    const [Err, setErr] = useState("");
+    // const [showNuevoModal, setShowNuevoModal] = useState(false);
+    // const [userData, setUserData] = useState(null);
+    // const [token, setToken] = useState(null);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [dataForm, setDataForm] = useState({
+    //     Nombre: ''
+    // });
+    // const [dataProductos, setDataProductos] = useState([]); // Ensure this is initialized as an empty array
+    // const [Err, setErr] = useState("");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const UserData = await getUserInfo();
-            const Token = await getTokenInfo();
-            setUserData(UserData);
-            setToken(Token);
-            setIsLoading(false);
-        };
-        fetchData();
-    }, []);
-=======
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const UserData = await getUserInfo();
+    //         const Token = await getTokenInfo();
+    //         setUserData(UserData);
+    //         setToken(Token);
+    //         setIsLoading(false);
+    //     };
+    //     fetchData();
+    // }, []);
     const [showEditarModal, setShowEditarModal] = useState(false)
     const [showNuevoModal, setShowNuevoModal] = useState(false)
     const [userData, setUserData] = useState(null)
@@ -75,7 +72,6 @@ export const ProductosRecetasAdmin = () => {
         }
         fetchData()
     }, [])
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,19 +86,19 @@ export const ProductosRecetasAdmin = () => {
                 }
             })
             if (response.ok){
-<<<<<<< HEAD
-                const data = await response.json();
-                setDataProductos(data);
-            }
-            else{
-                const data = await response.json();
-                console.error("Failed to fetch ingredient data:", data);
-                setErr(data.message || "Error al obtener datos de ingredientes.");
-            }
-        }
-        catch (error) {
-            console.error("Error fetching ingredient data:", error);
-=======
+// <<<<<<< HEAD
+//                 const data = await response.json();
+//                 setDataProductos(data);
+//             }
+//             else{
+//                 const data = await response.json();
+//                 console.error("Failed to fetch ingredient data:", data);
+//                 setErr(data.message || "Error al obtener datos de ingredientes.");
+//             }
+//         }
+//         catch (error) {
+//             console.error("Error fetching ingredient data:", error);
+
                 const data = await response.json()
                 console.log("Fetched seed data:", data)
                 setDataSemillas(data)
@@ -115,16 +111,15 @@ export const ProductosRecetasAdmin = () => {
         }
         catch (error) {
             console.error("Error fetching seed data:", error)
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
         }
     }
     fetchData()
 }, [])
 
-<<<<<<< HEAD
-    const handleNuevoProducto = async (e) => {
-        e.preventDefault();
-=======
+// <<<<<<< HEAD
+//     const handleNuevoProducto = async (e) => {
+//         e.preventDefault();
+// =======
     const handleNuevaSemilla = async (e) => {
         e.preventDefault()
     
@@ -140,7 +135,6 @@ export const ProductosRecetasAdmin = () => {
             alert("Please select an image file.")
             return
         }
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
         try {
             const response = await fetch(`${API}/products/create`, {
                 method: "POST",
@@ -149,32 +143,29 @@ export const ProductosRecetasAdmin = () => {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": token
                 },
-<<<<<<< HEAD
+
                 body: JSON.stringify(dataForm)
             });
-=======
-                body: formData
-            })
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
+
+
     
             const result = await response.json()
     
             if (response.status === 201) {
-<<<<<<< HEAD
-                alert("Semilla creada exitosamente.");
-                setDataForm({Producto: ''});
-                window.location.reload();
-            } else {
-                setErr(result.error || "Error al crear el ingrediente.");
-                console.log(result);
-=======
+
+            //     alert("Semilla creada exitosamente.");
+            //     setDataForm({Producto: ''});
+            //     window.location.reload();
+            // } else {
+            //     setErr(result.error || "Error al crear el ingrediente.");
+            //     console.log(result);
+
                 alert("Semilla creada exitosamente.")
                 setDataForm({ NombreCientSemilla: "", NombreComun: "", Descripcion: "", url_imagen: null })
                 window.location.reload()
             } else {
                 setErr(result.error || "Error al crear la semilla.")
                 console.log(result)
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
             }
         } catch (e) {
             console.error(e)
@@ -193,9 +184,9 @@ export const ProductosRecetasAdmin = () => {
                 }
             })
             if (response.status === 200) {
-<<<<<<< HEAD
-                setDataProductos(dataProductos.filter(ingrediente => ingrediente.IdProductosAlter !== id));
-=======
+// <<<<<<< HEAD
+//                 setDataProductos(dataProductos.filter(ingrediente => ingrediente.IdProductosAlter !== id));
+// =======
                 setDataSemillas(dataSemillas.filter(semilla => semilla.IdSemilla !== id))
             }
         } catch (error) {
@@ -237,7 +228,6 @@ export const ProductosRecetasAdmin = () => {
                     { ...semilla, ...dataForm } : semilla
                 ))
                 setShowEditarModal(false)
->>>>>>> 4fd4a11af60dedc2b498326be61187b80a70c2f6
             }
         } catch (error) {
             console.error('Error:', error)
