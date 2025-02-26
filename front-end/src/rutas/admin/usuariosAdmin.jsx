@@ -7,18 +7,18 @@ import MenuLateral from '../../components/sidebarAdmin'
 import NavAdmin from '../../components/navegacionAdmin'
 import UserModal from '../../components/UserModal'
 
-import { getUserInfo } from '../../../helpers/getuserinfo';
-import { getTokenInfo } from '../../../helpers/getjwt';
-import { U401 } from '../../components/401';
+import { getUserInfo } from '../../../helpers/getuserinfo'
+import { getTokenInfo } from '../../../helpers/getjwt'
+import { U401 } from '../../components/401'
 
 
-const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000';
+const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
 
 export const UsuariosAdmin = () => {
 
-    const [token, setToken] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [token, setToken] = useState(null)
+    const [userData, setUserData] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
     const [FormData, setFormData] = useState({
         email: "",
         password: "",
@@ -37,13 +37,13 @@ export const UsuariosAdmin = () => {
 
     useEffect(()=>{
         const fetchdata = async () =>{
-            const userdata = await getUserInfo();
-            const token = await getTokenInfo();
-            setUserData(userdata);
-            setToken(token);
-            setIsLoading(false);
+            const userdata = await getUserInfo()
+            const token = await getTokenInfo()
+            setUserData(userdata)
+            setToken(token)
+            setIsLoading(false)
         }
-        fetchdata();
+        fetchdata()
     }, [])
 
     const handleSearch = (e) => {
@@ -145,16 +145,16 @@ export const UsuariosAdmin = () => {
     }
 
     const handleEditar = (usuario) => {
-        setSelectedUsuario(usuario);
-        setShowEditarModal(true);
-    };
+        setSelectedUsuario(usuario)
+        setShowEditarModal(true)
+    }
     
     if (isLoading) {
-        return <div className="text-center mt-5">Loading...</div>;
+        return <div className="text-center mt-5">Loading...</div>
     }
 
     if (!userData || userData.rol !== 0) {
-        return <U401 />;
+        return <U401 />
     }
 
     return (
