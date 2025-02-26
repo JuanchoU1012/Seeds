@@ -15,7 +15,7 @@ from routes.user_routes import UserRoutes
 from routes.seeds_routes import SeedsRoutes
 from routes.recipes_routes import RecipesRoutes
 from routes.sellers_routes import SellersRoutes
-
+from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 import os
 from datetime import timedelta
@@ -23,7 +23,10 @@ from datetime import timedelta
 app = Flask(__name__)
 
 # Configure the JWT settings
-JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+JWT_SECRET_KEY = os.listdir()
+
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+
 app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 

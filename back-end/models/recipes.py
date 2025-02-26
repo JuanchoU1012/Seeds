@@ -7,7 +7,7 @@ class Recipes:
             query = "SELECT * FROM vw_recetas"
             cursor.execute(query)
             recipes = cursor.fetchall()
-            print(recipes)
+            print(recipes[1])
             return recipes
         except Exception as e:
             print(e)
