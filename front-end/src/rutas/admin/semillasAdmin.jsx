@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faMagnifyingGlass, faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 import MenuLateralAdmin from '../../components/sidebarAdmin.jsx';
 import NavAdmin from '../../components/navegacionAdmin';
@@ -235,7 +235,7 @@ const handleSearch = (e) => {
                             </td>
                             <td className="accionesSemillasAdmin">
                                 <NavLink className='actualizarSemillas'>
-                                    <FontAwesomeIcon icon={faPencil} onClick={() => handleEditar(semilla)} />
+                                    <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(semilla)} />
                                 </NavLink>
 
                                 <NavLink className='eliminarSemillas'>

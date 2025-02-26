@@ -13,12 +13,10 @@
 }
 
 .actulizarRecetas {
-    background-color: #00AF00;
-    padding: 2px;
-    font-size: 27px;
-    border-radius: 15%;
-    position: relative;
-    top: 12px;
+    font-weight: 500;
+    color: #3a3f43;
+    text-decoration: inherit;
+    font-size: 30px;
 }
 
 .buscarRecetasAdmin {

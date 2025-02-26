@@ -42,13 +42,11 @@
   bottom: 30px;
 }
 .borrarMisSemillas{
-  background-color: #e11010c0;
-  color: #fff;
-  margin-bottom: 2%;
-  border-radius: 8px;
-  width: 70%;
-  margin-left: 15%;
-  height: 38px;
+  font-weight: 500;
+  color: #3a3f43;
+  text-decoration: inherit;
+  font-size: 30px;
+
 }
 .botonEditarProductosAdmin{
   color: #fff;

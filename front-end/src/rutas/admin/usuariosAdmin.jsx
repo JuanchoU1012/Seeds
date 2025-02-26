@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { NavLink } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import '../../estilos/usuariosAdmin.css'
 import MenuLateral from '../../components/sidebarAdmin'
 import NavAdmin from '../../components/navegacionAdmin'
@@ -200,7 +200,7 @@ export const UsuariosAdmin = () => {
                             </td>
                             <td className="accionesUsuariosAdmin">
                                 <NavLink className='actulizarUsuarios' onClick={() => handleEditar(user)}>
-                                    <FontAwesomeIcon icon={faPencil} style={{ color: "#000000" }} />
+                                    <FontAwesomeIcon icon={faEdit} style={{ color: "#000000" }} />
                                 </NavLink>
                             </td>
                         </tr>
