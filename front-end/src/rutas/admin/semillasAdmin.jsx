@@ -202,7 +202,7 @@ const handleSearch = (e) => {
             <MenuLateralAdmin />
             {/* <div className="container"> */}
             <h1>Semillas</h1>
-            <div className="search-container">
+            <div className="buscarSemillasAdmin">
                 <input className="input-search" 
                 type="text" 
                 placeholder="Buscar..." 
@@ -218,7 +218,7 @@ const handleSearch = (e) => {
                         <th className="tituloCrudSemillas">Descripción</th>
                         <th className="tituloCrudSemillas">Imagen</th>
                         <th className="tituloCrudSemillas">Acciones</th>
-                    </tr>
+                    </tr>   
                 </thead>
                 <tbody>
                     {(!filteredSemillas)?

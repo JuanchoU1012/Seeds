@@ -15,8 +15,8 @@ import { RecetasAdmin }  from './rutas/admin/recetasAdmin'
 import { SemillasAdmin } from './rutas/admin/semillasAdmin'
 import { ProductosRecetasAdmin } from './rutas/admin/productosrecetasAdmin'
 
-import  MisSemillas  from './rutas/vendedor/MisSemillas'
-import RecetasVendedor from './rutas/vendedor/recetasVendedor'
+import {MisSemillasVendedor}  from './rutas/vendedor/MisSemillas'
+import {RecetasVendedor} from './rutas/vendedor/recetasVendedor'
 import ProductosVendedor from './rutas/vendedor/productosVendedor'
 
 
@@ -45,7 +45,7 @@ function App() {
         
         {/* Vendedor Paths */}
         <Route path="/recetasVendedor" element={<RecetasVendedor />} />
-        <Route path="/misSemillasVendedor" element={<MisSemillas />} />
+        <Route path="/misSemillasVendedor" element={<MisSemillasVendedor />} />
         <Route path="/productosVendedor" element={<ProductosVendedor />} />
 
         

@@ -1,3 +1,4 @@
 static/
 env
-config/connection
+config.connection
+config/__pycache__

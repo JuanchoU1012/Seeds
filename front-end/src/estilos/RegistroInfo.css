@@ -29,24 +29,11 @@
 
 .container {
     width: 90%;
-    max-width: 500px;
+    max-width: 1000px;
     background: white;
-    padding: 30px; /* Increased padding for better spacing */
+    /* padding: 30px; Increased padding for better spacing */
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
-}
-
-.swiper {
-    width: 100%;
-    height: auto;
-}
-
-.swiper-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Increased gap for better spacing */
-    padding: 20px; /* Added padding for internal spacing */
 }
 
 .form {
@@ -54,7 +41,7 @@
     flex-direction: column;
     align-items: center;
     gap: 20px; /* Increased gap for better spacing */
-    width: 100%;
+    width: 400px;
 }
 
 .input {
@@ -74,6 +61,22 @@
     background: #fff;
 }
 
+.basic-multi-single {
+    width: 90%;
+    max-width: 400px;
+    text-align: left;
+}
+
+.return{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    display: flex;
+}
 .btn {
     width: 90%;
     max-width: 400px;

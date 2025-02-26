@@ -35,6 +35,7 @@ app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['UPLOAD_FOLDER_SEED'] = 'static/uploads/seeds'
 # another folder for uploads
 app.config['UPLOAD_FOLDER_RECIPE'] = 'static/uploads/recipes'
+app.config['UPLOAD_FOLDER_COMMERCE'] = 'static/uploads/sellers'
 
 
 
