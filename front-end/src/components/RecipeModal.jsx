@@ -135,16 +135,19 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
                     {!data.IdReceta && (
                         <>
                             {Pasos.map((paso, index) => (
-                                <div key={index}>
+                                <div key={index} className=''>
                                     <label>Paso {index + 1}:</label>
+                                    <div className="modalPasos">
+
                                     <input
                                         className='input-modal'
                                         type="text"
                                         value={paso}
                                         onChange={(e) => handleStepChange(index, e.target.value)}
                                         placeholder={`Paso ${index + 1}`}
-                                    />
+                                        />
                                     <button type="button" onClick={() => removeStep(index)}>🗑️</button>
+                                        </div>
                                 </div>
                             ))}
                             <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>

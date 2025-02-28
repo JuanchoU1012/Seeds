@@ -1,71 +1,45 @@
 
-import '../../estilos/ProductosAdmin.css';
-import MenuLateral from '../../components/sidebarAdmin';
-import NavAdmin from '../../components/navegacionAdmin';
-import IngredienteModal from '../../components/IngredienteModal.jsx';
-import { useEffect, useState } from "react";
-import { getUserInfo } from '../../../helpers/getuserinfo';
-import { getTokenInfo } from '../../../helpers/getjwt';
-import { U401 } from '../../components/401';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
+import '../../estilos/ProductosAdmin.css'
+import MenuLateral from '../../components/sidebarAdmin'
+import NavAdmin from '../../components/navegacionAdmin'
+import IngredienteModal from '../../components/IngredienteModal.jsx'
+import { useEffect, useState } from "react"
+import { getUserInfo } from '../../../helpers/getuserinfo'
+import { getTokenInfo } from '../../../helpers/getjwt'
+import { U401 } from '../../components/401'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { NavLink } from 'react-router-dom'
 
 const API = import.meta.env.VITE_REACT_APP_API
 
 export const ProductosRecetasAdmin = () => {
 
-    // const [showEditarModal, setShowEditarModal] = useState(false)
-    // const [showNuevoModal, setShowNuevoModal] = useState(false)
-    // const [userData, setUserData] = useState(null)
-    // const [token, setToken] = useState(null)
-    // const [isLoading, setIsLoading] = useState(true)
-    // const [dataForm, setDataForm] = useState({
-    //     NombreCientSemilla: "",
-    //     NombreComun: "",
-    //     Descripcion: "",
-    //     image_url: null
-    // })
-    // const [dataSemillas, setDataSemillas] = useState([]) // Ensure this is initialized as an empty array
-    // const [selectedSemilla, setSelectedSemilla] = useState(null)
-    // const [Err, setErr] = useState("")
+   
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         // console.log("Fetching user info and token...")
-    //         const UserData = await getUserInfo()
-    //         const Token = await getTokenInfo()
-    //         setUserData(UserData)
-    //         setToken(Token)
-    //         setIsLoading(false)
-    //     }
-    //     fetchData()
-    // }, [])
-
-    const [showNuevoModal, setShowNuevoModal] = useState(false);
-    const [userData, setUserData] = useState(null);
-    const [token, setToken] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [showNuevoModal, setShowNuevoModal] = useState(false)
+    const [userData, setUserData] = useState(null)
+    const [token, setToken] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
     const [dataForm, setDataForm] = useState({
         Nombre: ''
-    });
-    const [dataProductos, setDataProductos] = useState([]); // Ensure this is initialized as an empty array
-    const [Err, setErr] = useState("");
+    })
+    const [dataProductos, setDataProductos] = useState([]) 
+    const [Err, setErr] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
-            const UserData = await getUserInfo();
-            const Token = await getTokenInfo();
-            setUserData(UserData);
-            setToken(Token);
-            setIsLoading(false);
-        };
-        fetchData();
-    }, []);
+            const UserData = await getUserInfo()
+            const Token = await getTokenInfo()
+            setUserData(UserData)
+            setToken(Token)
+            setIsLoading(false)
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
-        // console.log("Fetching seed data...")
         try{
             const response = await fetch(`${API}/products/get`, {
                 method: 'GET',
@@ -76,42 +50,18 @@ export const ProductosRecetasAdmin = () => {
                 }
             })
             if (response.ok){
-// <<<<<<< HEAD
-//                 const data = await response.json();
-//                 setDataProductos(data);
-//             }
-//             else{
-//                 const data = await response.json();
-//                 console.error("Failed to fetch ingredient data:", data);
-//                 setErr(data.message || "Error al obtener datos de ingredientes.");
-//             }
-//         }
-//         catch (error) {
-//             console.error("Error fetching ingredient data:", error);
 
-        //         const data = await response.json()
-        //         console.log("Fetched seed data:", data)
-        //         setDataSemillas(data)
-        //     }
-        //     else{
-        //         const data = await response.json()
-        //         console.error("Failed to fetch seed data:", data)
-        //         setErr(data.message || "Error al obtener datos de semillas.")
-        //     }
-        // }
-        // catch (error) {
-        //     console.error("Error fetching seed data:", error)
-                const data = await response.json();
-                setDataProductos(data);
+                const data = await response.json()
+                setDataProductos(data)
             }
             else{
-                const data = await response.json();
-                console.error("Failed to fetch ingredient data:", data);
-                setErr(data.message || "Error al obtener datos de ingredientes.");
+                const data = await response.json()
+                console.error("Failed to fetch ingredient data:", data)
+                setErr(data.message || "Error al obtener datos de ingredientes.")
             }
         }
         catch (error) {
-            console.error("Error fetching ingredient data:", error);
+            console.error("Error fetching ingredient data:", error)
 
         }
     }
@@ -119,7 +69,7 @@ export const ProductosRecetasAdmin = () => {
 }, [])
 
     const handleNuevoProducto = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
             const response = await fetch(`${API}/products/create`, {
                 method: "POST",
@@ -129,17 +79,17 @@ export const ProductosRecetasAdmin = () => {
                     "X-CSRF-TOKEN": token
                 },
                 body: JSON.stringify(dataForm)
-            });
+            })
     
             const result = await response.json()
     
             if (response.status === 201) {
-                alert("Semilla creada exitosamente.");
-                setDataForm({Producto: ''});
-                window.location.reload();
+                alert("Semilla creada exitosamente.")
+                setDataForm({Producto: ''})
+                window.location.reload()
             } else {
-                setErr(result.error || "Error al crear el ingrediente.");
-                console.log(result);
+                setErr(result.error || "Error al crear el ingrediente.")
+                console.log(result)
             }
         } catch (e) {
             console.error(e)
@@ -158,7 +108,7 @@ export const ProductosRecetasAdmin = () => {
                 }
             })
             if (response.status === 200) {
-                setDataProductos(dataProductos.filter(ingrediente => ingrediente.IdProductosAlter !== id));
+                setDataProductos(dataProductos.filter(ingrediente => ingrediente.IdProductosAlter !== id))
             }
         } catch (error) {
             console.error('Error:', error)

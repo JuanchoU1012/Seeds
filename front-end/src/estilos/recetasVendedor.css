@@ -1,17 +1,31 @@
 .cardRecetasVendedor{
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 30px;
+}
+.taejetaRecetas{
+    display: grid;
     justify-content: center;
     -webkit-box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
     -moz-box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
     box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
-    width: 86%;
     background: #d9d9d9;
     border-radius: 10px;
+    width: 300px;
+    margin-right: 100px;
+    height: 35vh;
+    margin-bottom: 10%;
 }
-.verMasVendedor{
-margin-bottom: 10%;
-background: #8581814d;
-width: 152px;
+.verMasRecetaVendedor{
+    margin-bottom: 20%;
+    margin-top: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.nombreReceta{
+    font-size: 22px;
+    font-weight: 600;
 }
 
 @media (max-width: 800px) {
@@ -32,8 +46,18 @@ width: 152px;
             right: -60px;
         }
         .crudVendedorSemillas{
-            margin-left: 8%;
-            width: 95%;
+            width: 65%;
             display: block;
         }
+        .cardRecetasVendedor{
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .taejetaRecetas{
+            width: 120%;
+            height: 25vh;
+            margin-right: 15%;
+        }
+        .crud-video video{
+            margin-top: 8%;
+        } 
 }

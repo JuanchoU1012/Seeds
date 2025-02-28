@@ -16,9 +16,7 @@ export const AdminMain = () => {
     fetchData()
   }, [])
 
-  if (isLoading) {
-    return <div className="text-center mt-5">Loading...</div>
-  }
+
 
   if (!userData) {
     return <U401 />

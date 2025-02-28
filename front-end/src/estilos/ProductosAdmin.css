@@ -23,22 +23,16 @@
 }
 
 .actulizarSemillas{
-    background-color: #00AF00;
-    font-size: 25px;
-    border-radius: 15%;
-    position: relative;
-    top: 12px;
-    margin-left: 3%;
-    padding: 2px;
+    font-weight: 500;
+    color: #3a3f43;
+    text-decoration: inherit;
+
 }
 .eliminarSemillas{
-    background-color: rgb(180, 30, 30);
-    padding: 2px;
-    font-size: 25px;
-    border-radius: 15%;
-    position: relative;
-    top: 12px;
-    margin-left: 2%;
+    font-weight: 500;
+    color: #3a3f43;
+    text-decoration: inherit;
+
 }
 
 .crudSemillasAdmin{
