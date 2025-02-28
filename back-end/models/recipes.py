@@ -6,15 +6,14 @@ class Recipes:
         try:
             query = "SELECT * FROM vw_recetas"
             cursor.execute(query)
-            recipes = cursor.fetchall()
-            print(recipes[1])
+            recipes = cursor.fetchall() # Log the fetched recipes
             return recipes
         except Exception as e:
-            print(e)
+            print("Error fetching recipes:", e)  # Log any errors
             return {"success": False, "message": "Error al obtener recetas"}, 500
         finally:
-            cursor.close()
             conn.close()
+            cursor.close()
 
 
     def get_recipe(IdReceta):
@@ -64,7 +63,7 @@ class Recipes:
                 sql_creador = "INSERT INTO vendedores_has_recetas (Vendedores_IdVendedor, Recetas_IdReceta) VALUES (%s, %s)"
                 cursor.execute(sql_creador, (data['IdCreador'], recipe_id))
                 conn.commit()
-                
+
             return {"success": True, "message": "Receta creada correctamente"}, 201
         except Exception as e:
             conn.rollback()
