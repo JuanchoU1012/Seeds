@@ -14,7 +14,7 @@ const Nav = () => {
                         <NavLink to='/'>
                             <img src={logo} alt="Logo" className="imagenHeader" />
                         </NavLink>
-                        
+                        <NavLink className='link ' to='/InicioTienda'>Tienda</NavLink>
                         <NavLink className='link ' to='/cartilla'>Cartilla</NavLink>
                         <NavLink className='link ' to='/inicioSesion'>Ingresar</NavLink>
                         <NavLink className='linkRegistro' to='/registro'>Registro</NavLink>

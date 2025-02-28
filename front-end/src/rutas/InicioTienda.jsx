@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faMagnifyingGlass, faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import VermasTienda from "../components/vermasTienda.jsx";
 import Nav from '../components/navegacion.jsx';
 import '../estilos/MisSemillasVendedor.css';
 
@@ -11,6 +12,7 @@ const API = import.meta.env.VITE_REACT_APP_API;
 export const InicioTienda = () => {
 
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showVermasModal, setShowVermasModal] = useState(false)
 
     const [filteredInventario, setFilteredInventario] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -49,12 +51,15 @@ export const InicioTienda = () => {
         const filtered = filteredInventario.filter(item => item.NombreComun.toLowerCase().includes(value));
         setFilteredInventario(filtered);
     };
-
+    const handleVermas = (recipe) => {
+        setSelectedItem(recipe)
+        setShowVermasModal(true)
+    }
     console.log(filteredInventario, 'data');
     return (
         <div className="SemillasAdmin">
             {error && <div>{error}</div>}
-            <Nav/>
+            <Nav />
             {/* <div className="container"> */}
             <h1>Nuestros Cultivos Y Sus Semillas</h1>
             <div className="search-container">
@@ -75,7 +80,7 @@ export const InicioTienda = () => {
                                 <p className="card-price">${item.PrecioDeVenta} X {item.Unidad}</p>
                                 <div className="accionesInventario">
                                     <NavLink className='ver-mas'>
-                                        {/* <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleShowMas(item)} /> */}
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(item)} />
                                     </NavLink>
                                 </div>
                             </div>
@@ -85,6 +90,11 @@ export const InicioTienda = () => {
             ) : (
                 <p className="mensaje-vacio">No hay Items disponibles </p>
             )}
+            <VermasTienda
+                isOpen={showVermasModal}
+                onClose={() => setShowVermasModal(false)}
+                data={selectedItem}
+            />
         </div>
     );
 
