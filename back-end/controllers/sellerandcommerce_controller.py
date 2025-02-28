@@ -73,6 +73,90 @@ class SellerAndCommerceController:
     # URL relativa de la imagen
         image_url = f"/uploads/seeds/{filename}"
         return sellerandcommerce.update_seller_and_commerce(IdComercio, data, image_url)
+    
+    # Inventory
+    def get_seller_inventory(Usermail):
+        Inventory = sellerandcommerce.get_seller_inventory(Usermail)
+        print(Inventory, 'datainventario')
+        if not Inventory:
+            return False
+        inventory_images=[]
+        for item in Inventory:
+            print(item)
+            inventory_data = dict(item)
+            image_path = item['Ruta'] if item else None
+            inventory_data['Ruta'] = f"/static{image_path}" if image_path else None
+            inventory_images.append(inventory_data)
+        return prepare_for_json(inventory_images)
+        
+    
+    def create_seller_inventory(data):
+        if not data['image_url']:
+            return {"error": "No image file"}, 400
+        
+        if not allowed_file(data['image_url'].filename):
+            return {"error": "File type not allowed"}, 400
+        
+        data['image_url'].seek(0, os.SEEK_END)
+        file_length = data['image_url'].tell()
+        if file_length > MAX_FILE_SIZE:
+            return {"error": "File is too large"}, 400
+        data['image_url'].seek(0)
 
-    def delete_seller_and_commerce(IdComercio):
-        return sellerandcommerce.delete_seller_and_commerce(IdComercio)
+        # Guardar el archivo
+        filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
+        upload_folder = current_app.config['UPLOAD_FOLDER_INVENTORY']
+        os.makedirs(upload_folder, exist_ok=True)
+        file_path = os.path.join(upload_folder, filename)
+        data['image_url'].save(file_path)
+
+        image_url = f"/uploads/sellers/inventory/{filename}"
+        return sellerandcommerce.create_seller_inventory(data,image_url)
+    
+    def update_seller_inventory(IdInventario, data, Usermail):
+        if not data['image_url']:
+            return sellerandcommerce.update_seller_inventory(IdInventario, data, None)
+
+        if not allowed_file(data['image_url'].filename):
+            return {"error": "File type not allowed"}, 400
+
+        inventory = sellerandcommerce.get_seller_inventory(Usermail)
+        if isinstance(inventory, dict) and 'success' in inventory:
+            return inventory  # Handle error if inventory retrieval fails
+
+        if not inventory:
+            return {"error": "No inventory found for the user"}, 404
+
+        image = inventory[0]  # Get the first inventory item
+        if image:
+            file_path = os.path.join(current_app.root_path, 'static', image['Ruta'].lstrip('/'))
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        data['image_url'].seek(0, os.SEEK_END)
+        file_length = data['image_url'].tell()
+        if file_length > MAX_FILE_SIZE:
+            return {"error": "File is too large"}, 400
+        data['image_url'].seek(0)
+
+        # Save the new image file
+        filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
+        upload_folder = current_app.config['UPLOAD_FOLDER_INVENTORY']
+        os.makedirs(upload_folder, exist_ok=True)
+        file_path = os.path.join(upload_folder, filename)
+        data['image_url'].save(file_path)
+
+        image_url = f"/uploads/sellers/inventory/{filename}"
+        return sellerandcommerce.update_seller_inventory(IdInventario, data, image_url)
+    def get_seller_recipes(Usermail):
+        Recipes = sellerandcommerce.get_seller_recipes(Usermail)
+        print(Recipes, 'datarecetas')
+        if not Recipes:
+            return False
+        recipes_videos = []
+        for recipe in Recipes:
+            recipe_data = dict(recipe)
+            video_path = recipe['Ruta'] if recipe else None
+            recipe_data['videourl'] = f"/static{video_path}" if video_path else None
+            recipes_videos.append(recipe_data)
+        return prepare_for_json(recipes_videos)

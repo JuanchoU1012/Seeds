@@ -66,6 +66,18 @@
     cursor: pointer;
 }
 
+  
+
+  @media (max-width: 800px){
+    .card{
+      width: 85%;
+    }
+    .titulo-historias{
+      font-size: 32px;
+    }
+  }
+  
+
 /* Responsivo */
 @media (max-width: 1000px) {
     .crudSemillasAdmin {

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import MenuLateralAdmin from "../../components/sidebarAdmin";
+import MenuLateral from "../../components/sidebar";
 import NavAdmin from '../../components/navegacionAdmin';
 import RecipesModal from "../../components/RecipeModal";
 import VermasReceta from "../../components/vermasReceta";
@@ -32,6 +32,7 @@ export const RecetasVendedor = () => {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [dataForm, setDataForm] = useState({
+        IdCreador: "",
         Nombre: "",
         Descripcion: "",
         Semillas: [],
@@ -51,9 +52,10 @@ export const RecetasVendedor = () => {
         fetchData();
     }, []);
 
+    
     useEffect(() => {
         const fetchRecipes = async () => {
-            const response = await fetch(`${API}/recipes/get`, {
+            const response = await fetch(`${API}/vendedor/recipes/get`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -83,6 +85,18 @@ export const RecetasVendedor = () => {
                     'Accept': 'application/json'
                 }
             });
+            const comercioResponse = await fetch(`${API}/vendedores/miinfo`, {
+                method: "GET",
+                credentials: "include",
+                headers:{
+                    'Accept': "application/json",
+                    "X-CSRF-TOKEN": token
+                }
+            })
+            if (comercioResponse.status === 200) {
+                const comercioData = await comercioResponse.json();
+                setDataForm({ ...dataForm, IdCreador: comercioData[0].IdVendedor })
+            };
 
             if (seedsResponse.status === 200) {
                 const seedsData = await seedsResponse.json();
@@ -119,6 +133,7 @@ export const RecetasVendedor = () => {
     const handleNuevaReceta = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        formData.append("IdCreador", dataForm.IdCreador);
         formData.append('Nombre', dataForm.Nombre);
         formData.append('Descripcion', dataForm.Descripcion);
         dataForm.Semillas.forEach(Semilla => formData.append('IdSemilla', Semilla));
@@ -180,6 +195,7 @@ export const RecetasVendedor = () => {
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe);
         setDataForm({
+            IdCreador: recipe.IdCreador,
             Nombre: recipe.Nombre || "",
             Descripcion: recipe.Descripcion || "",
             Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
@@ -194,6 +210,7 @@ export const RecetasVendedor = () => {
     const handleEditarReceta = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        formData.append("IdCreador", dataForm.IdCreador);
         formData.append('Nombre', dataForm.Nombre);
         formData.append('Descripcion', dataForm.Descripcion);
         dataForm.Semillas.forEach(Semilla => formData.append('IdSemilla', Semilla));
@@ -239,7 +256,7 @@ export const RecetasVendedor = () => {
     return (
         <div className="RecetasAdmin">
             <NavAdmin />
-            <MenuLateralAdmin/>
+            <MenuLateral/>
             
                 <h1>Recetas</h1>
                 <div className="search-container">

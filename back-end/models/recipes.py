@@ -59,6 +59,12 @@ class Recipes:
                     query = "INSERT INTO recetas_multimedia (Ruta, Recetas_IdReceta) VALUES (%s, %s)"
                     cursor.execute(query, (videourl, recipe_id))
                     conn.commit()
+
+            if data['IdCreador']:
+                sql_creador = "INSERT INTO vendedores_has_recetas (Vendedores_IdVendedor, Recetas_IdReceta) VALUES (%s, %s)"
+                cursor.execute(sql_creador, (data['IdCreador'], recipe_id))
+                conn.commit()
+                
             return {"success": True, "message": "Receta creada correctamente"}, 201
         except Exception as e:
             conn.rollback()

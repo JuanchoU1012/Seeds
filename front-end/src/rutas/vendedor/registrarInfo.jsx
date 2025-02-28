@@ -153,6 +153,7 @@ console.log("user", userData);
   const handleUpdate = async (e) => {
     e.preventDefault();
 
+    try {
     const DataUpdate = new FormData();
     DataUpdate.append("Nombre", formData.Nombre);
     DataUpdate.append("Apellido", formData.Apellido);
@@ -163,7 +164,6 @@ console.log("user", userData);
     DataUpdate.append("Ciudad", formData.Ciudad);
     DataUpdate.append("Departamento", formData.Departamento);
     DataUpdate.append("image_url", formData.image_url);
-    try {
       const response = await fetch(`${API}/vendedores/info/update/${userData.IdAccesoUsuario}`, {
         method: "PUT",
         credentials: 'include',
@@ -221,11 +221,6 @@ console.log("user", userData);
         formDataToSend.append('image_url', formData.image_url);
       }else{
         alert("No se ha seleccionado una imagen");
-      }
-
-      console.log("Datos a enviar:");
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(key, value);
       }
 
       const response = await fetch(`${API}/vendedores/info`, {
@@ -288,8 +283,8 @@ if (!userData || userData.rol !== 2) {
             <input className="input" type="tel" name="Telefono" placeholder="Teléfono" onChange={handleChange} value={formData.Telefono} />
             <input className="input" type="Correo" name="Correo" placeholder= "Correo" value={formData.Correo} readOnly/> 
 
-            <h2>Datos de la Empresa</h2>
-            <input className="input" type="text" name="NombreComercio" placeholder="Empresa" onChange={handleChange} value={formData.NombreComercio} />
+            <h2>Datos de la Finca o Cultivo</h2>
+            <input className="input" type="text" name="NombreComercio" placeholder="Nombre de la Finca" onChange={handleChange} value={formData.NombreComercio} />
             <input className="input" type="text" name="Direccion" placeholder="Dirección" onChange={handleChange} value={formData.Direccion} />
 
             <Select
