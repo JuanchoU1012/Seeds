@@ -288,6 +288,8 @@ if (!userData || userData.rol !== 2) {
             <input className="input" type="tel" name="Telefono" placeholder="Teléfono" onChange={handleChange} value={formData.Telefono} />
             <input className="input" type="Correo" name="Correo" placeholder= "Correo" value={formData.Correo} readOnly/> 
 
+          <div className="form2">
+
             <h2>Datos de la Empresa</h2>
             <input className="input" type="text" name="NombreComercio" placeholder="Empresa" onChange={handleChange} value={formData.NombreComercio} />
             <input className="input" type="text" name="Direccion" placeholder="Dirección" onChange={handleChange} value={formData.Direccion} />
@@ -315,6 +317,7 @@ if (!userData || userData.rol !== 2) {
             <input type="file" name="image_url" accept="image/*" onChange={handleImageChange} />
             {preview && <div className="preview-container"><img src={preview} alt="Preview" width="200" /></div>}
             <button type="submit" className="btn">Registrar Información</button>
+              </div>
           </form>
         </div>
       </div>

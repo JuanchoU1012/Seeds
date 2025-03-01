@@ -10,6 +10,7 @@ import UserModal from '../../components/UserModal'
 import { getUserInfo } from '../../../helpers/getuserinfo'
 import { getTokenInfo } from '../../../helpers/getjwt'
 import { U401 } from '../../components/401'
+import { Loading } from "../../components/loading"
 
 
 const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
@@ -150,7 +151,7 @@ export const UsuariosAdmin = () => {
     }
     
     if (isLoading) {
-        return <div className="text-center mt-5">Loading...</div>
+        return <Loading/>
     }
 
     if (!userData || userData.rol !== 0) {

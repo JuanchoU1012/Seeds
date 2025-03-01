@@ -1,14 +1,4 @@
 
-  .cardMisProductos{
-    background: #d9d9d9;
-    width: 86%;
-    margin-bottom: 10%;
-    border-radius: 10px;
-    display: grid;
-    -webkit-box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
-    -moz-box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
-    box-shadow: 8px 7px 24px -12px rgba(66, 68, 90, 1);
-}
 .nombreMisProductos{
   font-weight: 600;
   font-size: 24px;
@@ -44,6 +34,10 @@
 }
 .botonEditarProductosAdmin{
   color: #fff;
+}
+.crud-img img{
+  width: 80%;
+
 }
 
 @media (max-width: 800px){

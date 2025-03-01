@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #e9ecef; /* Optional background color */
+    background-color: #e9ecef; 
 }
 
 .imagen {
@@ -17,7 +17,7 @@
     max-width: 1000px;
     border-radius: 10px;
     object-fit: cover;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
 }
 
 .form-container {
@@ -33,22 +33,22 @@
     background: white;
     /* padding: 30px; Increased padding for better spacing */
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Increased gap for better spacing */
+    gap: 20px; 
     width: 400px;
 }
 
 .input {
     width: 90%;
     max-width: 400px;
-    padding: 12px; /* Increased padding for better touch targets */
-    font-size: 16px; /* Increased font size for better readability */
+    padding: 12px; 
+    font-size: 16px; 
     border: 1px solid #ddd;
     border-radius: 6px;
     background: #f9f9f9;
@@ -81,7 +81,7 @@
     width: 90%;
     max-width: 400px;
     padding: 12px;
-    font-size: 16px; /* Increased font size for better readability */
+    font-size: 16px; 
     font-weight: bold;
     border: none;
     border-radius: 6px;

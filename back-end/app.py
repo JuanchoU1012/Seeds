@@ -27,7 +27,6 @@ JWT_SECRET_KEY = os.listdir()
 
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
-print(JWT_SECRET_KEY)
 app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 

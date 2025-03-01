@@ -13,6 +13,8 @@ import '../../estilos/recetasVendedor.css'
 import { getUserInfo } from '../../../helpers/getuserinfo'
 import { getTokenInfo } from '../../../helpers/getjwt'
 import { U401 } from '../../components/401'
+import { Loading } from "../../components/loading.jsx";
+
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass"
 
 const API = import.meta.env.VITE_REACT_APP_API
@@ -145,8 +147,8 @@ export const RecetasVendedor = () => {
             const result = await response.json()
 
             if (response.status === 201) {
-                alert("Receta creada con éxito")
-                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
+            //     alert("Receta creada con éxito")
+            //     setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
                 window.location.reload()
             } else {
                 alert("Error al crear la receta")
@@ -231,8 +233,7 @@ export const RecetasVendedor = () => {
     }
 
     if (isLoading) {
-        return <div className="text-center mt-5">Loading...</div>
-    }
+        return <div className="text-center mt-5"><Loading/></div>    }
 
     if (!userData || userData.rol !== 2) {
         return <U401 />
@@ -273,14 +274,14 @@ export const RecetasVendedor = () => {
                                         )}
                                     </td>
                                     <NavLink onClick={() => handleVermas(recipe)}><td className="verMasRecetaVendedor"> <FontAwesomeIcon icon={faMagnifyingGlass}  /></td></NavLink>
-                                    {/* <td className="accionesRecetas">
-                                        <NavLink>
+                                    <td className="accionesRecetas">
+                                        {/* <NavLink>
                                             <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
-                                        </NavLink>
+                                        </NavLink> */}
                                         <NavLink className='eliminarSemillas'>
                                             <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
                                         </NavLink>
-                                    </td> */}
+                                    </td>
                                 </tr>
                             ))}
                             </div>

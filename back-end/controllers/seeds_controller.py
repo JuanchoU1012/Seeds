@@ -33,7 +33,7 @@ class SeedsController():
         data['image_url'].seek(0)
 
         # Guardar el archivo
-        filename = f"{uuid.uuid4().hex}_{data['image_url'].filename}"
+        filename = f"{data['image_url'].filename}"
         upload_folder = current_app.config['UPLOAD_FOLDER_SEED']
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)

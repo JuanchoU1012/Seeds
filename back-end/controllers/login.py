@@ -13,7 +13,6 @@ def login(data):
         sql = "SELECT * FROM AccesoUsuarios WHERE Email = %s"
         cursor.execute(sql, (email,))
         user = cursor.fetchone()
-        print(user)
         if user and bcrypt.checkpw(password.encode('utf-8') , user['Password']):
             additionaldata = {
                 'rol': user['Rol'],

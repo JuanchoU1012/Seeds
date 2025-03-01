@@ -15,8 +15,6 @@ def allowed_file(filename):
 
 class RecipesController:
     def create_recipes(data):
-        print("data", data)
-
         if not data['videourl']:
             return Recipes.create_recipe(data, None)
         
@@ -31,7 +29,7 @@ class RecipesController:
         data['videourl'].seek(0)
 
         # Guardar el archivo
-        filename = f"{uuid.uuid4().hex}_{data['videourl'].filename}"
+        filename = f"{data['videourl'].filename}"
         upload_folder = current_app.config['UPLOAD_FOLDER_RECIPE']
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)

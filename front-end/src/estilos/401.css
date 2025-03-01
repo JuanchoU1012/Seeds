@@ -32,3 +32,13 @@
         width: 100%;
     }
 }
+
+.contenedorLoading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contenedorLoading img{
+    width: 15%;
+}
+
