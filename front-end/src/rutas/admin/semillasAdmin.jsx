@@ -181,6 +181,7 @@ const handleSearch = (e) => {
                     { ...semilla, ...dataForm } : semilla
                 ))
                 setShowEditarModal(false)
+                window.location.reload()
             }
         } catch (error) {
             console.error('Error:', error)

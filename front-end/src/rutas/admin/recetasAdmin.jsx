@@ -184,7 +184,7 @@ export const RecetasAdmin = () => {
             Descripcion: recipe.Descripcion || "",
             Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
             Ingredientes: recipe.IdIngredientes ? recipe.IdIngredientes.split(",").map(IdIngrediente => parseInt(IdIngrediente)) : [],
-            videoUrl: recipe.videoUrl ? `http://localhost:5000${recipe.videoUrl}` : null,
+            videoUrl: recipe.videourl ? `http://localhost:5000${recipe.videourl}` : null,
             Pasos: recipe.Pasos.split('|').map(paso => paso.split(': ')[1])
         })
         console.log('edit', recipe)
