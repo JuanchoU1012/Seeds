@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./RecipeList.css";
+import Nav from "../components/navegacion";
 
 const API = import.meta.env.VITE_REACT_APP_API;
 const ITEMS_PER_PAGE = 10;
@@ -33,16 +34,7 @@ export const InicioRecetas = () => {
 
   return (
     <div className="recipe-container">
-      <header className="recipe-header">
-        <h1 className="title">Las mejores recetas de cocina casera y fácil</h1>
-        <input type="text" className="search-bar" placeholder="Buscar recetas..." />
-      </header>
-      <nav className="recipe-nav">
-        <button className="nav-button">Inicio</button>
-        <button className="nav-button">Recetas de Carnaval</button>
-        <button className="nav-button">Recetas Sanas</button>
-        <button className="nav-button">Recetarios</button>
-      </nav>
+    <Nav/>
       <div className="recipe-grid">
         {currentRecipes.map((recipe) => (
           <div key={recipe.IdReceta} className="recipe-card">

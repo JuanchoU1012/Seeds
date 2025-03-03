@@ -16,7 +16,7 @@
     background-color: white;
     border-radius: 15px;
     padding: 20px;
-    width: 90%;
+    width: 100%;
     max-width: 750px; /* Hacer el modal más ancho */
     display: flex;
     flex-direction: column;
@@ -57,9 +57,9 @@
 }
 
 .image-container img {
-    width: 100%;
-    max-width: 250px; /* Imagen más grande */
-    height: auto;
+    width: 300px;    
+    max-width: 300px; /* Imagen más grande */
+    height: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }

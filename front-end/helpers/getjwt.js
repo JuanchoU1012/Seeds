@@ -1,17 +1,17 @@
-export const getTokenInfo = async () => {
+export const getTokenInfo = () => {
     try {
-        const tokenRow = document.cookie
-            .split(';')
-            .find(row => row.startsWith('csrf_access_token'));
+        const cookies = document.cookie.split('; '); // Separar cookies correctamente
+        const tokenRow = cookies.find(row => row.startsWith('csrf_access_token='));
 
         if (!tokenRow) {
-            console.error("CSRF token not found in cookies.");
-            return null; // or handle it as needed
+            console.warn("CSRF token not found in cookies.");
+            return null;
         }
 
-        const csrftoken = tokenRow.split('=')[1];
-        return csrftoken;
+        const csrftoken = tokenRow.split('=')[1]?.trim(); // Eliminar espacios en blanco
+        return csrftoken || null;
     } catch (error) {
-        console.error("Error al obtener los datos:", error);
+        console.error("Error al obtener los datos del CSRF token:", error);
+        return null;
     }
 };

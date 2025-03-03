@@ -18,7 +18,7 @@ import { ProductosRecetasAdmin } from './rutas/admin/productosrecetasAdmin'
 import {MisSemillasVendedor}  from './rutas/vendedor/MisSemillas'
 import {RecetasVendedor} from './rutas/vendedor/recetasVendedor'
 import {InicioRecetas} from './rutas/InicioRecetas'
-import ProductosVendedor from './rutas/vendedor/productosVendedor'
+
 
 
 
@@ -48,7 +48,6 @@ function App() {
         {/* Vendedor Paths */}
         <Route path="/recetasVendedor" element={<RecetasVendedor />} />
         <Route path="/misSemillasVendedor" element={<MisSemillasVendedor />} />
-        <Route path="/productosVendedor" element={<ProductosVendedor />} />
 
         
       </Routes>

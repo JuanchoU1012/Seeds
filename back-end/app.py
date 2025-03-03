@@ -1,3 +1,4 @@
+
 """
 This module sets up a Flask web application and connects to a MySQL database.
 
@@ -32,8 +33,9 @@ jwt = JWTManager(app)
 
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=60)
-app.config["JWT_COOKIE_SECURE"] = True
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
+app.config["JWT_COOKIE_SECURE"] = True  # Ensure HTTPS
+app.config["JWT_COOKIE_SAMESITE"] = "None"  # Allow cross-origin cookies
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
 
 app.config['UPLOAD_FOLDER_SEED'] = 'static/uploads/seeds'
 app.config['UPLOAD_FOLDER_RECIPE'] = 'static/uploads/recipes'
@@ -44,12 +46,16 @@ app.config['UPLOAD_FOLDER_INVENTORY'] = 'static/uploads/sellers/inventory'
 
 # Update CORS configuration
 CORS(app, resources={
-    r"/*": {  # Your React app's URL
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Added OPTIONS
+    r"/*": {
+        "origins": [
+            "https://saberesysabores-production.up.railway.app",
+            "http://localhost:5173",  # Reemplaza con el puerto de tu React app
+            "http://localhost:5000"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "X-CSRF-TOKEN"],
-        "supports_credentials": True  # Enable if you're using cookies/credentials
+        "supports_credentials": True  # ✅ Corregido
     }
-
 })
 
 
@@ -64,8 +70,8 @@ app.register_blueprint(SeedsRoutes)
 app.register_blueprint(RecipesRoutes)
 app.register_blueprint(SellersRoutes)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
 
 
 

@@ -33,13 +33,14 @@
     display: none;
 }
 
+
+
 /* --- Galería de Cards --- */
-.gallery-container {
+.gallery-containerv {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    padding: 20px;
     margin-top: 2%;
     margin-left: 10%;
 }

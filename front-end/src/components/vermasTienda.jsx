@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import '../estilos/vermasmodalItem.css';
-
+const API = import.meta.env.VITE_REACT_APP_API;
 const VermasTienda = ({ isOpen, onClose, data }) => {
     if (!isOpen) return null;
 
@@ -12,7 +12,7 @@ const VermasTienda = ({ isOpen, onClose, data }) => {
                     {/* Imagen más grande */}
                     <div className="image-container">
                         {data.Ruta ? (
-                            <img src={`http://localhost:5000${data.Ruta}`} alt="Preview" />
+                            <img src={`${API}/${data.Ruta}`} alt="Preview" />
                         ) : (
                             <p>No hay imagen disponible</p>
                         )}

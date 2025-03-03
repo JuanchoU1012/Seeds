@@ -8,7 +8,6 @@ import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../imagenes/Logo.png'
 
 
 

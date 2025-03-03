@@ -20,7 +20,7 @@ class Users:
             conn.commit()
             return {"success": True, "message": "Usuario creado correctamente"}, 201
         except Exception as e:
-            return {"success": False, "message": "Error al crear el usuario"}, 500
+            return {"success": False, "message": str(e)}, 500
         finally:
             cursor.close()
             conn.close()

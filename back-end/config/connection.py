@@ -1,10 +1,12 @@
+import os
 import mysql.connector as mysql
 
 db_config = {
-      "user": "root",
-      "password": "",## perra hpta cambiele esa clave de mierda att. mamian
-      "host": "localhost",
-      "database": "saberesysabores"
+      "host": os.environ.get("DB_HOST"),
+      "port": os.environ.get("DB_PORT"),
+      "user": os.environ.get("DB_USER"),
+      "password": os.environ.get("DB_PASSWORD"),## perra hpta cambiele esa clave de mierda att. mamian
+      "database": os.environ.get("DB_DATABASE")
 }
 
 def connection():

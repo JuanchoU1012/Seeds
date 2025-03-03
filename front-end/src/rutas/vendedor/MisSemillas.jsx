@@ -278,7 +278,7 @@ export const MisSemillasVendedor = () => {
             {error && <div>{error}</div>}
             <NavAdmin />
             <MenuLateral />
-            {/* <div className="container"> */}
+            
             <h1>Semillas En mi Inventario</h1>
             <div className="search-container">
                 <input className="buscarSemillasAdmin"
@@ -290,7 +290,7 @@ export const MisSemillasVendedor = () => {
             <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Semilla</button>
             <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoItemModal(true)}>Agrega una Semilla</button>
             {filteredInventario.length > 0 ? (
-                <div className="gallery-container">
+                <div className="gallery-containerv">
                     {filteredInventario.map((item) => (
                         <div key={item.IdInventario} className="card">
                             <img src={`${API}/${item.Ruta}`} alt={item.NombreComun} className="card-image" />
@@ -310,7 +310,7 @@ export const MisSemillasVendedor = () => {
             ) : (
                 <p className="mensaje-vacio">No hay Items disponibles </p>
             )}
-
+            
             {/* Modal de edición */}
             <NuevoItemModal
                 isOpen={showEditarModal}
@@ -319,7 +319,7 @@ export const MisSemillasVendedor = () => {
                 data={dataFormInv}
                 seedOptions={seedOptions}
                 setData={setDataFormInv}
-            />
+                />
 
             {/* Modal de creación */}
             <NuevoItemModal
@@ -329,7 +329,7 @@ export const MisSemillasVendedor = () => {
                 data={dataFormInv}
                 seedOptions={seedOptions}
                 setData={setDataFormInv}
-            />
+                />
 
             {/* New Modal */}
             <SeedModal
@@ -338,7 +338,7 @@ export const MisSemillasVendedor = () => {
                 onSubmit={handleNuevaSemilla}
                 data={dataForm}
                 setData={setDataForm}
-            />
+                />
 
         </div>
     );

@@ -24,6 +24,6 @@ class UserController:
             for item in items:
                 store_data = dict(item)
                 image_path = item['Ruta'] if item else None
-                store_data['Ruta'] = f"/static/{image_path}" if image_path else None
+                store_data['Ruta'] = f"/static{image_path}" if image_path else None
                 items_with_images.append(store_data)
         return prepare_for_json(items_with_images)
