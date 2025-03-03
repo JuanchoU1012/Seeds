@@ -18,12 +18,13 @@ const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, i
     if (data.videoUrl instanceof File) {
         setPreview(URL.createObjectURL(data.videoUrl));
     } else if (typeof data.videoUrl === 'string') {
-        setPreview(`http://localhost:5000${data.videoUrl}`);    
+        setPreview(`${data.videoUrl}`);    
     } else {
         setPreview(null);
     }
-}, [data.videoUrl]);
+}, [data.videoUrl, data.Pasos]); 
 
+console.log(data, 'modaldat')
 
     // console.log('modaldata',data)
     if (!isOpen) return null;
