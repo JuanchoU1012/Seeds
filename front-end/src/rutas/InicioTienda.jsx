@@ -1,33 +1,101 @@
-import React from "react";
-import Nav from '../components/navegacion'
-import MenuLateral from '../components/sidebarAdmin'
-import Galeria from '../components/galeria'
+import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faMagnifyingGlass, faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import VermasTienda from "../components/vermasTienda.jsx";
+import Nav from '../components/navegacion.jsx';
+import '../estilos/MisSemillasVendedor.css';
 
-const imagenesTienda = [
-    { url: 'https://encolombia.com/wp-content/uploads/2021/10/Cultivo-de-Calabaza-330x205.jpg', titulo: 'AUYAMA' },
-    { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs3A1bJmZKyXZGnpj1fWNh9JQb9JGaAbZunw&s', titulo: 'ARVEJA ' },
-    { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeOZZZGT3MkrCVm-YOr0kcr3HiYR1RxZHagw&s', titulo: ' AMARANTO' },
-    { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLAOeTFUo4uGtmE6J6gaykH4qCkYgIJ2bySXLcyNxhXifpC0LQ8yLb1i9bpbEJODccmFQ&usqp=CAU', titulo: ' ARRACACHA' },
-    { url: 'https://picsum.photos/200/308', titulo: ' ' },
-    { url: 'https://picsum.photos/200/309', titulo: ' ' },
-    { url: 'https://picsum.photos/200/302', titulo: ' ' },
-    { url: 'https://picsum.photos/200/302', titulo: ' ' },
-    { url: 'https://picsum.photos/200/300', titulo: ' ' },
-    { url: 'https://picsum.photos/200/301', titulo: ' ' },
-    { url: 'https://picsum.photos/200/302', titulo: ' ' },
-    { url: 'https://picsum.photos/200/302', titulo: ' ' },
-  ];
+const API = import.meta.env.VITE_REACT_APP_API;
 
 export const InicioTienda = () => {
-    return (
-        <div className="TiendaPrincipio">
-            <Nav />
-            <div className="contenedorGaleria">
-                <MenuLateral/>
-                <Galeria imagenes={imagenesTienda} />
-            </div>
-        </div>
-    )
-}
 
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [showVermasModal, setShowVermasModal] = useState(false)
+
+    const [filteredInventario, setFilteredInventario] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const fetchOptions = async () => {
+            try {
+                const response = await fetch(`${API}/tienda`, {
+                    method: 'GET',
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                })
+
+                const data = await response.json();
+                if (response.ok && data.length > 0) {
+                    setFilteredInventario(data);
+                }
+                else {
+                    console.error("Failed to fetch inventory data:", data);
+                    setError(data.message || "Error al obtener datos del inventario.");
+                }
+            }
+            catch (error) {
+                console.error("Error fetching seed data:", error);
+            }
+        }
+        fetchOptions();
+    }, []);
+
+    const handleSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchTerm(value);
+        const filtered = filteredInventario.filter(item => item.NombreComun.toLowerCase().includes(value));
+        setFilteredInventario(filtered);
+    };
+    const handleVermas = (recipe) => {
+        setSelectedItem(recipe)
+        setShowVermasModal(true)
+    }
+    console.log(filteredInventario, 'data');
+    return (
+        <div className="SemillasAdmin">
+            {error && <div>{error}</div>}
+            <Nav />
+            {/* <div className="container"> */}
+            <h1>Nuestros Cultivos Y Sus Semillas</h1>
+            <div className="search-container">
+                <input className="buscarSemillasAdmin"
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearch} />
+            </div>
+            {filteredInventario.length > 0 ? (
+                <div className="gallery-container">
+                    {filteredInventario.map((item) => (
+                        <div key={item.IdInventario} className="card">
+                            <img src={`${API}/${item.Ruta}`} alt={item.NombreComun} className="card-image" />
+                            {console.log(API, item.Ruta, 'ruta')}
+                            <div className="card-content">
+                                <h3 className="card-title">{item.NombreComun}</h3>
+                                <p className="card-price">${item.PrecioDeVenta} X {item.Unidad}</p>
+                                <div className="accionesInventario">
+                                    <NavLink className='ver-mas'>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(item)} />
+                                    </NavLink>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p className="mensaje-vacio">No hay Items disponibles </p>
+            )}
+            <VermasTienda
+                isOpen={showVermasModal}
+                onClose={() => setShowVermasModal(false)}
+                data={selectedItem}
+            />
+        </div>
+    );
+
+};

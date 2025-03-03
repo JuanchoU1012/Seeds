@@ -202,8 +202,8 @@ const handleSearch = (e) => {
             <MenuLateralAdmin />
             {/* <div className="container"> */}
             <h1>Semillas</h1>
-            <div className="buscarSemillasAdmin">
-                <input className="input-search" 
+            <div className="inpu-container">
+                <input className="buscarSemillasAdmin" 
                 type="text" 
                 placeholder="Buscar..." 
                 value={searchTerm} 

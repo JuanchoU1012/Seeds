@@ -55,11 +55,10 @@ class sellerandcommerce:
             cursor.close()
             conn.close()
 
-
     def get_seller_and_commerce(Usermail):
         try:
             conn, cursor = connection()
-            sql = """SELECT c.IdComercio, c.NombreComercio, v.Nombre, v.Apellidos, v.Telefono, a.rol, a.Email, cm.Ruta, d.Direccion, m.NombreMun, dep.NombreDep
+            sql = """SELECT v.IdVendedor,c.IdComercio, c.NombreComercio, v.Nombre, v.Apellidos, v.Telefono, a.rol, a.Email, cm.Ruta, d.Direccion, m.NombreMun, dep.NombreDep
             FROM comercios c
             LEFT JOIN comercios_multimedia cm ON c.IdComercio = cm.Comercios_IdComercio
             RIGHT JOIN vendedores v ON c.Vendedores_IdVendedor = v.IdVendedor
@@ -130,3 +129,116 @@ class sellerandcommerce:
             conn.close()
 
             # INVENTARIO Y RECETAS DEL VENDEDOR
+    
+    # Inventory
+    def get_seller_inventory(Usermail):
+        try:
+            conn, cursor = connection()
+            sql = """SELECT i.IdInventario, s.IdSemilla, s.NombreComun, i.PrecioDeVenta, u.IdUnidad, u.Unidad, im.Ruta, c.IdComercio
+                    FROM Inventario i
+                    INNER JOIN semillas s ON i.Semillas_IdSemilla = s.IdSemilla
+                    LEFT JOIN unidadesdeventa u ON i.UnidadesDeVenta_IdUnidad = u.IdUnidad
+                    LEFT JOIN inventario_multimedia im ON i.IdInventario = im.Inventario_IdInventario
+                    INNER JOIN comercios c ON i.Comercios_IdComercio = c.IdComercio
+                    INNER JOIN vendedores v ON c.Vendedores_IdVendedor = v.IdVendedor
+                    WHERE v.AccesoUsuarios_Email = %s"""
+            cursor.execute(sql, (Usermail,))
+            result = cursor.fetchall()
+            if result:
+                return result
+            else:
+                return {"success": False, "message": "Inventario no encontrado"}, 404
+        except Exception as e:
+            return {"success": False, "message": str(e)}, 500
+        finally:
+            cursor.close()
+            conn.close()
+
+    def create_seller_inventory(data, image_url):
+        try:
+            conn, cursor = connection()
+            sql_inventory = """INSERT INTO inventario (Semillas_IdSemilla, UnidadesDeVenta_IdUnidad, 
+            PrecioDeVenta, Ruta, Comercios_IdComercio) values (%s, %s, %s, %s, %s)"""
+            values = (data['IdSemilla'], data['UnidadDeVenta'], data['PrecioDeVenta'], image_url, data['IdComercio'])
+            cursor.execute(sql_inventory, values)
+
+            if image_url:
+                sql_image = 'INSERT INTO inventario_multimedia (Ruta, Inventario_IdInventario) values (%s, %s)'
+                values = (image_url, cursor.lastrowid)
+                cursor.execute(sql_image, values)
+            conn.commit()
+            return {'message': 'Inventario creado correctamente'}, 201
+        except Exception as e:
+            return {"success": False, "message":str(e)}, 500
+        finally:
+            conn.close()
+            cursor.close()
+    
+    def update_seller_inventory(IdInventario, data, image_url):
+        try:
+            conn, cursor = connection()
+            sql_inventory = """UPDATE inventario SET Semillas_IdSemilla = %s, UnidadesDeVenta_IdUnidad = %s, PrecioDeVenta = %s WHERE IdInventario = %s AND Comercios_IdComercio = %s"""
+            values = (data['IdSemilla'], data['UnidadDeVenta'], data['PrecioDeVenta'], IdInventario, data['IdComercio'])
+            cursor.execute(sql_inventory, values)
+
+            if image_url:
+                sql_img = """UPDATE inventario_multimedia SET Ruta = %s WHERE Inventario_IdInventario = %s"""
+                values = (image_url, IdInventario)
+                cursor.execute(sql_img, values)
+            conn.commit()
+            return {'message': 'Inventario actualizado correctamente'}, 200
+        except Exception as e:
+            return {"success": False, "message":str(e)}, 500
+        finally:
+            conn.close()
+            cursor.close()
+
+    def get_seller_recipes(Usermail):
+        try:
+            conn, cursor = connection()
+            sql_recipe = """SELECT 
+        `r`.`IdReceta` AS `IdReceta`,
+        `r`.`Nombre` AS `Nombre`,
+        `r`.`Descripcion` AS `Descripcion`,
+        COALESCE(GROUP_CONCAT(DISTINCT CONCAT(`pr`.`NumeroPaso`,
+                            ': ',
+                            `pr`.`Instruccion`)
+                    ORDER BY `pr`.`NumeroPaso` ASC
+                    SEPARATOR ' | '),
+                'No se encontraron pasos') AS `Pasos`,
+        COALESCE(GROUP_CONCAT(DISTINCT `s`.`IdSemilla`
+                    SEPARATOR ', ')) AS `IdSemillas`,
+        COALESCE(GROUP_CONCAT(DISTINCT CONCAT(`rs`.`Cantidad`,
+                            ' de ',
+                            `s`.`NombreComun`)
+                    SEPARATOR ', '),
+                'No se encontraron semillas') AS `Semillasusadas`,
+        COALESCE(GROUP_CONCAT(DISTINCT `p`.`IdProductosAlter`
+                    SEPARATOR ', ')) AS `IdIngredientes`,
+        COALESCE(GROUP_CONCAT(DISTINCT CONCAT(`rp`.`Cantidad`, ' de ', `p`.`Producto`)
+                    SEPARATOR ', '),
+                'No se encontraron productos adicionales') AS `ProductosAdicionales`,
+        `rm`.`Ruta` AS `Ruta`
+    FROM
+        `recetas` `r`
+        LEFT JOIN `recetas_has_semillas` `rs` ON `r`.`IdReceta` = `rs`.`Recetas_IdReceta`
+        LEFT JOIN `semillas` `s` ON `rs`.`Semillas_IdSemilla` = `s`.`IdSemilla`
+        LEFT JOIN `recetas_has_productosalterrecetas` `rp` ON `r`.`IdReceta` = `rp`.`Recetas_IdReceta`
+        LEFT JOIN `productosalterrecetas` `p` ON `rp`.`ProductosAlterRecetas_IdProductosAlter` = `p`.`IdProductosAlter`
+        LEFT JOIN `recetas_multimedia` `rm` ON `r`.`IdReceta` = `rm`.`Recetas_IdReceta`
+        LEFT JOIN `pasosrecetas` `pr` ON `r`.`IdReceta` = `pr`.`Recetas_IdReceta`
+        INNER JOIN `vendedores_has_recetas` `vr` ON `r`.`IdReceta` = `vr`.`Recetas_IdReceta`
+        INNER JOIN `vendedores` `v` ON `v`.`IdVendedor` = `vr`.`Vendedores_IdVendedor`
+        WHERE `v`.`AccesoUsuarios_Email` = %s
+    GROUP BY `rm`.`Ruta` , `r`.`IdReceta` , `r`.`Nombre` , `r`.`Descripcion`
+    """
+            cursor.execute(sql_recipe, (Usermail,))
+            recipes = cursor.fetchall()
+            if recipes:
+                return recipes
+            else:
+                return {"success": False, "message": "No se encontraron recetas"}, 404
+        except Exception as e:
+            return {"success": False, "message":str(e)}, 500
+        finally:
+            cursor.close()

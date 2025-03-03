@@ -14,6 +14,7 @@ def get_recipes():
 @jwt_required()
 def create_recipes():
     data = {
+        'IdCreador': request.form.get('IdCreador'),
         'Nombre': request.form.get('Nombre'),
         'Descripcion': request.form.get('Descripcion'),
         'Semillas':  request.form.getlist('IdSemilla'),
@@ -28,6 +29,7 @@ def create_recipes():
 @jwt_required()
 def update_recipes(IdReceta):
     data = {
+        'IdCreador': request.form.get('IdCreador'),
         'Nombre': request.form.get('Nombre'),
         'Descripcion': request.form.get('Descripcion'),
         'Semillas':  request.form.getlist('IdSemilla'),

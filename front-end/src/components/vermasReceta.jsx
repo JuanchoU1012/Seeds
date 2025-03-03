@@ -79,7 +79,7 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
     const pasos = data.Pasos ? data.Pasos.split('|').map(paso => paso.split(": ")[1] || paso) : [];
 
     return (
-        <div className="modalReceta" onClick={onClose}>
+        <div className="modalvermas" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <header>

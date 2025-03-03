@@ -46,3 +46,16 @@ class Users:
             return {"success": True, "message": "Usuario eliminado correctamente"}, 200
         except Exception as e:
             return {"success": False}, 500
+        
+    def get_store():
+        conn, cursor = connection()
+        try:
+            query_store = """SELECT * FROM vw_tienda"""
+            cursor.execute(query_store)
+            result = cursor.fetchall()
+            return result
+        except Exception as e:
+            return {"success": False}, 500
+        finally:
+            cursor.close()
+            conn.close()

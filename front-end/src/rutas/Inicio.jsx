@@ -5,8 +5,12 @@ import Banner from '../components/banner'
 import logo from '../imagenes/logo.png'
 import PiePagina from '../components/piePagina'
 import Vision from '../imagenes/vision.png'
+import ImageSlider from "../components/swiper";
+
+
 
 export const Inicio = () => {
+
   return (
     <div className="principio">
       <Nav/>
@@ -20,6 +24,7 @@ export const Inicio = () => {
           </div>
         </div> */}
         <Banner/>
+        <ImageSlider/>
         <div className="primerTexto">
             <div className="textoInicio">
               <p className="parrafoInicio">

@@ -35,8 +35,8 @@ const MenuLateral = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="linkVendedorSidebar" to="/productosVendedor">
-                            <FontAwesomeIcon className="iconosSidebar" icon={faStore} style={{ color: "#71277a" }} />Productos
+                        <NavLink className="linkVendedorSidebar" to="/Iniciotienda">
+                            <FontAwesomeIcon className="iconosSidebar" icon={faStore} style={{ color: "#71277a" }} />Tienda
                         </NavLink>
                     </li>
                 </ul>

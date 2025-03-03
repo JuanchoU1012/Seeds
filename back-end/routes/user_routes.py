@@ -43,3 +43,7 @@ def logout():
         response = jsonify({"message": "JWT cleaned"})
         unset_jwt_cookies(response)
         return response
+
+@UserRoutes.route("/tienda", methods=["GET"])
+def get_store():
+    return jsonify(UserController.get_store())

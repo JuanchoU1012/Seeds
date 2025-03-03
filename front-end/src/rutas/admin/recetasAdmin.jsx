@@ -283,7 +283,7 @@ export const RecetasAdmin = () => {
                                     </td>
                                     <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
                                     <td className="accionesRecetas">
-                                        <NavLink>
+                                        <NavLink className='actualizarSemillas'>
                                             <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
                                         </NavLink>
                                         <NavLink className='eliminarSemillas'>

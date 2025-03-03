@@ -22,13 +22,13 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modalSemillasAdmin" onClick={onClose}>
+        <div className="modalSemillas" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
                 <h2>{data.IdSemilla ? 'Editar Semilla' : 'Nueva Semilla'}</h2>
-                <form onSubmit={onSubmit} className="formularioEditarProductosAdmin">
+                <form onSubmit={onSubmit} className="modal-form">
                     <input
-                        className="inputProductoEditarAdmin"
+                        className="input-modal"
                         type="text"
                         name="NombreCientSemilla"
                         value={data.NombreCientSemilla}
@@ -36,7 +36,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
                         placeholder="Nombre Científico"
                     />
                     <input
-                        className="inputProductoEditarAdmin"
+                        className="input-modal"
                         type="text"
                         name="NombreComun"
                         value={data.NombreComun}
@@ -44,7 +44,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
                         placeholder="Nombre Común"
                     />
                     <input
-                        className="inputProductoEditarAdmin"
+                        className="input-modal"
                         type="text"
                         name="Descripcion"
                         value={data.Descripcion}
@@ -54,7 +54,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
     
                     <input
                         onChange={handleImageChange}
-                        className="inputProductoEditarAdmin"
+                        className="input-modal"
                         type="file"
                         name="image_url"
                         accept="image/*"
@@ -66,7 +66,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
                     )}
 
 
-                    <button type="submit" className="botonEditarProductosAdmin">
+                    <button type="submit" className="btn-modal">
                         {data.IdSemilla ? 'Guardar Cambios' : 'Crear Semilla'}
                     </button>
                 </form>

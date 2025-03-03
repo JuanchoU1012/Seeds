@@ -1,128 +1,106 @@
-.imagenInicio{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 22%;
-  
+.imagenInicio {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5%; /* Adjusted for consistent spacing */
 }
+
 .imagenSuperior {
     height: 35vh;
     width: 100%;
     margin-top: 5%;
     border-radius: 15px;
     position: relative;
-    right: -13%;
     box-shadow: 10px 9px 5px 0px rgba(162, 162, 162, 0.58);
-    margin-bottom: 10%;
-  }
-  .cuadritoTexto{
+    margin-bottom: 5%; /* Adjusted for consistent spacing */
+}
+
+.cuadritoTexto {
     width: 30%;
     position: relative;
-    right: 65%;
     height: 35vh;
     background-color: #ffffff;
     border-radius: 18px;
-    opacity: 0.5;
-    margin-top: 5%;
+    opacity: 0.8; /* Increased opacity for better visibility */
     display: flex;
     justify-content: center;
     align-items: center;
     color: black;
-    font-size: 60px;
-    margin-bottom: 10%;
     font-size: 40px;
-  }
+}
 
-
-.primerTexto{
+.primerTexto {
     display: flex;
     justify-content: space-around;
-    align-items: self-start;
-    margin-bottom: -18%;
+    align-items: flex-start; /* Changed to flex-start for better alignment */
+    margin-bottom: 5%; /* Adjusted for consistent spacing */
 }
-.textoInicio{
+
+.textoInicio {
     display: flex;
     justify-content: left;
     align-items: center;
-    position: relative;
-    bottom: 260px;
     width: 90%;
     text-align: left;
 }
-.quienesSomos{
+
+.quienesSomos {
     color: #71277a;
+    font-size: 2em; /* Increased font size for prominence */
 }
-.imagenPrimerTexto{
-    display: flex;
-    position: relative;
-    width: 18%;
-    height: 18%;
-    bottom: 46vh;
-}
-.primerTextoImagen{
-    position: relative;
-    left: 13%;
-}
-.misionVision{
+
+.misionVision {
     display: flex;
     justify-content: space-around;
 }
-.parrafoVisionMision{
+
+.parrafoVisionMision {
     width: 36%;
     text-align: left;
     border-radius: 12px;
     padding: 17px;
-    height: 20%;
     box-shadow: 3px 5px 15px 5px #797979;
 }
-.tituloInicioPaginaMV{
+
+.tituloInicioPaginaMV {
     text-align: center;
     color: #71277a;
-}
-.imagenVision{
-    width: 38.8%;
-    height: 38.8%;
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2%;
-}
-.imagenMision{
-    width: 40%;
-    height: 40%;
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2%;
+    font-size: 2em; /* Increased font size for prominence */
 }
 
-@media (max-width: 640px){
-    .imagenSuperior{
+.imagenVision, .imagenMision {
+    width: 40%; /* Adjusted for better responsiveness */
+    height: auto; /* Set to auto for better aspect ratio */
+    display: flex;
+    margin: 0 auto 2%; /* Centered with margin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .imagenSuperior {
         height: 16vh;
         width: 90%;
-        margin-bottom: 20%;
     }
-    .cuadritoTexto{
+    .cuadritoTexto {
         height: 16vh;
         width: 27%;
         font-size: 20px;
     }
-    .parrafoInicio{
-        height: 65vh;
+    .parrafoInicio {
+        height: auto; /* Adjusted for better responsiveness */
         margin-top: 30%;
         font-size: 13px;
     }
-    .misionVision{
+    .misionVision {
         display: grid;
     }
-    .parrafoVisionMision{
+    .parrafoVisionMision {
         width: 75%;
         margin-left: 9%;
-        height: 44vh;
+        height: auto; /* Adjusted for better responsiveness */
         font-size: 10px;
     }
-    .tituloInicioPaginaMV{
+    .tituloInicioPaginaMV {
         font-size: 25px;
     }
 }
-
