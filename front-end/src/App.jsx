@@ -42,7 +42,7 @@ function App() {
         {/* Admin Paths */}
         <Route path="/recetasAdmin" element={<RecetasAdmin />} />
         <Route path="/usuariosAdmin" element={<UsuariosAdmin />} />
-        <Route path="/productosAdmin" element={<ProductosRecetasAdmin />} />
+        <Route path="/ingredientesAdmin" element={<ProductosRecetasAdmin />} />
         <Route path='/semillasAdmin' element= {<SemillasAdmin/>}/>
         
         {/* Vendedor Paths */}

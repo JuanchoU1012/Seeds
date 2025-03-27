@@ -48,7 +48,7 @@ const NuevoItemModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions 
         <div className="modalSemillas" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
-                <h2>{'Agrega Una Nueva Semilla a tu Inventario'}</h2>
+                <h2>{data.IdSemilla ? 'Edita Tu Semilla' : 'Agrega Una Nueva Semilla a tu Inventario'}</h2>
                 <form onSubmit={onSubmit} className="modal-form">
                     <Select
                         isClearable={true}
@@ -95,8 +95,8 @@ const NuevoItemModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions 
                     )}
 
 
-                    <button type="submit" className="botonEditarProductosAdmin">
-                        {'Guardar Semilla'}
+                    <button type="submit" className="btn-modal">
+                        {data.IdSemilla ? 'Confimar Cambios' : 'Agregar Semilla'}
                     </button>
                 </form>
             </div>

@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../estilos/vermasmodal.css';
+import ModalSuccessError from './ModalSuccessError';
 
+const API = import.meta.env.VITE_REACT_APP_API
 const VermasReceta = ({ isOpen, onClose, data }) => {
     if (!isOpen) return null;
 
@@ -15,6 +17,11 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
     const [ingredientes, setIngredientes] = useState([]);
     const [cantidadSemillas, setCantidadSemillas] = useState({});
     const [cantidadIngredientes, setCantidadIngredientes] = useState({});
+    const [modal, setModal] = useState({
+        isOpen: false,
+        message: '',
+        type: ''
+    });
 
     useEffect(() => {
         if (!data.Semillasusadas || !data.ProductosAdicionales) return;
@@ -57,22 +64,31 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
         });
 
         try {
-            const response = await fetch('http://localhost:5000/recipes/cantidades', {
+            const response = await fetch(`${API}/recipes/cantidades`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ actualizaciones })
             });
 
             if (!response.ok) {
-                throw new Error('Error en la actualización');
+                setModal({
+                    isOpen: 'true',
+                    message: 'Error al actualizar las cantidades',
+                    type: 'error'
+                });
             }
-            console.log('Actualización exitosa:', actualizaciones);
-            alert('Cantidades actualizadas correctamente');
-            window.location.reload();
-
+            setModal({
+                isOpen: 'true',
+                message: 'Cantidad actualizada correctamente',
+                type: 'success'
+            });
         } catch (error) {
             console.error('Error al actualizar la cantidad:', error);
-            alert('Error al actualizar las cantidades');
+            setModal({
+                isOpen: 'true',
+                message: 'Error al actualizar la cantidad',
+                type: 'error'
+            });
         }
     };
 
@@ -94,7 +110,7 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
                     <h3>Semillas Usadas</h3>
                     {semillas.length > 0 ? semillas.map((semilla) => (
                         <div key={semilla.IdSemilla}> 
-                             <label>{semilla.Semilla}</label>
+                             <label>{semilla.Semilla} </label>
                             <input
                                 className='input-modal-cantidad'
                                 type="text"
@@ -108,7 +124,7 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
                     <h3>Ingredientes Usados</h3>
                     {ingredientes.length > 0 ? ingredientes.map((ingrediente) => (
                         <div key={ingrediente.IdIngrediente}>
-                            <label>{ingrediente.Ingrediente}</label>
+                            <label>{ingrediente.Ingrediente} </label>
                             <input
                                 className='input-modal-cantidad'
                                 type="text"
@@ -130,14 +146,20 @@ const VermasReceta = ({ isOpen, onClose, data }) => {
                     <h3>Video</h3>
                     {data.videourl ? (
                         <div className="preview-container">
-                            <video src={`http://localhost:5000${data.videourl}`} alt="Preview" width="200" controls />
+                            <video src={`${data.videourl}`} alt="Preview" width="200" controls />
                         </div>
                     ) : (
                         <p>No hay video disponible</p>
                     )}
                 </section>
-                <button className="guardar-cambios" onClick={guardarCambios}>Guardar Cambios</button>
+                <button className="guardar-cambios" onClick={guardarCambios}>Guardar Cantidades</button>
             </div>
+            <ModalSuccessError
+            isOpen={modal.isOpen}
+            message={modal.message}
+            type={modal.type}
+            onClose={() => setModal({ isOpen: false })}
+            />
         </div>
     );
 };

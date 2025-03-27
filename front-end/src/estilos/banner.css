@@ -12,7 +12,7 @@
     overflow: hidden;
     box-shadow: 10px 10px 5px 0px rgba(189, 189, 189, 1);
     margin-top: 5%;
-    margin-bottom: 25%;
+    margin-bottom: 5%;
     width: 80%;
 }
 
@@ -118,6 +118,6 @@
     }
 
     .banner-button-right {
-        left: 50px;
+        left: 10px;
     }
 }

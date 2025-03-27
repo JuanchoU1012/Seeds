@@ -25,7 +25,7 @@ const Banner = () => {
         <div className='banner-section right'>
           <div className='overlay'>
             <div className='banner-content right-content'>
-              <p className='banner-text'>Conoce nuestras historias</p>
+              <p className='banner-text'>Conoce nuestras semillas y sus historias</p>
               <Link to='/historias'>
                 <button className='banner-button-right'>Conócelas</button>
               </Link>

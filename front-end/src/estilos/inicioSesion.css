@@ -1,31 +1,63 @@
-.contenedorLogin{
+.contenedorLogin {
     width: 100%;
     height: 100vh;
     display: flex;
     background-color: #c2c2c299;
 }
-.contenedorImagenLogin{
+
+/* 📌 Imagen y título */
+.contenedorImagenLogin {
     width: 50%;
     height: 90vh;
     margin-top: 35px;
     margin-left: 45px;
     border-radius: 12px;
     display: flex;
+    position: relative;
 }
-.imagenLogin{
+
+.imagenLogin {
     width: 100%;
     height: 90vh;
     border-radius: 12px;
 }
-.contenedorFormulario{
+
+.tituloImagenLogin {
+    position: absolute;
+    z-index: 100;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 65px;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    top: 39%;
+}
+
+.logosena{
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    margin-top: 35%;
+    margin-left: 45%;
+}
+
+/* 📌 Formulario */
+.contenedorFormulario {
     width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
 }
-.inputLogin{
+
+/* 📌 Inputs */
+.inputLogin {
     width: 95%;
-    height: 30px;
+    height: 40px;
     margin-bottom: 25px;
     border: none;
     border-radius: 8px;
@@ -35,63 +67,121 @@
     color: #3a3f43;
 }
 
-.botonesSesion{
-    margin-top: 42px;
-    margin-bottom: 12px;
+/* 📌 Botones */
+.botonesSesion {
+    margin-top: 20px;
     width: 45%;
-    height: 55px;
+    height: 50px;
     background-color: #fff;
-    margin-left: 5%;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-.botones:hover{
-    background-color: #acacac;
 
+.botonesSesion:hover {
+    background-color: #acacac;
 }
-.botonVolverInicio{
+
+.botonVolverInicio {
     margin-right: 17px;
     margin-left: 17px;
 }
-.tituloImagenLogin{
-    z-index: 100;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 65px;
-    margin-left: -100%;
-    margin-top: 18%;
-}
-.iconosLogin{
-    position: relative;
-    top: 38px;
-    right: 46%;
-    font: 32%;
-}
 
-.cuenta{
+/* 📌 Estilos para enlaces */
+.cuenta {
     color: #3a3f43;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
 }
 
-.error{
-    color: #c63f3f;
-    border: solid 1px #c63f3f;
-    padding: 11px;
-    border-radius: 5px;
-    width: 101%;
+.tituloInicio{
+    color: #ffffff;
+}
+/* 📌 RESPONSIVE DESIGN */
+
+/* 🔹 Ajustes para pantallas menores a 1024px */
+@media (max-width: 1024px) {
+    .contenedorImagenLogin {
+        width: 40%;
+    }
+
+    .contenedorFormulario {
+        width: 60%;
+    }
+
+    .tituloImagenLogin {
+        font-size: 50px;
+        top: 30%;
+    }
 }
 
-@media (max-width: 800px){
-    .contenedorImagenLogin{
+/* 🔹 Ajustes para pantallas menores a 800px */
+@media (max-width: 800px) {
+    .contenedorLogin {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contenedorImagenLogin {
         display: none;
     }
-    .contenedorFormulario{
-        width: 100%;
+
+    .contenedorFormulario {
+        width: 90%;
+        min-height: 100vh;
     }
+
+    .tituloImagenLogin {
+        position: static;
+        font-size: 40px;
+        color: #3a3f43;
+        text-align: center;
+        padding: 20px;
+    }
+
     .inputLogin {
-        width: 76%;
+        width: 90%;
     }
-    .error{
-        width: 70%;
-        margin-left: 12%;
+
+    .botonesSesion {
+        width: 100%;
+        height: 55px;
+    }
+
+    .error {
+        max-width: 90%;
+    }
+}
+
+/* 🔹 Ajustes para pantallas menores a 480px */
+@media (max-width: 480px) {
+    .contenedorFormulario {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .tituloImagenLogin {
+        font-size: 35px;
+        padding: 15px;
+    }
+
+    .inputLogin {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .botonesSesion {
+        width: 100%;
+        height: 60px;
+        font-size: 18px;
+    }
+
+    .cuenta {
+        font-size: 16px;
     }
 }

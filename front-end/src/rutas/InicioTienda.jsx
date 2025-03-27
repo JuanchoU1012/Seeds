@@ -51,8 +51,8 @@ export const InicioTienda = () => {
         const filtered = filteredInventario.filter(item => item.NombreComun.toLowerCase().includes(value));
         setFilteredInventario(filtered);
     };
-    const handleVermas = (recipe) => {
-        setSelectedItem(recipe)
+    const handleVermas = (item) => {
+        setSelectedItem(item)
         setShowVermasModal(true)
     }
     console.log(filteredInventario, 'data');
@@ -70,10 +70,10 @@ export const InicioTienda = () => {
                     onChange={handleSearch} />
             </div>
             {filteredInventario.length > 0 ? (
-                <div className="gallery-container">
+                <div className="gallery-containeri">
                     {filteredInventario.map((item) => (
                         <div key={item.IdInventario} className="card">
-                            <img src={`${API}/${item.Ruta}`} alt={item.NombreComun} className="card-image" />
+                            <img src={`${item.Ruta}`} alt={item.NombreComun} className="card-image" />
                             {console.log(API, item.Ruta, 'ruta')}
                             <div className="card-content">
                                 <h3 className="card-title">{item.NombreComun}</h3>

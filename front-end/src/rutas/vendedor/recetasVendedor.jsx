@@ -1,19 +1,20 @@
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import MenuLateral from "../../components/sidebar";
 import NavAdmin from '../../components/navegacionAdmin';
 import RecipesModal from "../../components/RecipeModal";
 import VermasReceta from "../../components/vermasReceta";
+import IngredienteModal from "../../components/IngredienteModal.jsx";
+import ModalSuccessError from "../../components/ModalSuccessError";
 import '../../estilos/recetasAdmin.css';
 
 //usertoken
 import { getUserInfo } from '../../../helpers/getuserinfo';
 import { getTokenInfo } from '../../../helpers/getjwt';
 import { U401 } from '../../components/401';
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
@@ -21,6 +22,15 @@ export const RecetasVendedor = () => {
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
     const [showVermasModal, setShowVermasModal] = useState(false);
+    const [ShowIngredientModal, setShowIngredientModal] = useState(false);
+    const [showTooltip, setShowTooltip] = useState()
+
+    const [modal, setModal] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+        onConfirm: null
+    })
 
     const [dataRecipes, setRecipes] = useState([]);
     const [filteredRecetas, setFilteredRecetas] = useState([]);
@@ -40,6 +50,9 @@ export const RecetasVendedor = () => {
         videoUrl: null,
         Pasos: []
     });
+    const [dataFormIng, setDataFormIng] = useState({
+        Nombre: ''
+    })
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,7 +65,44 @@ export const RecetasVendedor = () => {
         fetchData();
     }, []);
 
-    
+
+    const handleNuevoProducto = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await fetch(`${API}/products/create`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token
+                },
+                body: JSON.stringify(dataFormIng)
+            })
+
+            if (response.status === 201) {
+                setModal({
+                    isOpen: true,
+                    message: "Ingrediente creado correctamente",
+                    type: "success"
+                })
+                setDataForm({ Producto: '' })
+            } else {
+                setModal({
+                    isOpen: true,
+                    message: "Error al crear el ingrediente",
+                    type: "error"
+                })
+            }
+        } catch (e) {
+            console.error(e)
+            setModal({
+                isOpen: true,
+                message: "Error en la conexion",
+                type: "error"
+            })
+        }
+    }
+
     useEffect(() => {
         const fetchRecipes = async () => {
             const response = await fetch(`${API}/vendedor/recipes/get`, {
@@ -88,7 +138,7 @@ export const RecetasVendedor = () => {
             const comercioResponse = await fetch(`${API}/vendedores/miinfo`, {
                 method: "GET",
                 credentials: "include",
-                headers:{
+                headers: {
                     'Accept': "application/json",
                     "X-CSRF-TOKEN": token
                 }
@@ -140,11 +190,6 @@ export const RecetasVendedor = () => {
         dataForm.Ingredientes.forEach(Ingrediente => formData.append('IdIngrediente', Ingrediente));
         dataForm.Pasos.forEach(paso => formData.append('Paso', paso));
 
-        if (dataForm.videoUrl && dataForm.videoUrl instanceof File) {
-            formData.append('videourl', dataForm.videoUrl);
-        } else {
-            alert("No se ha seleccionado ningún video.");
-        }
         console.log('data desde receta', dataForm);
         try {
             const response = await fetch(`${API}/recipes/create`, {
@@ -156,41 +201,73 @@ export const RecetasVendedor = () => {
                 },
                 body: formData
             });
-            const result = await response.json();
-
             if (response.status === 201) {
-                alert("Receta creada con éxito");
-                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null });
-                window.location.reload();
+                setModal({
+                    isOpen: true,
+                    message: "Receta creada exitosamente",
+                    type: "success"
+                })
+                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
+                setShowNuevoModal(false)
             } else {
-                alert("Error al crear la receta");
-                console.log(result);
+                setModal({
+                    isOpen: true,
+                    message: "Error al crear la receta",
+                    type: "error"
+                })
             }
         } catch (e) {
-            console.error(e);
+            console.error(e)
+            setModal({
+                isOpen: true,
+                message: "Error al crear la receta",
+                type: "error"
+            })
         }
     };
 
-    const handleEliminar = async (IdReceta) => {
-        try {
-            const response = await fetch(`${API}/recipes/delete/${IdReceta}`, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    "X-CSRF-TOKEN": token
+    const handleEliminar = async (IdReceta, Nombre) => {
+        const eliminarReceta = async (IdReceta) => {
+            try {
+                const response = await fetch(`${API}/recipes/delete/${IdReceta}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        "X-CSRF-TOKEN": token
+                    }
+                });
+    
+                if (response.status === 200) {
+                    setModal({ isOpen: false }); // Cierra el modal antes de recargar
+                    setTimeout(() => window.location.reload(), 500);
+                } else {
+                    setModal({
+                        isOpen: true,
+                        type: "error",
+                        message: "Error al eliminar la receta"
+                    });
                 }
-            });
-            if (response.status === 200) {
-                alert("Receta eliminada con éxito");
-                window.location.reload();
-            } else {
-                alert("Error al eliminar la receta");
+            } catch (e) {
+                console.error(e);
+                setModal({
+                    isOpen: true,
+                    type: "error",
+                    message: "Ocurrió un problema con la conexión"
+                });
             }
-        } catch (e) {
-            console.error(e);
-        }
-    };
+        };
+    
+        setModal({
+            isOpen: true,
+            message: `¿Estás seguro de que quieres eliminar la receta "${Nombre}"?`,
+            type: "confirm",
+            onConfirm: () => {
+                setModal({ isOpen: false }); // Cierra el modal al confirmar
+                eliminarReceta(IdReceta);
+            }
+        });
+    };    
 
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe);
@@ -200,7 +277,7 @@ export const RecetasVendedor = () => {
             Descripcion: recipe.Descripcion || "",
             Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
             Ingredientes: recipe.IdIngredientes ? recipe.IdIngredientes.split(",").map(IdIngrediente => parseInt(IdIngrediente)) : [],
-            videoUrl: recipe.videoUrl ? `http://localhost:5000${recipe.videoUrl}` : null,
+            videoUrl: recipe.videoUrl ? `${API}${recipe.videoUrl}` : null,
             Pasos: recipe.Pasos.split('|').map(paso => paso.split(': ')[1])
         });
         console.log('edit', recipe);
@@ -218,7 +295,6 @@ export const RecetasVendedor = () => {
         formData.append('videourl', dataForm.videoUrl);
         dataForm.Pasos.forEach(paso => formData.append('Paso', paso));
 
-        console.log('back', formData);
         try {
             const response = await fetch(`${API}/recipes/update/${selectedRecipe.IdReceta}`, {
                 method: 'PUT',
@@ -230,14 +306,27 @@ export const RecetasVendedor = () => {
                 body: formData
             });
             if (response.status === 200) {
-                alert("Receta editada con éxito");
-                setShowEditarModal(false);
-                window.location.reload();
+                setShowEditarModal(false)
+                setModal({
+                    isOpen: true,
+                    message: "Receta editada exitosamente",
+                    type: "success"
+                })
+                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
             } else {
-                alert("Error al editar la receta");
+                setModal({
+                    isOpen: true,
+                    message: "Error al editar la receta",
+                    type: "error"
+                })
             }
         } catch (e) {
-            console.error(e);
+            console.error(e)
+            setModal({
+                isOpen: true,
+                type: "error",
+                message: "Ocurrió un problema con la conexión"
+            });
         }
     };
 
@@ -253,21 +342,45 @@ export const RecetasVendedor = () => {
     if (!userData || userData.rol !== 2) {
         return <U401 />;
     }
+    console.log('userData', userData);
     return (
         <div className="RecetasAdmin">
             <NavAdmin />
-            <MenuLateral/>
-            
-                <h1>Recetas</h1>
-                <div className="search-container">
-                    <input className="buscarRecetasAdmin"
-                        type="text"
-                        placeholder="Buscar..."
-                        value={searchTerm}
-                        onChange={handleSearch} />
+            <MenuLateral />
+
+            <h1>Recetas</h1>
+            <div className="search-container">
+                <input className="buscarRecetasAdmin"
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearch} />
+            </div>
+            <div className="top-container">
+
+                <div className="info-icon-container" onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}>
+                    <span className="info-icon"
+
+                    >ℹ️</span>
+                    {showTooltip && (
+                        <div className="tooltip">
+                            Completa todos los campos para agregar una receta correctamente. <br />
+                            - Nombre: Nombre de la receta, ej: Mantequilla De Ajo.<br />
+                            - Descripción: Historia de la receta y beneficios.<br />
+                            - Selecciona el ingrediente principal, semilla e ingredientes secundarios.<br />
+                            - Agrega pasos, tiempo en minutos y una descripción sencilla del paso.
+                        </div>
+                    )}
                 </div>
-                <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
-                <table className="crudRecetasAdmin">
+                <div className="botones-container">
+                    <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
+                    <button className="botonNuevaSemillaAdmin" onClick={() => setShowIngredientModal(true)}>Agregar Ingrediente</button>
+                </div>
+            </div>
+            <div className="crudRecetasAdmin">
+
+                <table className="table">
                     <thead>
                         <tr>
                             <th className="tituloCrudRecetas">Nombre Receta</th>
@@ -275,7 +388,7 @@ export const RecetasVendedor = () => {
                             <th className="tituloCrudRecetas">Ingrediente Principales</th>
                             <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
                             <th className="tituloCrudRecetas">Video</th>
-                            <th className="tituloCrudRecetas">Pasos</th>
+                            <th className="tituloCrudRecetas">Cantidades</th>
                             <th className="tituloCrudRecetas">Acciones</th>
                         </tr>
                     </thead>
@@ -293,53 +406,81 @@ export const RecetasVendedor = () => {
                                     <td>{recipe.ProductosAdicionales}</td>
                                     <td className="crud-video">
                                         {recipe.videourl ? (
-                                            <video src={`http://localhost:5000${recipe.videourl}`} controls />
+                                            <video src={`${recipe.videourl}`} controls />
                                         ) : (
                                             <span>No hay video</span>
                                         )}
                                     </td>
-                                    <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
+                                    <td><NavLink onClick={() => handleVermas(recipe)}>➕</NavLink></td>
                                     <td className="accionesRecetas">
-                                        <NavLink>
+                                        <NavLink className='actualizarSemillas'>
                                             <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
                                         </NavLink>
                                         <NavLink className='eliminarSemillas'>
-                                            <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
+                                            <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta, recipe.Nombre)} />
                                         </NavLink>
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
-
-                {/* {New Modal} */}
-                <RecipesModal
-                    isOpen={showNuevoModal}
-                    onClose={() => setShowNuevoModal(false)}
-                    onSubmit={handleNuevaReceta}
-                    data={dataForm}
-                    setData={setDataForm}
-                    seedOptions={seedOptions} // Pass seed options
-                    ingredientOptions={ingredientOptions} // Pass ingredient options
-                />
-
-                {/* {Edit Modal} */}
-                <RecipesModal
-                    isOpen={showEditarModal}
-                    onClose={() => setShowEditarModal(false)}
-                    onSubmit={handleEditarReceta}
-                    data={dataForm}
-                    setData={setDataForm}
-                    seedOptions={seedOptions} // Pass seed options
-                    ingredientOptions={ingredientOptions} // Pass ingredient options
-                />
-
-                {/* ver mas modal */}
-                <VermasReceta
-                    isOpen={showVermasModal}
-                    onClose={() => setShowVermasModal(false)}
-                    data={selectedRecipe}
-                />
             </div>
+
+            {/* New Modal */}
+            <IngredienteModal
+                isOpen={ShowIngredientModal}
+                onClose={() => setShowIngredientModal(false)}
+                onSubmit={handleNuevoProducto}
+                data={dataFormIng}
+                setData={setDataFormIng}
+            />
+
+            {/* {New Modal} */}
+            <RecipesModal
+                isOpen={showNuevoModal}
+                onClose={() => setShowNuevoModal(false)}
+                onSubmit={handleNuevaReceta}
+                data={dataForm}
+                setData={setDataForm}
+                seedOptions={seedOptions} // Pass seed options
+                ingredientOptions={ingredientOptions} // Pass ingredient options
+            />
+
+            {/* {Edit Modal} */}
+            <RecipesModal
+                isOpen={showEditarModal}
+                onClose={() => {
+                    setShowEditarModal(false);
+                    setDataForm({ 
+                        ...dataForm, 
+                        Nombre: '', 
+                        Descripcion: '', 
+                        Semillas: [], 
+                        Ingredientes: [], 
+                        videoUrl: null 
+                    });
+                }}
+                onSubmit={handleEditarReceta}
+                data={dataForm}
+                setData={setDataForm}
+                seedOptions={seedOptions} // Pass seed options
+                ingredientOptions={ingredientOptions} // Pass ingredient options
+            />
+
+            {/* ver mas modal */}
+            <VermasReceta
+                isOpen={showVermasModal}
+                onClose={() => setShowVermasModal(false)}
+                data={selectedRecipe}
+            />
+
+            <ModalSuccessError
+                isOpen={modal.isOpen}
+                type={modal.type}
+                message={modal.message}
+                onClose={() => setModal({ isOpen: false })}
+                onConfirm={modal.onConfirm}
+            />
+        </div>
     );
 };

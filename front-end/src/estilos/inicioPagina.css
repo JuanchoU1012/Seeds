@@ -1,3 +1,9 @@
+.slidersemillas{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
 .imagenInicio {
     display: flex;
     justify-content: center;

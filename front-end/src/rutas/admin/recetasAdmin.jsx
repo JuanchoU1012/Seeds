@@ -7,6 +7,7 @@ import MenuLateralAdmin from "../../components/sidebarAdmin"
 import NavAdmin from '../../components/navegacionAdmin'
 import RecipesModal from "../../components/RecipeModal"
 import VermasReceta from "../../components/vermasReceta"
+import ModalSuccessError from "../../components/ModalSuccessError"
 import '../../estilos/recetasAdmin.css'
 
 //usertoken
@@ -21,6 +22,14 @@ export const RecetasAdmin = () => {
     const [showEditarModal, setShowEditarModal] = useState(false)
     const [showNuevoModal, setShowNuevoModal] = useState(false)
     const [showVermasModal, setShowVermasModal] = useState(false)
+    const [showTooltip, setShowTooltip] = useState()
+    
+    const [modal, setModal] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+        onConfirm: null
+    })
 
     const [dataRecipes, setRecipes] = useState([])
     const [filteredRecetas, setFilteredRecetas] = useState([])
@@ -64,7 +73,6 @@ export const RecetasAdmin = () => {
                 const data = await response.json()
                 setRecipes(data)
                 setFilteredRecetas(data)
-                console.log(data)
             }
         }
 
@@ -127,10 +135,7 @@ export const RecetasAdmin = () => {
 
         if (dataForm.videoUrl && dataForm.videoUrl instanceof File) {
             formData.append('videourl', dataForm.videoUrl)
-        } else {
-            alert("No se ha seleccionado ningún video.")
         }
-        console.log('data desde receta', dataForm)
         try {
             const response = await fetch(`${API}/recipes/create`, {
                 method: 'POST',
@@ -141,41 +146,73 @@ export const RecetasAdmin = () => {
                 },
                 body: formData
             })
-            const result = await response.json()
-
             if (response.status === 201) {
-                alert("Receta creada con éxito")
+                setModal({
+                    isOpen: true,
+                    message: "Receta creada exitosamente",
+                    type: "success"
+                })
                 setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
-                window.location.reload()
+                setShowNuevoModal(false)
             } else {
-                alert("Error al crear la receta")
-                console.log(result)
+                setModal({
+                    isOpen: true,
+                    message: "Error al crear la receta",
+                    type: "error"
+                })
             }
         } catch (e) {
             console.error(e)
+            setModal({
+                isOpen: true,
+                message: "Error al crear la receta",
+                type: "error"
+            })
         }
     }
 
-    const handleEliminar = async (IdReceta) => {
-        try {
-            const response = await fetch(`${API}/recipes/delete/${IdReceta}`, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    "X-CSRF-TOKEN": token
+    const handleEliminar = async (IdReceta, Nombre) => {
+        const eliminarReceta = async (IdReceta) => {
+            try {
+                const response = await fetch(`${API}/recipes/delete/${IdReceta}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        "X-CSRF-TOKEN": token
+                    }
+                });
+    
+                if (response.status === 200) {
+                    setModal({ isOpen: false }); // Cierra el modal antes de recargar
+                    setTimeout(() => window.location.reload(), 500);
+                } else {
+                    setModal({
+                        isOpen: true,
+                        type: "error",
+                        message: "Error al eliminar la receta"
+                    });
                 }
-            })
-            if (response.status === 200) {
-                alert("Receta eliminada con éxito")
-                window.location.reload()
-            } else {
-                alert("Error al eliminar la receta")
+            } catch (e) {
+                console.error(e);
+                setModal({
+                    isOpen: true,
+                    type: "error",
+                    message: "Ocurrió un problema con la conexión"
+                });
             }
-        } catch (e) {
-            console.error(e)
-        }
-    }
+        };
+    
+        setModal({
+            isOpen: true,
+            message: `¿Estás seguro de que quieres eliminar la receta "${Nombre}"?`,
+            type: "confirm",
+            onConfirm: () => {
+                setModal({ isOpen: false }); // Cierra el modal al confirmar
+                eliminarReceta(IdReceta);
+            }
+        });
+    };    
 
     const handleEditar = (recipe) => {
         setSelectedRecipe(recipe)
@@ -184,7 +221,7 @@ export const RecetasAdmin = () => {
             Descripcion: recipe.Descripcion || "",
             Semillas: recipe.IdSemillas ? recipe.IdSemillas.split(",").map(IdSemillas => parseInt(IdSemillas)) : [],
             Ingredientes: recipe.IdIngredientes ? recipe.IdIngredientes.split(",").map(IdIngrediente => parseInt(IdIngrediente)) : [],
-            videoUrl: recipe.videourl ? `http://localhost:5000${recipe.videourl}` : null,
+            videoUrl: recipe.videourl ? `${recipe.videourl}` : null,
             Pasos: recipe.Pasos.split('|').map(paso => paso.split(': ')[1])
         })
         console.log('edit', recipe)
@@ -201,7 +238,6 @@ export const RecetasAdmin = () => {
         formData.append('videourl', dataForm.videoUrl)
         dataForm.Pasos.forEach(paso => formData.append('Paso', paso))
 
-        console.log('back', formData)
         try {
             const response = await fetch(`${API}/recipes/update/${selectedRecipe.IdReceta}`, {
                 method: 'PUT',
@@ -213,14 +249,27 @@ export const RecetasAdmin = () => {
                 body: formData
             })
             if (response.status === 200) {
-                alert("Receta editada con éxito")
                 setShowEditarModal(false)
-                window.location.reload()
+                setModal({
+                    isOpen: true,
+                    message: "Receta editada exitosamente",
+                    type: "success"
+                })
+                setDataForm({ ...dataForm, Nombre: '', Descripcion: '', Semillas: [], Ingredientes: [], videoUrl: null })
             } else {
-                alert("Error al editar la receta")
+                setModal({
+                    isOpen: true,
+                    message: "Error al editar la receta",
+                    type: "error"
+                })
             }
         } catch (e) {
             console.error(e)
+            setModal({
+                isOpen: true,
+                type: "error",
+                message: "Ocurrió un problema con la conexión"
+            });
         }
     }
 
@@ -239,18 +288,46 @@ export const RecetasAdmin = () => {
     return (
         <div className="RecetasAdmin">
             <NavAdmin />
-            <MenuLateralAdmin/>
-            
-                <h1>Recetas</h1>
-                <div className="search-container">
-                    <input className="buscarRecetasAdmin"
-                        type="text"
-                        placeholder="Buscar..."
-                        value={searchTerm}
-                        onChange={handleSearch} />
+            <MenuLateralAdmin />
+
+            <h1>Recetas</h1>
+            <div className="search-container">
+                <input className="buscarRecetasAdmin"
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearch} />
+            </div>
+
+            <div className="top-container">
+                <div className="info-icon-container" onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}>
+                    <span className="info-icon"
+                        
+                    >ℹ️</span>
+                    {showTooltip && (
+                        <div className="tooltip">
+                            Completa todos los campos para agregar una receta correctamente. <br />
+                            - Nombre: Nombre de la receta, ej: Mantequilla De Ajo.<br />
+                            - Descripción: Historia de la receta y beneficios.<br />
+                            - Selecciona el ingrediente principal, semilla e ingredientes secundarios.<br />
+                            - Agrega pasos, tiempo en minutos y una descripción sencilla del paso.
+                        </div>
+                    )}
                 </div>
-                <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
-                <table className="crudRecetasAdmin">
+
+                {/* Contenedor de Botones */}
+                <div className="botones-container">
+                    
+                <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Receta</button>
+                <NavLink to="/ingredientesAdmin" className="botonNuevaSemillaAdmin">
+                    Ingredientes Recetas
+                </NavLink>
+                </div>
+            </div>
+
+            <div className="crudRecetasAdmin">
+                <table className="table">
                     <thead>
                         <tr>
                             <th className="tituloCrudRecetas">Nombre Receta</th>
@@ -258,7 +335,7 @@ export const RecetasAdmin = () => {
                             <th className="tituloCrudRecetas">Ingrediente Principales</th>
                             <th className="tituloCrudRecetas">Ingredientes Secundarios</th>
                             <th className="tituloCrudRecetas">Video</th>
-                            <th className="tituloCrudRecetas">Pasos</th>
+                            <th className="tituloCrudRecetas">Cantidades</th>
                             <th className="tituloCrudRecetas">Acciones</th>
                         </tr>
                     </thead>
@@ -276,53 +353,75 @@ export const RecetasAdmin = () => {
                                     <td>{recipe.ProductosAdicionales}</td>
                                     <td className="crud-video">
                                         {recipe.videourl ? (
-                                            <video src={`http://localhost:5000${recipe.videourl}`} controls />
+                                            <video src={`${recipe.videourl}`} controls />
                                         ) : (
                                             <span>No hay video</span>
                                         )}
                                     </td>
-                                    <td><NavLink> <FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => handleVermas(recipe)} /></NavLink></td>
+                                    <td><NavLink onClick={() => handleVermas(recipe)}>➕</NavLink></td>
                                     <td className="accionesRecetas">
                                         <NavLink className='actualizarSemillas'>
                                             <FontAwesomeIcon icon={faEdit} onClick={() => handleEditar(recipe)} />
                                         </NavLink>
                                         <NavLink className='eliminarSemillas'>
-                                            <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta)} />
+                                            <FontAwesomeIcon icon={faTrash} onClick={() => handleEliminar(recipe.IdReceta, recipe.Nombre)} />
                                         </NavLink>
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
-
-                {/* {New Modal} */}
-                <RecipesModal
-                    isOpen={showNuevoModal}
-                    onClose={() => setShowNuevoModal(false)}
-                    onSubmit={handleNuevaReceta}
-                    data={dataForm}
-                    setData={setDataForm}
-                    seedOptions={seedOptions} // Pass seed options
-                    ingredientOptions={ingredientOptions} // Pass ingredient options
-                />
-
-                {/* {Edit Modal} */}
-                <RecipesModal
-                    isOpen={showEditarModal}
-                    onClose={() => setShowEditarModal(false)}
-                    onSubmit={handleEditarReceta}
-                    data={dataForm}
-                    setData={setDataForm}
-                    seedOptions={seedOptions} // Pass seed options
-                    ingredientOptions={ingredientOptions} // Pass ingredient options
-                />
-
-                {/* ver mas modal */}
-                <VermasReceta
-                    isOpen={showVermasModal}
-                    onClose={() => setShowVermasModal(false)}
-                    data={selectedRecipe}
-                />
             </div>
+            {/* {New Modal} */}
+            <RecipesModal
+                isOpen={showNuevoModal}
+                onClose={() => setShowNuevoModal(false)}
+                onSubmit={handleNuevaReceta}
+                data={dataForm}
+                setData={setDataForm}
+                seedOptions={seedOptions} // Pass seed options
+                ingredientOptions={ingredientOptions} // Pass ingredient options
+                isAdmin={true} // Set isAdmin to true for admin mode
+            />
+
+            {/* {Edit Modal} */}
+            <RecipesModal
+                isOpen={showEditarModal}
+                onClose={() => {
+                    setShowEditarModal(false);
+                    setDataForm({ 
+                        ...dataForm, 
+                        Nombre: '', 
+                        Descripcion: '', 
+                        Semillas: [], 
+                        Ingredientes: [], 
+                        videoUrl: null 
+                    });
+                }}
+                
+                onSubmit={handleEditarReceta}
+                data={dataForm}
+                setData={setDataForm}
+                seedOptions={seedOptions} // Pass seed options
+                ingredientOptions={ingredientOptions} // Pass ingredient options
+                isAdmin={true} // Set isAdmin to true for admin mode
+            />
+
+            {/* ver mas modal */}
+            <VermasReceta
+                isOpen={showVermasModal}
+                onClose={() => setShowVermasModal(false)}
+                data={selectedRecipe}
+            />
+
+            {/* SuccesError Modal */}
+            <ModalSuccessError 
+            isOpen={modal.isOpen}
+            type={modal.type}
+            message={modal.message}
+            onClose={() => setModal({ isOpen: false })}
+            onConfirm={modal.onConfirm}
+        />
+        </div>
     )
 }

@@ -4,27 +4,30 @@ import PropTypes from 'prop-types';
 import Select from 'react-select'; // Import Select from react-select
 import '../estilos/recipemodal.css'
 
-const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions }) => {
+const RecipesModal = ({ isOpen, onClose, onSubmit, data, setData, seedOptions, ingredientOptions, isAdmin }) => {
     // Add validation before form submission
+    console.log(data, 'modaldata')
 
     const [Pasos, setPasos] = useState(data.Pasos);
 
     const [preview, setPreview] = useState(null);
 
+    const [showTooltip, setShowTooltip] = useState()
 
     useEffect(() => {
-    setPasos(data.Pasos);
+        setPasos(data.Pasos);
+        if (isAdmin) {
+            if (data.videoUrl instanceof File) {
+                setPreview(URL.createObjectURL(data.videoUrl));
+            } else if (typeof data.videoUrl === 'string') {
+                setPreview(`${data.videoUrl}`);
+            } else {
+                setPreview(null);
+            }
+        }
+    }, [data.videoUrl, data.Pasos, isAdmin]);
 
-    if (data.videoUrl instanceof File) {
-        setPreview(URL.createObjectURL(data.videoUrl));
-    } else if (typeof data.videoUrl === 'string') {
-        setPreview(`${data.videoUrl}`);    
-    } else {
-        setPreview(null);
-    }
-}, [data.videoUrl, data.Pasos]); 
-
-console.log(data, 'modaldat')
+    console.log(data, 'modaldat')
 
     // console.log('modaldata',data)
     if (!isOpen) return null;
@@ -77,7 +80,29 @@ console.log(data, 'modaldat')
         <div className="modalReceta" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
-                <h2>{data.IdReceta ? 'Editar Receta' : 'Nueva Receta'}</h2>
+
+                <div className="modal-header">
+                    <h2>{data.Nombre ? 'Editar Receta' : 'Nueva Receta'}</h2>
+
+                    {/* Icono de información con tooltip */}
+                    <div
+                        className="info-icon-container"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                    >
+                        <span className="info-icon">ℹ️</span>
+                        {showTooltip && (
+                            <div className="tooltip">
+                                Completa todos los campos para agregar una receta correctamente. <br />
+                                - Nombre: Nombre de la receta,ej: Mantiequilla De Ajo.<br />
+                                - Descripcion: Historia de la receta, y si tiene algun beneficio.<br />
+                                - Selecciona el ingrediente ppal, semilla, e ingredientes secundarios.<br />
+                                - Agrega pasos según sea necesario, Tiempo en minutos y una descripción sencilla del paso.
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 <form onSubmit={onSubmit} className='modal-form'>
                     <input
                         className='input-modal'
@@ -88,28 +113,35 @@ console.log(data, 'modaldat')
                         placeholder="Nombre de la receta"
                     />
 
-                    <input
+                    <textarea
                         className='input-modal'
-                        type="text"
                         name="Descripcion"
                         value={data.Descripcion}
                         onChange={handleChange}
-                        placeholder="Descripción"
+                        placeholder="Descripción de la receta..."
+                        rows="4"
                     />
+                    {isAdmin && (
+                        <>
+                            <label className="custom-file-upload">
+                                Seleccionar Video
+                                <input
+                                    onChange={handleVideoChange}
+                                    type="file"
+                                    name="videoUrl"
+                                    accept="video/*"
+                                    required
+                                    hidden
+                                />
+                            </label>
 
-                    <input
-                        onChange={handleVideoChange}
-                        className='input-modal'
-                        type="file"
-                        name="videoUrl"
-                        accept="video/*"
-                    />
-                    {preview && (
-                        <div className="preview-container">
-                            <video src={preview} alt="Preview" width="200" controls />
-                        </div>
+                            {preview && (
+                                <div className="preview-container">
+                                    <video src={preview} alt="Preview" width="200" controls />
+                                </div>
+                            )}
+                        </>
                     )}
-
 
                     <Select
                         isMulti
@@ -139,23 +171,24 @@ console.log(data, 'modaldat')
                                 <div key={index} className=''>
                                     <label>Paso {index + 1}:</label>
                                     <div className="modalPasos">
-
-                                    <input
-                                        className='input-modal'
-                                        type="text"
-                                        value={paso}
-                                        onChange={(e) => handleStepChange(index, e.target.value)}
-                                        placeholder={`Paso ${index + 1}`}
+                                        <input
+                                            className='input-modal'
+                                            type="text"
+                                            value={paso}
+                                            onChange={(e) => handleStepChange(index, e.target.value)}
+                                            placeholder={`Paso ${index + 1}`}
                                         />
-                                    <button type="button" onClick={() => removeStep(index)}>🗑️</button>
-                                        </div>
+                                        <button type="button" onClick={() => removeStep(index)}>🗑️</button>
+                                    </div>
                                 </div>
                             ))}
                             <button type="button" className='btn-modal' onClick={addStep}>➕ Agregar Paso</button>
                         </>
                     )}
 
-                    <button type="submit" className='btn-modal'>Guardar Receta</button>
+                    <button type="submit" className='btn-modal'>
+                        {data.Nombre ? 'Guardar Cambios' : 'Crear Receta'}
+                    </button>
                 </form>
             </div>
         </div>
@@ -163,6 +196,7 @@ console.log(data, 'modaldat')
 };
 
 RecipesModal.propTypes = {
+    isAdmin: PropTypes.bool.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

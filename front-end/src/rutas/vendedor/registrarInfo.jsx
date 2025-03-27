@@ -5,6 +5,9 @@ import { getTokenInfo } from "../../../helpers/getjwt";
 import { getUserInfo } from "../../../helpers/getuserinfo";
 import { U401 } from "../../components/401";
 
+
+import ModalSuccessError from "../../components/ModalSuccessError";
+
 import dataColombia from "../../../helpers/colombia.json";
 import Select from "react-select";
 import { NavLink } from "react-router-dom";
@@ -26,6 +29,14 @@ const RegistrarInfo = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [preview, setPreview] = useState(null);
+
+  const [modal, setModal] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+    onConfirm: null,
+  });
+
   const [formData, setFormData] = useState({
     Nombre: "",
     Apellido: "",
@@ -97,7 +108,9 @@ useEffect(()=> {
               Departamento: datacomercio[0].NombreDep || "",
               image_url: datacomercio[0].Ruta || null,
             }));
+            setPreview(datacomercio[0].Ruta || null);
           }
+          console.log(datacomercio);
         } catch (error) {
           console.error("Error obteniendo datos del comercio:", error);
         }}
@@ -174,7 +187,6 @@ console.log("user", userData);
         body: DataUpdate,
       });
       if (response.ok) {
-        setSuccess("Datos actualizados correctamente.");
         setFormData({
           Nombre: "",
           Apellido: "",
@@ -187,12 +199,25 @@ console.log("user", userData);
           image_url: null
         });
         setPreview(null);
-        window.location.reload();
+        setModal({
+          type: "success",
+          message: "Datos actualizados correctamente.",
+          isOpen: true
+        })
       } else {
-        setError("Error al actualizar los datos.");
+        setModal({
+          type: "error",
+          message: "Error al actualizar los datos.",
+          isOpen: true
+        })
       }
     } catch (error) {
-      console.error("Error al actualizar los datos:", error);
+      console.error(error);
+      setModal({
+        type: "error",
+        message: "Problemas con la conexión.",
+        isOpen: true
+      })
     }
   };
 
@@ -201,8 +226,11 @@ console.log("user", userData);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.Nombre || !formData.Correo || !formData.NombreComercio || !formData.Direccion || !formData.Departamento || !formData.Ciudad) {
-      setError("Por favor, complete todos los campos.");
-      return;
+      setModal({
+        type: "error",
+        message: "Por favor, completa todos los campos obligatorios.",
+        isOpen: true
+      })
     }
 
     try {
@@ -234,9 +262,17 @@ console.log("user", userData);
       });
 
       if (!response.ok) {
-        throw new Error("Error en la respuesta del servidor");
+        setModal({
+          type: "error",
+          message: "Error al guardar la información.",
+          isOpen: true
+        })
       }
-      setSuccess("Información guardada con éxito.");
+      setModal({
+        type: "success",
+        message: "Información guardada correctamente.",
+        isOpen: true
+      })
       setFormData({
         Nombre: "",
         Apellido: "",
@@ -251,7 +287,11 @@ console.log("user", userData);
       setPreview(null);
     } catch (error) {
       console.error("Error al enviar datos:", error);
-      setError("Error al enviar datos.");
+      setModal({
+        type: "error",
+        message: "Problemas con la conexión.",
+        isOpen: true
+      })
     }
   };
 
@@ -268,14 +308,14 @@ if (!userData || userData.rol !== 2) {
   return (
     <div className="InfoVendedor">
       <div className="image-container">
+        <div className="container-img">
         <NavLink to="/misSemillasVendedor" className="return"> <FontAwesomeIcon icon={faArrowCircleLeft}/> </NavLink>
-        <img src="https://i.pinimg.com/736x/e7/70/0d/e7700d61681c27a3a431e784a66de716.jpg" alt="Imagen" className="imagen" />
+        <img src="https://i.pinimg.com/736x/e7/70/0d/e7700d61681c27a3a431e784a66de716.jpg" className="imagenr" />
+        </div>
       </div>
 
       <div className="form-container">
         <div className="container">
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
           <form className="form" onSubmit={infoexiste === true ? handleUpdate : handleSubmit}>
             <h2>Datos Personales</h2>
             <input className="input" type="text" name="Nombre" placeholder="Nombre" onChange={handleChange} value={formData.Nombre} />
@@ -313,6 +353,12 @@ if (!userData || userData.rol !== 2) {
           </form>
         </div>
       </div>
+      <ModalSuccessError
+      isOpen={modal.isOpen}
+      message={modal.message}
+      type={modal.type}
+      onClose={() => setModal({ isOpen: false})}
+     />
     </div>
   );
 };

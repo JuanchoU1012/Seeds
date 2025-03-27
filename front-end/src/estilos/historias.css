@@ -1,9 +1,10 @@
-.gallery-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    margin-top: 7%;
+.gallery-containerh {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2%;
+  padding: 0 10%;
   }
   
   .card {

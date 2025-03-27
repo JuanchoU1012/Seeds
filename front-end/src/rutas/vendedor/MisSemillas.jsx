@@ -8,6 +8,7 @@ import NavAdmin from '../../components/navegacionAdmin';
 
 import SeedModal from '../../components/SeedModal';
 import NuevoItemModal from '../../components/NuevoItemModal.jsx';
+import ModalSuccessError from "../../components/ModalSuccessError.jsx";
 
 import '../../estilos/MisSemillasVendedor.css';
 
@@ -22,10 +23,19 @@ export const MisSemillasVendedor = () => {
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showNuevoModal, setShowNuevoModal] = useState(false);
     const [showNuevoItemModal, setShowNuevoItemModal] = useState(false);
+    const [showTooltip, setShowTooltip] = useState()
 
     const [userData, setUserData] = useState(null);
     const [token, setToken] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [modal, setModal] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+        onConfirm: null
+    });
+
     const [dataForm, setDataForm] = useState({
         NombreCientSemilla: "",
         NombreComun: "",
@@ -105,7 +115,7 @@ export const MisSemillasVendedor = () => {
             const comercioResponse = await fetch(`${API}/vendedores/miinfo`, {
                 method: "GET",
                 credentials: "include",
-                headers:{
+                headers: {
                     'Accept': "application/json",
                     "X-CSRF-TOKEN": token
                 }
@@ -155,38 +165,45 @@ export const MisSemillasVendedor = () => {
             const result = await response.json();
 
             if (response.status === 201) {
-                alert("Semilla creada exitosamente.");
+                setModal({
+                    isOpen: true,
+                    message: "Semilla creada exitosamente.",
+                    type: "success"
+                })
                 setDataForm({ NombreCientSemilla: "", NombreComun: "", Descripcion: "", url_imagen: null });
-                window.location.reload();
             } else {
-                setError(result.error || "Error al crear la semilla.");
+                setModal({
+                    isOpen: true,
+                    message:  "Error al crear la semilla.",
+                    type: "error"
+                })
                 console.log(result);
             }
         } catch (e) {
             console.error(e);
+            setModal({
+                isOpen: true,
+                message: "Ocurrió un problema con la conexión.",
+                type: "error"
+            })
         }
     };
 
     const handleNuevoItem = async (e) => {
         e.preventDefault();
-    
-        if (!dataFormInv.IdSemilla || !dataFormInv.UnidadDeVenta || !dataFormInv.PrecioDeVenta) {
-            alert("Todos los campos son obligatorios.");
-            return;
-        }
-    
+
         const formData = new FormData();
         formData.append("IdSemilla", dataFormInv.IdSemilla);
         formData.append("UnidadDeVenta", dataFormInv.UnidadDeVenta);
         formData.append("PrecioDeVenta", dataFormInv.PrecioDeVenta);
         formData.append("IdComercio", dataFormInv.IdComercio);
-    
+
         if (dataFormInv.image_url instanceof File) {
             formData.append('image_url', dataFormInv.image_url);
         } else {
             alert("No se ha seleccionado una imagen válida.");
         }
-    
+
         try {
             const response = await fetch(`${API}/vendedores/nuevoinventario`, {
                 method: "POST",
@@ -194,19 +211,31 @@ export const MisSemillasVendedor = () => {
                 headers: { 'Accept': "application/json", 'X-CSRF-TOKEN': token },
                 body: formData
             });
-    
+
             if (response.ok) {
-                alert('Semilla añadida correctamente');
+                setModal({
+                    isOpen: true,
+                    message: "Semilla añadida exitosamente al inventario.",
+                    type: "success"
+                })
                 setDataFormInv({ IdSemilla: "", UnidadDeVenta: "", PrecioDeVenta: "", image_url: null });
-                window.location.reload();
             } else {
-                setError("Error al añadir la semilla");
+                setModal({
+                    isOpen: true,
+                    message: "Error al añadir la semilla al inventario.",
+                    type: "error"
+                })
             }
         } catch (error) {
             console.error(error);
+            setModal({
+                isOpen: true,
+                message: "Ocurrió un problema con la conexión.",
+                type: "error"
+            })
         }
     };
-    
+
 
     const handleEditar = (item) => {
         setSelectedItem(item);
@@ -215,7 +244,7 @@ export const MisSemillasVendedor = () => {
             IdSemilla: item.IdSemilla,
             UnidadDeVenta: item.IdUnidad,
             PrecioDeVenta: item.PrecioDeVenta,
-            image_url: item.Ruta ? `${API}/${item.Ruta}` : null
+            image_url: item.Ruta ? `${item.Ruta}` : null
         });
         setShowEditarModal(true);
     };
@@ -229,15 +258,6 @@ export const MisSemillasVendedor = () => {
         formData.append("PrecioDeVenta", dataFormInv.PrecioDeVenta);
         formData.append("IdComercio", dataFormInv.IdComercio);
         formData.append("image_url", dataFormInv.image_url);
-        
-        
-        console.log("editarcomer", dataFormInv.IdComercio);
-    
-
-        for (const item of formData.entries()) {
-            console.log(item, 'itemtobakc')
-        }
-    
 
         try {
             const response = await fetch(`${API}/vendedores/inventario/update/${selectedItem.IdInventario}`, {
@@ -255,10 +275,26 @@ export const MisSemillasVendedor = () => {
                         { ...semilla, ...dataForm } : semilla
                 ));
                 setShowEditarModal(false);
-                window.location.reload();
+                setModal({
+                    isOpen: true,
+                    message: "Semilla actualizada exitosamente.",
+                    type: "success"
+                })
+            }
+            else {
+                setModal({
+                    isOpen: true,
+                    message: "Error al actualizar la semilla.",
+                    type: "error"
+                })
             }
         } catch (error) {
             console.error('Error:', error);
+            setModal({
+                isOpen: true,
+                message: "Ocurrió un problema con la conexión.",
+                type: "error"
+            })
         }
     };
 
@@ -272,29 +308,62 @@ export const MisSemillasVendedor = () => {
         return <U401 />;
     }
 
+    console.log("datauser", userData);
     console.log(filteredInventario, 'data');
     return (
         <div className="SemillasAdmin">
             {error && <div>{error}</div>}
             <NavAdmin />
             <MenuLateral />
-            
+    
             <h1>Semillas En mi Inventario</h1>
+    
+            {/* Contenedor de búsqueda */}
             <div className="search-container">
-                <input className="buscarSemillasAdmin"
+                <input 
+                    className="buscarSemillasAdmin"
                     type="text"
                     placeholder="Buscar..."
                     value={searchTerm}
-                    onChange={handleSearch} />
+                    onChange={handleSearch} 
+                />
             </div>
-            <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nueva Semilla</button>
-            <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoItemModal(true)}>Agrega una Semilla</button>
+    
+            {/* Contenedor de Icono de Información y Botones */}
+            <div className="top-container">
+                <div className="info-icon-container" onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}>
+                    <span className="info-icon"
+                        
+                    >ℹ️</span>
+                    {showTooltip && (
+                        <div className="tooltip">
+                            Completa todos los campos para agregar una receta correctamente. <br />
+                            - Nombre: Nombre de la receta, ej: Mantequilla De Ajo.<br />
+                            - Descripción: Historia de la receta y beneficios.<br />
+                            - Selecciona el ingrediente principal, semilla e ingredientes secundarios.<br />
+                            - Agrega pasos, tiempo en minutos y una descripción sencilla del paso.
+                        </div>
+                    )}
+                </div>
+    
+                {/* Contenedor de Botones */}
+                <div className="botones-container">
+                    <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>
+                        Nueva Semilla
+                    </button>
+                    <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoItemModal(true)}>
+                        Agregar una Semilla
+                    </button>
+                </div>
+            </div>
+    
+            {/* Contenedor de Inventario */}
             {filteredInventario.length > 0 ? (
-                <div className="gallery-containerv">
+                <div className="gallery-containeri">
                     {filteredInventario.map((item) => (
                         <div key={item.IdInventario} className="card">
-                            <img src={`${API}/${item.Ruta}`} alt={item.NombreComun} className="card-image" />
-                            {console.log(API, item.Ruta, 'ruta')}
+                            <img src={`${item.Ruta}`} alt={item.NombreComun} className="card-image" />
                             <div className="card-content">
                                 <h3 className="card-title">{item.NombreComun}</h3>
                                 <p className="card-price">${item.PrecioDeVenta} X {item.Unidad}</p>
@@ -308,39 +377,38 @@ export const MisSemillasVendedor = () => {
                     ))}
                 </div>
             ) : (
-                <p className="mensaje-vacio">No hay Items disponibles </p>
+                <p className="mensaje-vacio">No hay ítems disponibles</p>
             )}
-            
-            {/* Modal de edición */}
+    
+            {/* Modal de edición y creación */}
             <NuevoItemModal
-                isOpen={showEditarModal}
-                onClose={() => setShowEditarModal(false)} // ✅ Cierra el modal correcto
-                onSubmit={handleUpdateItem}
+                isOpen={showEditarModal || showNuevoItemModal}
+                onClose={() => {
+                    setShowEditarModal(false);
+                    setShowNuevoItemModal(false);
+                }}
+                onSubmit={showEditarModal ? handleUpdateItem : handleNuevoItem}
                 data={dataFormInv}
                 seedOptions={seedOptions}
                 setData={setDataFormInv}
-                />
-
-            {/* Modal de creación */}
-            <NuevoItemModal
-                isOpen={showNuevoItemModal}
-                onClose={() => setShowNuevoItemModal(false)}
-                onSubmit={handleNuevoItem}
-                data={dataFormInv}
-                seedOptions={seedOptions}
-                setData={setDataFormInv}
-                />
-
-            {/* New Modal */}
+            />
+    
+            {/* Modal de Nueva Semilla */}
             <SeedModal
                 isOpen={showNuevoModal}
                 onClose={() => setShowNuevoModal(false)}
                 onSubmit={handleNuevaSemilla}
                 data={dataForm}
                 setData={setDataForm}
-                />
+            />
 
+            <ModalSuccessError
+                            isOpen={modal.isOpen}
+                            type={modal.type}
+                            message={modal.message}
+                            onClose={() => setModal({ isOpen: false })}
+                            onConfirm={modal.onConfirm}
+                        />
         </div>
-    );
-
+    );    
 };

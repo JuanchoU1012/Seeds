@@ -1,44 +1,91 @@
-.container401{
-    display: grid;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-}
-.img401{
-    height: 60vh;
-    width: 100%;
-}
-.error-actions{
-    width: 100%;
-    margin-top: 4%;
-}
-.volver401{
-    padding: 10px 30px 10px 30px;
-    margin-right: 2%;
-    background-color: #969696;
-    border-radius: 8px;
-    color: #fff;
-}
-.volver401:hover{
-    color: #fff;
-    background-color: #c6c6c6;
-}
-
-@media (max-width: 800px){
-    .img401{
-        width: 100%;
-    }
-    .container401{
-        width: 100%;
-    }
-}
-
-.contenedorLoading{
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.contenedorLoading img{
-    width: 15%;
+    height: 100vh;
+    text-align: center;
 }
 
+.error-template {
+    padding: 40px;
+}
+
+.error-title {
+    font-size: clamp(32px, 5vw, 48px); /* Tamaño adaptable */
+    color: #ff3b3b;
+}
+
+.nonauto {
+    font-size: clamp(18px, 3vw, 24px); /* Se adapta al ancho */
+    color: #444;
+}
+
+.error-details {
+    font-size: 18px;
+    color: #666;
+}
+
+.error-img {
+    margin: 20px 0;
+}
+
+.img-401 {
+    width: 80%;
+    max-width: 300px;
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se acomoden en móviles */
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn401 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn401:hover {
+    background-color: #0056b3;
+}
+
+.icon401 {
+    font-size: 18px;
+}
+
+/* 📌 Media Query para pantallas pequeñas */
+@media (max-width: 600px) {
+    .container {
+        height: auto;
+        margin-top: 50px;
+    }
+
+    .error-template {
+        padding: 20px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn401 {
+        width: 100%; /* Botones ocupan el ancho completo en móviles */
+        padding: 14px;
+    }
+}

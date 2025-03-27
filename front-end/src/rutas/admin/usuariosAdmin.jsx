@@ -12,151 +12,150 @@ import { getTokenInfo } from '../../../helpers/getjwt'
 import { U401 } from '../../components/401'
 import { Loading } from "../../components/loading"
 
-
 const API = import.meta.env.VITE_REACT_APP_API || 'http://localhost:5000'
 
 export const UsuariosAdmin = () => {
-
     const [token, setToken] = useState(null)
     const [userData, setUserData] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [FormData, setFormData] = useState({
-        email: "",
-        password: "",
-        rol: ""
-    })
+    const [FormDataUser, setFormData] = useState({ 
+        IdAccesoUsuario: "",
+        Email: "", 
+        Password: "", 
+        Rol: "" })
     const [dataUsuarios, setDataUsuarios] = useState([])
     const [selectedUsuario, setSelectedUsuario] = useState(null)
     const [showEditarModal, setShowEditarModal] = useState(false)
     const [showNuevoModal, setShowNuevoModal] = useState(false)
-    
-    const [filteredUsuarios, setFilteredUsuarios] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
-   
+    const [filteredUsuarios, setFilteredUsuarios] = useState([])
 
-
-
-    useEffect(()=>{
-        const fetchdata = async () =>{
+    useEffect(() => {
+        const fetchData = async () => {
             const userdata = await getUserInfo()
             const token = await getTokenInfo()
             setUserData(userdata)
             setToken(token)
             setIsLoading(false)
         }
-        fetchdata()
+        fetchData()
     }, [])
 
     const handleSearch = (e) => {
         const value = e.target.value.toLowerCase()
         setSearchTerm(value)
-        const filtered = filteredUsuarios.filter(semilla => semilla.NombreComun.toLowerCase().includes(value))
+        const filtered = dataUsuarios.filter(user => user.Email.toLowerCase().includes(value))
         setFilteredUsuarios(filtered)
     }
 
     const validateFormData = () => {
-        return FormData.email && FormData.password && FormData.rol
+        return FormDataUser.Email && FormDataUser.Password && FormDataUser.Rol
     }
-    
 
     const handleNuevoUsuario = async (e) => {
         e.preventDefault()
         if (!validateFormData()) return
+
         try {
             const response = await fetch(`${API}/registro`, {
                 method: "POST",
                 credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    "Accept": "application/json"
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: FormData.email,
-                    password: FormData.password,
-                    rol: FormData.rol
+                    Email: FormDataUser.Email,
+                    Password: FormDataUser.Password,
+                    Rol: FormDataUser.Rol                    
                 }),
             })
 
             if (response.status === 201) {
-                alert(response.text)
-                setFormData({ email: "", password: "", rol: "" })
+                alert("Usuario registrado correctamente")
+                setFormData({ Email: "", Password: "", Rol: "" })
                 window.location.reload()
             } else {
                 const errorData = await response.json()
-                console.error(errorData.message || "Registration failed")
+                console.error(errorData.message || "Registro fallido")
             }
         } catch (err) {
-            console.error(err.message || "An error occurred")
+            console.error(err.message || "Error en la solicitud")
         }
     }
 
     useEffect(() => {
-            const fetchData = async () => {
-            // console.log("Fetching seed data...")
-            try{
+        const fetchData = async () => {
+            try {
                 const response = await fetch(`${API}/users/get`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json',
-                        "Accept": "application/json"
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": token
                     }
                 })
-                if (response.status === 200) {
+
+                if (response.ok) {
                     const data = await response.json()
                     setDataUsuarios(data)
                     setFilteredUsuarios(data)
+                } else {
+                    const errorData = await response.json()
+                    console.error("Error al obtener datos de usuarios:", errorData)
                 }
-                else{
-                    const data = await response.json()
-                    console.error("Failed to fetch user data:", data)
-                }
-            }
-            catch (error) {
-                console.error("Error fetching seed data:", error)
+            } catch (error) {
+                console.error("Error en la solicitud:", error)
             }
         }
-        fetchData()
-    }, [])
-
-    const handleUpdate = async (e) => {
-        e.preventDefault()
-        try {
-            const response = await fetch(`${API}/actualizar_usuario`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    IdAccesoUsuario: selectedUsuario.IdAccesoUsuario,
-                    Email: selectedUsuario.Email,
-                    Rol: selectedUsuario.Rol
-                })
-            })
-
-            if (response.ok) {
-                const updatedUsuarios = await response.json()
-                setDataUsuarios(updatedUsuarios)
-                setShowEditarModal(false)
-                alert('Usuario actualizado correctamente')
-            } else {
-                console.error("Error al actualizar el usuario")
-            }
-        } catch (error) {
-            console.error("Error al hacer la petición:", error)
-        }
-    }
-
+        if (token) fetchData()
+        }, [token])
+    
+    console.log(selectedUsuario)
     const handleEditar = (usuario) => {
         setSelectedUsuario(usuario)
+        setFormData({
+            IdAccesoUsuario: usuario.IdAccesoUsuario,
+            Email: usuario.Email,
+            Password: usuario.Password,
+            Rol: usuario.Rol
+        })
         setShowEditarModal(true)
     }
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        console.log(FormDataUser, 'datatoupdate')
+        try {
+            const response = await fetch(`${API}/actualizar_usuario`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token
+                },
+                body: JSON.stringify({
+                    IdAccesoUsuario: FormDataUser.IdAccesoUsuario,
+                    Email: FormDataUser.Email,
+                    Password: FormDataUser.Password,
+                    Rol: FormDataUser.Rol
+                })
+            });
     
-    if (isLoading) {
-        return <Loading/>
-    }
+            if (response.ok) {
+                alert('Usuario actualizado correctamente');
+                setShowEditarModal(false);
+                window.location.reload();
+            } else {
+                console.error("Error al actualizar usuario");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        }
+    };
+    
 
-    if (!userData || userData.rol !== 0) {
-        return <U401 />
-    }
+
+    if (isLoading) return <Loading />
+    if (!userData || userData.rol !== 0) return <U401 />
 
     return (
         <div className="UsuariosAdmin">
@@ -168,44 +167,35 @@ export const UsuariosAdmin = () => {
                     type="text"
                     placeholder="Buscar..."
                     value={searchTerm}
-                    onChange={handleSearch} />
+                    onChange={handleSearch}
+                />
             </div>
             <button className="botonNuevaRecetaAdmin" onClick={() => setShowNuevoModal(true)}>Nuevo usuario</button>
             <table className="crudUsuariosAdmin">
                 <thead>
                     <tr>
-                        <td className="tituloCrudUsuarios">Id</td>
                         <td className="tituloCrudUsuarios">Correo</td>
                         <td className="tituloCrudUsuarios">Rol</td>
                         <td className="tituloCrudUsuarios">Acciones</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {(!filteredUsuarios)?
-                    <tr>
-                        <td colSpan="5">No hay usuarios</td>
-                    </tr> 
-                    : 
-                    filteredUsuarios.map((user) => (
-                        <tr key={user.IdAccesoUsuario}>
-                            <td>{user.IdAccesoUsuario}</td>
-                            <td>{user.Email}</td>
-                            <td>
-                                {user.Rol === 0 ? (
-                                    <span>Administrador</span>
-                                ) : user.Rol === 1 ? (
-                                    <span>Vendedor</span>
-                                ) : (
-                                    <span>Cleinte</span>
-                                )}
-                            </td>
-                            <td className="accionesUsuariosAdmin">
-                                <NavLink className='actulizarUsuarios' onClick={() => handleEditar(user)}>
-                                    <FontAwesomeIcon icon={faEdit} style={{ color: "#000000" }} />
-                                </NavLink>
-                            </td>
+                    {filteredUsuarios.length === 0 ?
+                        <tr>
+                            <td colSpan="3">No hay usuarios</td>
                         </tr>
-                    ))}
+                        :
+                        filteredUsuarios.map((user) => (
+                            <tr key={user.IdAccesoUsuario}>
+                                <td>{user.Email}</td>
+                                <td>{user.Rol === 0 ? "Administrador" : user.Rol === 1 ? "Vendedor" : "Cliente"}</td>
+                                <td className="accionesUsuariosAdmin">
+                                    <NavLink className='actulizarUsuarios' onClick={() => handleEditar(user)}>
+                                        <FontAwesomeIcon icon={faEdit} style={{ color: "#000000" }} />
+                                    </NavLink>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
 
@@ -214,8 +204,8 @@ export const UsuariosAdmin = () => {
                 isOpen={showEditarModal}
                 onClose={() => setShowEditarModal(false)}
                 onSubmit={handleUpdate}
-                data={selectedUsuario}
-                setData={setSelectedUsuario}
+                data={FormDataUser}
+                setData={setFormData}
             />
 
             {/* Modal para nuevo usuario */}
@@ -223,7 +213,7 @@ export const UsuariosAdmin = () => {
                 isOpen={showNuevoModal}
                 onClose={() => setShowNuevoModal(false)}
                 onSubmit={handleNuevoUsuario}
-                data={FormData}
+                data={FormDataUser}
                 setData={setFormData}
             />
         </div>

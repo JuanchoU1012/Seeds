@@ -1,4 +1,5 @@
 import Proptypes from 'prop-types';
+import '../estilos/seedmodal.css'
 
 
 const IngredientModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
@@ -11,20 +12,20 @@ const IngredientModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
    if (!isOpen) return null;
 
    return (
-       <div className="modalSemillasAdmin" onClick={onClose}>
+       <div className="modalSemillas" onClick={onClose}>
            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                <button className="close-modal" onClick={onClose}>X</button>
                <h2>{'Nuevo Ingrediente'}</h2>
-               <form onSubmit={onSubmit} className="formularioEditarProductosAdmin">
+               <form onSubmit={onSubmit} className="modal-form">
                    <input
-                       className="inputProductoEditarAdmin"
+                       className="input-modal"
                        type="text"
                        name="Nombre"
                        value={data.Nombre}
                        onChange={handleChange}
                        placeholder="Nombre"
                    />
-                   <button className="botonEditarProductosAdmin" type="submit">
+                   <button className="btn-modal" type="submit">
                     Crear Ingrediente
                    </button>
             </form>

@@ -1,13 +1,4 @@
 
-"""
-This module sets up a Flask web application and connects to a MySQL database.
-
-The `connection()` function establishes a connection to the MySQL database using the configuration stored in the `db_config` dictionary. It returns the connection object and a cursor object.
-
-The `index()` function is a route handler that retrieves all the users from the `usuarios` table in the database and renders them in the `index.html` template.
-
-The application is run in debug mode when the script is executed directly.
-"""
 # import libraries
 
 from flask import Flask, render_template
@@ -24,9 +15,9 @@ from datetime import timedelta
 app = Flask(__name__)
 
 # Configure the JWT settings
-JWT_SECRET_KEY = os.listdir()
-
+load_dotenv()  # Asegúrate de cargar las variables de entorno antes de usarlas
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+
 
 app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 jwt = JWTManager(app)
@@ -47,11 +38,6 @@ app.config['UPLOAD_FOLDER_INVENTORY'] = 'static/uploads/sellers/inventory'
 # Update CORS configuration
 CORS(app, resources={
     r"/*": {
-        "origins": [
-            "https://saberesysabores-production.up.railway.app",
-            "http://localhost:5173",  # Reemplaza con el puerto de tu React app
-            "http://localhost:5000"
-        ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "X-CSRF-TOKEN"],
         "supports_credentials": True  # ✅ Corregido
@@ -70,8 +56,10 @@ app.register_blueprint(SeedsRoutes)
 app.register_blueprint(RecipesRoutes)
 app.register_blueprint(SellersRoutes)
 
+port = int(os.getenv("PORT", 5000))  # Usa el puerto de Railway o 5000 por defecto
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=port)
+
 
 
 

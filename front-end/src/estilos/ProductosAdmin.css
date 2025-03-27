@@ -72,20 +72,42 @@
   
 
 /* Responsivo */
-@media (max-width: 1000px) {
+/* Responsivo */
+@media (max-width: 1024px) {
     .crudSemillasAdmin {
         width: 90%;
-        margin-left: 5%;
-        font-size: 15px;
+        left: 5%;
+        overflow-x: auto;
     }
-    
-    .crudSemillasAdmin th,
-    .crudSemillasAdmin td {
-        font-size: 14px;
-        padding: 6px;
+}
+
+@media (max-width: 800px) {
+    .crudSemillasAdmin {
+        width: 95%;
+        left: 2.5%;
+    }
+    .crudSemillasAdmin{
+        width: 100%;
+        left: 0;
+        padding: 0 10px;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    h1{
+        text-align: center;
+    }
+    .crudSemillasAdmin{
+        width: 100%;
+        left: 0;
+        padding: 0 10px;
+        overflow-x: auto;
+        box-sizing: border-box;
     }
 
-    .accionesSemillas svg {
-        font-size: 16px;
+    .botonNuevaSemillaAdmin {
+        width: 150px;
     }
 }

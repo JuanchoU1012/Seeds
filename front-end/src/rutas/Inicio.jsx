@@ -24,7 +24,10 @@ export const Inicio = () => {
           </div>
         </div> */}
         <Banner/>
-        <ImageSlider/>
+        <div className="slidersemillas">
+          <ImageSlider/>
+        </div>
+
         <div className="primerTexto">
             <div className="textoInicio">
               <p className="parrafoInicio">

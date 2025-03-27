@@ -1,16 +1,29 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import '../estilos/seedmodal.css'
+import { useState, useEffect } from 'react';
+import '../estilos/recipemodal.css'
 
 
 const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
+
+    console.log(data, 'modaldata')
+    const [preview, setPreview] = useState(null);
+
+
+        useEffect(() => {
+                if (data.image_url instanceof File) {
+                    setPreview(URL.createObjectURL(data.image_url));
+                } else if (typeof data.image_url === 'string') {
+                    setPreview(`${data.image_url}`);
+                } else {
+                    setPreview(null);
+                }
+            }, [data.image_url]);
     
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
     };
     
-    const [preview, setPreview] = useState(null);
     
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -25,7 +38,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
         <div className="modalSemillas" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-modal" onClick={onClose}>X</button>
-                <h2>{data.IdSemilla ? 'Editar Semilla' : 'Nueva Semilla'}</h2>
+                <h2>{data.NombreComun ? 'Editar Semilla' : 'Nueva Semilla'}</h2>
                 <form onSubmit={onSubmit} className="modal-form">
                     <input
                         className="input-modal"
@@ -43,13 +56,13 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
                         onChange={handleChange}
                         placeholder="Nombre Común"
                     />
-                    <input
+                    <textarea
                         className="input-modal"
-                        type="text"
                         name="Descripcion"
                         value={data.Descripcion}
                         onChange={handleChange}
                         placeholder="Descripción de la Semilla"
+                        rows="4"
                     />
     
                     <input
@@ -67,7 +80,7 @@ const SeedModal = ({ isOpen, onClose, onSubmit, data, setData }) => {
 
 
                     <button type="submit" className="btn-modal">
-                        {data.IdSemilla ? 'Guardar Cambios' : 'Crear Semilla'}
+                        {data.NombreCientSemilla ? 'Guardar Cambios' : 'Crear Semilla'}
                     </button>
                 </form>
             </div>

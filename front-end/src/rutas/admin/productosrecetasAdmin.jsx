@@ -130,10 +130,9 @@ export const ProductosRecetasAdmin = () => {
             <MenuLateral />
             <h1>Ingredienetes Secundarios Recetas</h1>
             <button className="botonNuevaSemillaAdmin" onClick={() => setShowNuevoModal(true)}>Nuevo Ingrediente</button>
-            <table className="CrudSemillasAdmin">
+            <table className="crudSemillasAdmin">
                 <thead>
                     <tr>
-                        <th className="tituloCrudSemillas" >Semilla</th>
                         <th className="tituloCrudSemillas">Ingrediente</th>
                         <th className="tituloCrudSemillas">Acciones</th>
                     </tr>

@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import '../estilos/vermasmodalItem.css';
-const API = import.meta.env.VITE_REACT_APP_API;
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
+import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 const VermasTienda = ({ isOpen, onClose, data }) => {
     if (!isOpen) return null;
 
@@ -12,7 +15,7 @@ const VermasTienda = ({ isOpen, onClose, data }) => {
                     {/* Imagen más grande */}
                     <div className="image-container">
                         {data.Ruta ? (
-                            <img src={`${API}/${data.Ruta}`} alt="Preview" />
+                            <img src={`${data.Ruta}`} alt="Preview" />
                         ) : (
                             <p>No hay imagen disponible</p>
                         )}
@@ -23,12 +26,16 @@ const VermasTienda = ({ isOpen, onClose, data }) => {
                         <p className="price">${data.PrecioDeVenta} X {data.Unidad}</p>
                         <div className="vendedor-details">
                             <h3>Detalles del Vendedor</h3>
-                            <p><strong>{data.Nombre} {data.Apellidos}</strong></p>
+                            <NavLink className="vendedor-info">
+                                <FontAwesomeIcon icon={faUserCheck} className="user-icon" />
+                                <p><strong>{data.Nombre} {data.Apellidos}</strong></p>
+                            </NavLink>
                             <p>{data.NombreComercio}</p>
                             <p>{data.Telefono}</p>
                             <p>{data.Direccion}, {data.NombreMun}, {data.NombreDep}</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

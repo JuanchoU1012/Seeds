@@ -1,13 +1,11 @@
 
-
 .tituloCrudRecetas {
     border-bottom: 0.5px solid;
     width: 170px;
 }
 
 
-
-.actulizarRecetas {
+.actualizarRecetas {
     font-weight: 500;
     color: #3a3f43;
     text-decoration: inherit;
@@ -15,21 +13,36 @@
 }
 
 .buscarRecetasAdmin {
-    background: #D9D9D9;
-    width: 190px;
+    background: #d9d9d9;
+    width: 220px;
     height: 40px;
     border-radius: 7px;
-    position: relative;
-    bottom: 0px;
-    border: none;
-    padding-left: 2%;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 1rem;
+    margin: 10px auto;
+    display: block;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center; /* Alinea todos los elementos verticalmente */
+    gap: 15px; /* Espaciado uniforme entre elementos */
+    margin-left: 35%;
 }
 
 .botonNuevaRecetaAdmin {
-    background: #a5a0a082;
-    position: relative;
-    right: 20%;
-    bottom: 25px;
+    background: #6d6d6d;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: white;
+    transition: background 0.3s ease-in-out;
+}
+
+.botonNuevaRecetaAdmin:hover {
+    background: #4e4e4e;
 }
 
 .eliminarRecetas {
@@ -46,6 +59,11 @@
     width: 80%;
     position: relative;
     left: 18.5%;
+    overflow-x: auto;
+}
+.table{
+    width: 100%;
+    min-width: 800px;
 }
 
 /* Asegurar que los videos no se expandan demasiado */
@@ -58,47 +76,163 @@
 /* Ajustes de botones y acciones */
 .accionesRecetas {
     display: flex;
-    gap: 10px;
     justify-content: center;
+    gap: 10px;
 }
 
-.accionesRecetas svg {
+.accionesSemillas svg {
     font-size: 20px;
     cursor: pointer;
 }
 
-/* Responsivo */
-@media (max-width: 1000px) {
+.actulizarSemillas{
+    font-weight: 500;
+    color: #3a3f43;
+    text-decoration: inherit;
+
+}
+.eliminarSemillas{
+    font-weight: 500;
+    color: #3a3f43;
+    text-decoration: inherit;
+
+}
+
+/* --- ÍCONO DE INFORMACIÓN (TOOLTIP) --- */
+
+.top-container {
+    display: flex;
+    padding: 10px 5%;
+    margin-left: 15%;
+}
+
+.botones-container {
+    align-items: center;
+    margin-left: 5%;
+}
+
+.info-icon-container {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    justify-content: flex-start;
+}
+
+/* Ajustes en el icono */
+.info-icon {
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Tooltip mejor posicionado */
+.tooltip {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    width: 250px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Mostrar tooltip al hacer hover */
+.info-icon-container:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+@media (max-width: 1024px) {
+
     .crudRecetasAdmin {
         width: 90%;
-        margin-left: 5%;
-        font-size: 15px;
+        left: 5%;
+        overflow-x: auto;
     }
-    
-    .crudRecetasAdmin th,
-    .crudRecetasAdmin td {
-        font-size: 14px;
-        padding: 6px;
+    .top-container{
+        margin: 0% 9% 0% 9%;
     }
 
-    .accionesRecetas svg {
-        font-size: 16px;
+    .botones-container{
+        margin-left: 15%;
+    }
+    .tooltip {
+        width: 200px;
+        font-size: 12px;
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 800px) {
+
     .crudRecetasAdmin {
-        left: 6.5%;
-        font-size: 15px;
+        width: 95%;
+        left: 2.5%;
+        overflow-x: auto;
     }
-    .actulizarRecetas, .eliminarRecetas {
-        font-size: 20px;
+    .botones-container{
+        justify-content: center;
+        align-items: center;
+        margin-top: 3%;
     }
-    .modal-content {
-        width: 60%;
+
+    .tooltip {
+        width: 180px;
+        font-size: 11px;
     }
-    .recetasAdmin {
-        margin-left: 3%;
-        font-size: 14px;
+}
+
+@media (max-width: 480px) {
+
+    h1{
+        text-align: center;
+    }
+
+    .crudRecetasAdmin{
+        width: 100%;
+        left: 0;
+        padding: 0 10px;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+
+    .buscarSemillasAdmin {
+        justify-self: center;
+    }
+
+    .top-container{
+        margin: 0% 9% 0% 13%;
+    }
+
+    .botonNuevaSemillaAdmin {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+
+    .botones-container{
+        max-width: 50%;
+        justify-content: center;
+        align-items: center;
+        /* margin-left: 33%; */
+        margin-top: 6%;
+    }
+
+    .info-icon-container {
+        margin-top: 14%;
+    }
+
+    .tooltip {
+        width: 145px;
+        font-size: 10px;
+        top: 30px;
+        right: 30px;
     }
 }

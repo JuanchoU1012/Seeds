@@ -38,7 +38,7 @@ export const InicioRecetas = () => {
       <div className="recipe-grid">
         {currentRecipes.map((recipe) => (
           <div key={recipe.IdReceta} className="recipe-card">
-            <video src={`${API}/${recipe.videourl}`} alt={recipe.Nombre} className="recipe-image" />
+            <video src={`${recipe.videourl}`} alt={recipe.Nombre} className="recipe-image" />
             <h3 className="recipe-title">{recipe.Nombre}</h3>
             <p className="recipe-author">{recipe.Descripcion}</p>
           </div>
